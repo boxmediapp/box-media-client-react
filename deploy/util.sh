@@ -1,4 +1,4 @@
-projectName="image-client-app"
+projectName="box-media-client-react"
 
 getProjectVersionFromPom(){
   projectversion=`grep -A 0 -B 2 "<packaging>" pom.xml  | grep version  | cut -d\> -f 2 | cut -d\< -f 1`
@@ -6,7 +6,7 @@ getProjectVersionFromPom(){
 }
 
 buildVariables(){
-  export websiterootfolder="/home/ec2-user/bdocker/bnginx/var/www"
+  export websiterootfolder="bdocker/bnginx/var/www"
 
   export websitefoldername="html"
   export zipfilename="$projectName-$projectversion.zip"

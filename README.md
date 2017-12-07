@@ -1,4 +1,4 @@
-# image-client-app
+# box-media-client-react-app
 This is the ReactJS web application
 
 
@@ -6,7 +6,7 @@ This is the ReactJS web application
 
 ### Checkout
 
-> ```git clone git@github.com:boxmediapp/box-media-manager.git```
+> ```git clone git@github.com:boxmediapp/box-media-client-react.git```
 
 ### Run locally
 

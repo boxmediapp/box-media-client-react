@@ -7,13 +7,12 @@ import {
 import {textValues,config} from "../configs";
 import {AppHeader,BigButton} from "../components";
 import {styles} from "./styles";
-
+import {genericUtil} from "../utils";
 
 export  default class ListSchedulesView extends Component {
     constructor(props){
       super(props);
-      if(textValues.schedules.redirect)
-        window.location.pathname=textValues.schedules.redirect;
+      genericUtil.redirectToMediaApp(textValues.schedules.redirect);
     }
 
 

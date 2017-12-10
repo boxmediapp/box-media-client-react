@@ -5,37 +5,37 @@ const textValues={
     },
     episodeList:{
               link:"/box-media/episode-list",
-              redirect:"/media-app/index.html",
+              redirect:"episode",
               linkText:"Episodes"
     },
     programmeList:{
           link:"/box-media/programme-list",
-          redirect:"/media-app/index.html?resource=programmes",
+          redirect:"programmes",
           linkText:"Programme"
     },
     collectionList:{
           link:"/box-media/collection-list",
-          redirect:"/media-app/index.html?resource=collections",
+          redirect:"collections",
           linkText:"Collections"
     },
     s3:{
           link:"/box-media/s3-file-list",
-          redirect:"/media-app/index.html?resource=s3",
+          redirect:"s3",
           linkText:"S3"
     },
     schedules:{
           link:"/box-media/schedule-list",
-          redirect:"/media-app/index.html?resource=schedules",
+          redirect:"schedules",
           linkText:"Schedules",
     },
     playLists:{
           link:"/box-media/playlists",
-          redirect:"/media-app/index.html?resource=playlists",
+          redirect:"playlists",
           linkText:"Playlists"
     },
     importSchedules:{
           link:"/box-media/importSchedules",
-          redirect1:"/media-app/index.html?resource=importSchedules",
+          redirect1:"importSchedules",
           linkText:"Imports",
           scheduledtasks:{
             title:"Scheduled Tasks"
@@ -43,12 +43,12 @@ const textValues={
     },
     admin:{
           link:"/box-media/admin",
-          redirect:"/media-app/index.html?resource=admin",
+          redirect:"admin",
           linkText:"Admin"
     },
     help:{
           link:"/box-media/help",
-          redirect:"/media-app/index.html?resource=help",
+          redirect:"help",
           linkText:"Help"
     },
 

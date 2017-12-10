@@ -7,13 +7,12 @@ import {
 import {textValues,config} from "../configs";
 import {AppHeader,BigButton} from "../components";
 import {styles} from "./styles";
-
+import {genericUtil} from "../utils";
 
 export  default class ListS3FilesView extends Component {
     constructor(props){
       super(props);
-      if(textValues.s3.redirect)
-        window.location.pathname=textValues.s3.redirect;
+      genericUtil.redirectToMediaApp(textValues.s3.redirect);
     }
 
 

@@ -105,7 +105,7 @@ export default class ImageUtil{
   getS3ImageURL(image){
     return image.s3BaseURL+"/"+image.filename;
   }
-  
+
   calculateFitImageWidth(resolution){
       var width=mobileImageWidth;
       var height=mobileImageHeight;
@@ -127,5 +127,5 @@ export default class ImageUtil{
       }
       return {width, height};
   }
-
+  
 }

@@ -7,13 +7,13 @@ import {
 import {textValues,config} from "../configs";
 import {AppHeader,BigButton} from "../components";
 import {styles} from "./styles";
-
+import {genericUtil} from "../utils";
 
 export  default class HelpView extends Component {
     constructor(props){
       super(props);
-      if(textValues.help.redirect)
-        window.location.pathname=textValues.help.redirect;
+      genericUtil.redirectToMediaApp(textValues.help.redirect);
+
     }
 
 

@@ -7,13 +7,13 @@ import {
 import {textValues,config} from "../configs";
 import {AppHeader,BigButton} from "../components";
 import {styles} from "./styles";
-
+import {genericUtil} from "../utils";
 
 export  default class ListPlayListView extends Component {
     constructor(props){
       super(props);
-      if(textValues.playLists.redirect)
-        window.location.pathname=textValues.playLists.redirect;
+      genericUtil.redirectToMediaApp(textValues.playLists.redirect);
+
     }
 
 

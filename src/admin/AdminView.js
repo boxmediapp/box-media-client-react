@@ -10,13 +10,13 @@ import {
 import {textValues,config} from "../configs";
 import {AppHeader,BigButton} from "../components";
 import {styles} from "./styles";
+import {genericUtil} from "../utils";
 
 export  default class AdminView extends Component {
     constructor(props){
       super(props);
-      if(textValues.admin.redirect){
-        window.location.pathname=textValues.admin.redirect;
-      }
+      genericUtil.redirectToMediaApp(textValues.admin.redirect);
+
     }
     render(){
 

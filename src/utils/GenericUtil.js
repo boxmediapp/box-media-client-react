@@ -198,6 +198,13 @@ export default class GenericUtil{
 
 
   }
+  redirectToMediaApp(resource){
+      if(resource){
+          window.location = '/media-app/index.html?resource=' + resource;
+      }
+
+
+  }
 
 }
 

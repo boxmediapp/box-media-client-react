@@ -7,13 +7,13 @@ import {
 import {textValues,config} from "../configs";
 import {AppHeader,BigButton} from "../components";
 import {styles} from "./styles";
-
+import {genericUtil} from "../utils";
 
 export  default class ListProgrammeView extends Component {
     constructor(props){
       super(props);
-      if(textValues.programmeList.redirect)
-        window.location.pathname=textValues.programmeList.redirect;
+      genericUtil.redirectToMediaApp(textValues.programmeList.redirect);
+
     }
 
 

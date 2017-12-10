@@ -7,14 +7,14 @@ import {
 import {textValues,config} from "../configs";
 import {AppHeader,BigButton} from "../components";
 import {styles} from "./styles";
+import {genericUtil} from "../utils";
 
 
 export  default class ListEpisodesView extends Component {
     constructor(props){
       super(props);
-      if(textValues.episodeList.redirect)
-        window.location.pathname=textValues.episodeList.redirect;
-    }
+      genericUtil.redirectToMediaApp(textValues.episodeList.redirect);
+    }      
 
 
     render(){

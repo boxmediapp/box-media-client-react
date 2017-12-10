@@ -25,7 +25,7 @@ export  default class ListEpisodesView extends Component {
 
                 <div style={AppHeader.styles.content}>
                     <div className="dataContainer">
-                            Episode Lists
+                        {textValues.redirect.message}
                     </div>
                </div>
             </div>

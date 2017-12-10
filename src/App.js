@@ -20,7 +20,15 @@ import {HomeView} from "./home";
 import {ListEpisodesView} from "./list-episodes";
 import {ListProgrammeView} from "./list-programme";
 import {ListCollectionsView} from "./list-collections";
+import {ListS3FilesView} from "./list-s3-files";
+import {ListSchedulesView} from "./list-schedules";
+import {ListPlayListView} from "./playlists";
+import {ImportSchedulesView} from "./import-schedules";
+import {HelpView} from "./help";
+
+
 import {genericUtil} from "./utils";
+
 
 
 
@@ -78,6 +86,15 @@ export default class App extends Component{
                                   <Route  path={textValues.episodeList.link} component={ListEpisodesView}/>
                                   <Route  path={textValues.programmeList.link} component={ListProgrammeView}/>
                                   <Route  path={textValues.collectionList.link} component={ListCollectionsView}/>
+                                  <Route  path={textValues.s3.link} component={ListS3FilesView}/>
+                                  <Route  path={textValues.schedules.link} component={ListSchedulesView}/>
+                                  <Route  path={textValues.playLists.link} component={ListPlayListView}/>
+                                  <Route  path={textValues.importSchedules.link} component={ImportSchedulesView}/>
+
+                                  <Route  path={textValues.admin.link} component={AdminView}/>
+                                  <Route  path={textValues.help.link} component={HelpView}/>
+
+
 
                                   <Route path={textValues.admin.link} component={AdminView}/>
 

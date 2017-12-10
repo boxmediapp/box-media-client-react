@@ -1,5 +1,8 @@
 const textValues={
     title:"Box Media Application",
+    redirect:{
+      message:"Loading..."
+    },
     episodeList:{
               link:"/box-media/episode-list",
               redirect:"/media-app/index.html",
@@ -23,7 +26,7 @@ const textValues={
     schedules:{
           link:"/box-media/schedule-list",
           redirect:"/media-app/index.html?resource=schedules",
-          linkText:"Schedules"
+          linkText:"Schedules",
     },
     playLists:{
           link:"/box-media/playlists",
@@ -32,8 +35,11 @@ const textValues={
     },
     importSchedules:{
           link:"/box-media/importSchedules",
-          redirect:"/media-app/index.html?resource=importSchedules",
-          linkText:"Imports"
+          redirect1:"/media-app/index.html?resource=importSchedules",
+          linkText:"Imports",
+          scheduledtasks:{
+            title:"Scheduled Tasks"
+          }
     },
     admin:{
           link:"/box-media/admin",

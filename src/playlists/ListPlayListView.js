@@ -9,11 +9,11 @@ import {AppHeader,BigButton} from "../components";
 import {styles} from "./styles";
 
 
-export  default class ListProgrammeView extends Component {
+export  default class ListPlayListView extends Component {
     constructor(props){
       super(props);
-      if(textValues.programmeList.redirect)
-        window.location.pathname=textValues.programmeList.redirect;
+      if(textValues.playLists.redirect)
+        window.location.pathname=textValues.playLists.redirect;
     }
 
 
@@ -21,11 +21,11 @@ export  default class ListProgrammeView extends Component {
 
         return (
             <div>
-              <AppHeader selected="programmeList"/>
+              <AppHeader selected="playLists"/>
 
                 <div style={AppHeader.styles.content}>
                     <div className="dataContainer">
-                            Programme Lists
+                            {textValues.redirect.message}
                     </div>
                </div>
             </div>

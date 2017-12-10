@@ -1,2 +1,2 @@
-import ListProgrammeView from "./ListProgrammeView";
-export {ListProgrammeView};
+import ListSchedulesView from "./ListSchedulesView";
+export {ListSchedulesView};

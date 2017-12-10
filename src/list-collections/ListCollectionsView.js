@@ -25,7 +25,7 @@ export  default class ListCollectionsView extends Component {
 
                 <div style={AppHeader.styles.content}>
                     <div className="dataContainer">
-                            Collections Lists
+                            {textValues.redirect.message}
                     </div>
                </div>
             </div>

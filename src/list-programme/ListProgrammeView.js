@@ -25,7 +25,7 @@ export  default class ListProgrammeView extends Component {
 
                 <div style={AppHeader.styles.content}>
                     <div className="dataContainer">
-                            Programme Lists
+                            {textValues.redirect.message}
                     </div>
                </div>
             </div>

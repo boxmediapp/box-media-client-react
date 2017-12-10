@@ -14,6 +14,9 @@ import {styles} from "./styles";
 export  default class AdminView extends Component {
     constructor(props){
       super(props);
+      if(textValues.admin.redirect){
+        window.location.pathname=textValues.admin.redirect;
+      }
     }
     render(){
 
@@ -24,7 +27,7 @@ export  default class AdminView extends Component {
               <div style={AppHeader.styles.content}>
                   <div style={styles.iconContainer}>
 
-                    Admin
+                    {textValues.redirect.message}
                      {/*
                       <BigButton label={textValues.newepisodes.linkText}
                                content={textValues.newepisodes.actionText}

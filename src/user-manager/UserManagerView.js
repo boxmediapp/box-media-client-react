@@ -17,7 +17,7 @@ import {genericUtil} from "../utils";
 export  default class UserManagerView extends Component {
     constructor(props){
       super(props);
-      this.state={users:[], createNewUser:false};
+      this.state={users:[], dialog:null};
       this.loadUsers();
     }
 
@@ -30,8 +30,8 @@ export  default class UserManagerView extends Component {
       this.setState(Object.assign({}, this.state,{users}));
     }
 
-    setCreateNewUser(createNewUser){
-      this.setState(Object.assign({}, this.state,{createNewUser}));
+    setDialog(dialog){
+      this.setState(Object.assign({}, this.state,{dialog}));
     }
 
     onCreateNewUser(data){
@@ -41,7 +41,7 @@ export  default class UserManagerView extends Component {
              this.loadUsers();
        });
 
-      this.setCreateNewUser(false);
+      this.setDialog(null);
     }
     onDeleteUser(user){
       if(!user){
@@ -56,15 +56,21 @@ export  default class UserManagerView extends Component {
              this.loadUsers();
        });
 
-
-      console.log("onDeleteUser user:"+JSON.stringify(user));
+    }
+    onDisplayChangedPasswordDialog(user){
+      this.user=user;
+      this.setDialog("update");
+    }
+    onChangePassword(user){
+      console.log("updated:"+JSON.stringify(user));
+      this.setDialog(null);
+      if(user && user.username && user.password){
+          api.updateUser(user.username, user);
+      }
 
     }
-    onChangedPassword(user){
-
-    }
-    onCancelCreateNewUser(){
-      this.setCreateNewUser(false);
+    onCancel(){
+      this.setDialog(null);
     }
     render(){
 
@@ -90,7 +96,7 @@ export  default class UserManagerView extends Component {
 
                        data={this.state.users}
                        header={<Cell></Cell>}
-                       cell={<ActiveCell data={this.state.users} onDeleteUser={this.onDeleteUser.bind(this)} onChangedPassword={this.onChangedPassword.bind(this)}/>}
+                       cell={<ActiveCell data={this.state.users} onDeleteUser={this.onDeleteUser.bind(this)} onDisplayChangedPasswordDialog={this.onDisplayChangedPasswordDialog.bind(this)}/>}
                        width={800}
                        />
 
@@ -100,15 +106,18 @@ export  default class UserManagerView extends Component {
 
                               </Table>
                               <a className="btn btn-primary btn-normal imageControlButton" onClick={rvt=>{
-                                this.setCreateNewUser(true);
+                                this.setDialog("create");
                               }}>Add New User
                               </a>
              </div>
 
 
-             <DisplayCreateNewUserDialog render={this.state.createNewUser} onCreateNewUser={this.onCreateNewUser.bind(this)}
-             onCancelCreateNewUser={this.onCancelCreateNewUser.bind(this)}/>
+             <DisplayCreateNewUserDialog dialogtype={this.state.dialog} onCreateNewUser={this.onCreateNewUser.bind(this)}
+             onCancel={this.onCancel.bind(this)}/>
 
+             <ChangePassqwordDialog dialogtype={this.state.dialog}
+             onChangePassword={this.onChangePassword.bind(this)}
+             onCancel={this.onCancel.bind(this)} user={this.user}/>
           </div>
         );
 
@@ -131,12 +140,12 @@ class TextCell extends Component{
 
 class ActiveCell extends Component {
   render() {
-    const {data, rowIndex, onDeleteUser,onChangedPassword,columnKey, ...props} = this.props;
+    const {data, rowIndex, onDeleteUser,onDisplayChangedPasswordDialog,columnKey, ...props} = this.props;
     return (
       <Cell {...props}>
 
 
-            <a className="btn btn-primary btn-normal mediaButton"onClick={ evt=> onChangedPassword(data[rowIndex])}>Change Password</a>
+            <a className="btn btn-primary btn-normal mediaButton"onClick={ evt=> onDisplayChangedPasswordDialog(data[rowIndex])}>Change Password</a>
             <a className="btn btn-primary btn-normal mediaButton" onClick={ evt=> onDeleteUser(data[rowIndex])}>Delete
             </a>
 
@@ -148,16 +157,37 @@ class ActiveCell extends Component {
 
 class DisplayCreateNewUserDialog extends Component{
   render(){
-    if(this.props.render){
+    if(this.props.dialogtype==="create"){
          var message={
            title:"Add New User",
            onConfirm:this.props.onCreateNewUser,
-           onCancel:this.props.onCancelCreateNewUser,
+           onCancel:this.props.onCancel,
            inputs:[{name:"username",  label:"Username:"},
                    {name:"password",  label:"Password:"}],
            confirmButton:"Create",
            cancelButton:"Cancel"
 
+         }
+        return(<ModalDialog message={message}/>);
+    }
+    else{
+      return  null;
+    }
+  }
+}
+
+class ChangePassqwordDialog extends Component{
+     render(){
+    if(this.props.dialogtype==="update"){
+         var message={
+           title:"Change Password",
+           onConfirm:this.props.onChangePassword,
+           onCancel:this.props.onCancel,
+           inputs:[
+                   {name:"username",  label:"Username:", readOnly:true, value:this.props.user.username},
+                   {name:"password",  label:"Password:"}],
+           confirmButton:"Change",
+           cancelButton:"Cancel"
          }
         return(<ModalDialog message={message}/>);
     }

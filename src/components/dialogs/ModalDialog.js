@@ -7,7 +7,13 @@ export default class ModalDialog extends Component {
       if(this.props.message.inputs && this.props.message.inputs.length>0){
           var inputs={};
           this.props.message.inputs.forEach(input=>{
-            inputs[input.name]="";
+            if(input.value){
+              inputs[input.name]=input.value;
+            }
+            else{
+              inputs[input.name]="";
+            }
+
           });
           this.state={first:"",last:"", inputs};
       }
@@ -40,7 +46,7 @@ export default class ModalDialog extends Component {
                             <div style={styles.title}>{this.props.message.title}</div>
                             <div style={styles.content}>
                                   {this.props.message.content}
-                                  <DisplayInputs {...this.props} onInputChanged={this.onInputChanged.bind(this)}/>
+                                  <DisplayInputs {...this.props} onInputChanged={this.onInputChanged.bind(this)} currentInputs={this.state.inputs}/>
                             </div>
 
                             <div style={styles.footer}>
@@ -82,10 +88,18 @@ class DisplayButton extends Component{
 class DisplayInputs extends Component{
   renderInputField(input, index){
       var onInputChanged=this.props.onInputChanged;
+      var value=this.props.currentInputs[input.name];
 
+      if(input.readOnly){
+        return( <div style={styles.inputContainer} key={input.name}>
+                    <div style={styles.inputLabel}>{input.label}</div>
+                    <input type="text" key={input.name} value={value} readOnly></input>
+                </div>
+        );
+      }
       return( <div style={styles.inputContainer} key={input.name}>
                   <div style={styles.inputLabel}>{input.label}</div>
-                  <input type="text" key={input.name} onChange={evt=>{
+                  <input type="text" key={input.name} value={value} onChange={evt=>{
                         var newinput={};
                         newinput[input.name]=evt.target.value;
                         onInputChanged(newinput);

@@ -5,7 +5,7 @@ const textValues={
     },
     episodeList:{
               link:"/box-media/episode-list",
-              redirect:"episode",
+              redirect1:"episode",
               linkText:"Episodes"
     },
     programmeList:{
@@ -43,7 +43,7 @@ const textValues={
     },
     admin:{
           link:"/box-media/admin",
-          redirect:"admin",
+          redirect1:"admin",
           linkText:"Admin"
     },
     help:{
@@ -55,6 +55,14 @@ const textValues={
     logout:{
       link:"/box-media-app/logout",
       linkText:"Sign out"
+    },
+    manageUser:{
+        linkText:"Users Manager",
+        actionText:"Manage Users",
+        link:"/box-media/userManager",
+
+
+
     },
 
     home:{

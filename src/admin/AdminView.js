@@ -27,22 +27,9 @@ export  default class AdminView extends Component {
               <div style={AppHeader.styles.content}>
                   <div style={styles.iconContainer}>
 
-                    {textValues.redirect.message}
-                     {/*
-                      <BigButton label={textValues.newepisodes.linkText}
-                               content={textValues.newepisodes.actionText}
-                               link={textValues.newepisodes.link}/>
-
-                      <BigButton label={textValues.assignedEpisodes.linkText}
-                                content={textValues.assignedEpisodes.actionText}
-                                link={textValues.assignedEpisodes.link}/>
-                      */}
-
-
-
-
-
-
+                      <BigButton label={textValues.manageUser.linkText}
+                                 content={textValues.manageUser.actionText}
+                                 link={textValues.manageUser.link}/>
                   </div>
              </div>
 

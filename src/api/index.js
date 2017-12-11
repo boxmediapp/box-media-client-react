@@ -197,6 +197,18 @@ class ServiceAPI {
          getAllBoxChannels(){
            return httpGetRequest("box-channels");
          }
+         getUsers(){
+           return httpGetRequest("users");
+         }
+         createNewUser(user){
+           return httpPostRequest("users", JSON.stringify(user));
+         }
+         deleteUser(username){
+           return httpDeleteRequest("users/"+username);
+         }
+         updateUser(username,user){
+           return httpDeleteRequest("users/"+username,user);
+         }
 }
 
 

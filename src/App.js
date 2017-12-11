@@ -25,6 +25,8 @@ import {ListSchedulesView} from "./list-schedules";
 import {ListPlayListView} from "./playlists";
 import {ImportSchedulesView} from "./import-schedules";
 import {HelpView} from "./help";
+import {UserManagerView} from "./user-manager";
+
 
 
 import {genericUtil} from "./utils";
@@ -97,6 +99,8 @@ export default class App extends Component{
 
 
                                   <Route path={textValues.admin.link} component={AdminView}/>
+                                  <Route path={textValues.manageUser.link} component={UserManagerView}/>
+
 
                               </div>
                             </Router>

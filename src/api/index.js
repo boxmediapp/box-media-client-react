@@ -207,7 +207,7 @@ class ServiceAPI {
            return httpDeleteRequest("users/"+username);
          }
          updateUser(username,user){
-           return httpDeleteRequest("users/"+username,user);
+           return httpPutRequest("users/"+username,JSON.stringify(user));
          }
 }
 

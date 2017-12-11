@@ -4,7 +4,7 @@ export default class ModalDialog extends Component {
   constructor(props){
       super(props);
 
-      if(this.props.message.inputs && this.props.message.inputs.length>0){
+      if(this.props.message && this.props.message.inputs && this.props.message.inputs.length>0){
           var inputs={};
           this.props.message.inputs.forEach(input=>{
             if(input.value){
@@ -17,9 +17,7 @@ export default class ModalDialog extends Component {
           });
           this.state={first:"",last:"", inputs};
       }
-      else{
-          this.state={first:"",last:""};
-      }
+
 
   }
   onConfirm(){

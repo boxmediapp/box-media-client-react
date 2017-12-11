@@ -177,6 +177,7 @@ class DisplayCreateNewUserDialog extends Component{
 }
 
 class ChangePassqwordDialog extends Component{
+
      render(){
     if(this.props.dialogtype==="update"){
          var message={

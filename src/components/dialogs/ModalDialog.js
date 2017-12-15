@@ -15,7 +15,7 @@ export default class ModalDialog extends Component {
             }
 
           });
-          this.state={first:"",last:"", inputs};
+          this.state={inputs};
       }
 
 
@@ -38,13 +38,18 @@ export default class ModalDialog extends Component {
   }
   render(){
       if(this.props.message){
+            var currentInputs=null;
+            if(this.state && this.state.inputs){
+              currentInputs=this.state.inputs;
+            }
+
             return(
                       <div style={styles.backdropStyle}>
                         <div style={styles.dialogwindow}>
                             <div style={styles.title}>{this.props.message.title}</div>
                             <div style={styles.content}>
                                   {this.props.message.content}
-                                  <DisplayInputs {...this.props} onInputChanged={this.onInputChanged.bind(this)} currentInputs={this.state.inputs}/>
+                                  <DisplayInputs {...this.props} onInputChanged={this.onInputChanged.bind(this)} currentInputs={currentInputs}/>
                             </div>
 
                             <div style={styles.footer}>
@@ -67,7 +72,7 @@ export default class ModalDialog extends Component {
 class DisplayButton extends Component{
 
         render(){
-        if(this.props.onClick){
+        if(this.props.onClick && this.props.buttonText){
           return(
             <div style={styles.buttonContainer}>
                <button onClick={this.props.onClick} className="btn btn-primary btn-normal">{this.props.buttonText}</button>

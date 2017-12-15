@@ -30,6 +30,10 @@ export  default class AdminView extends Component {
                       <BigButton label={textValues.manageUser.linkText}
                                  content={textValues.manageUser.actionText}
                                  link={textValues.manageUser.link}/>
+
+                      <BigButton label={textValues.appConfig.linkText}
+                                 content={textValues.appConfig.actionText}
+                                 link={textValues.appConfig.link}/>       
                   </div>
              </div>
 

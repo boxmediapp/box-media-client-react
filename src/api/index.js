@@ -96,6 +96,9 @@ class ServiceAPI {
              return data.appconfig;
            });
          }
+         updateConfig(appconfig){
+           return httpPutRequest("app/info",JSON.stringify({appconfig}));
+         }
          requestS3UploadURL(request){
            return httpPostRequest("presigned", JSON.stringify(request));
          }

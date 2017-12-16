@@ -48,7 +48,7 @@ const pHTTPDeleteRequest=function(path, headers){
   return fetch(config.api.getUrl(path),{headers,method:"DELETE"})
   .then(function(response) {
         if((!response) || response.status>=400){
-            console.error("failure response on delete request:"+path);
+            console.error("failure response on delete request:"+path +":"+response.status+":"+response);
             throw Error("HTTP response error on:"+path);
         }
 
@@ -211,6 +211,18 @@ class ServiceAPI {
          }
          updateUser(username,user){
            return httpPutRequest("users/"+username,JSON.stringify(user));
+         }
+         getAppReports(){
+           return httpGetRequest("reports");
+         }
+         loadTags(){
+           return httpGetRequest("tags");
+         }
+         addNewTag(tag){
+           return httpPostRequest("tags", JSON.stringify({name:tag}));
+         }
+         removeTag(tag){
+           return httpDeleteRequest("tags/"+encodeURIComponent(tag));
          }
 }
 

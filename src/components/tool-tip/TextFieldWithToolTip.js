@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import ReactTooltip from 'react-tooltip';
 import {styles} from "./styles";
+import "./styles/index.css";
 export default class TextFieldWithToolTip extends Component{
 
   render(){

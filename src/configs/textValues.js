@@ -176,7 +176,29 @@ const textValues={
           help: "This is the file name prefix used for prefxing the transcoded files, this can be used spcified the output folder. For example, if the file received as the input the transcode does not contaons 'V_' prefix, it can be added as file name prefix here"
         }
     },
-
+    appReports:{
+      linkText:"Reports",
+      actionText:"Reports",
+      link:"/box-media/reports",
+      numberOfEpisodes:{
+          label:"Number Of Episodes"
+      },
+      numberOfHoursTotal:{
+          label:"Total video hours"
+      },
+      numberOfHoursActive:{
+          label:"Total video hours in active"
+      },
+    },
+    manageTags:{
+      linkText:"Manage Tags",
+      actionText:"Manage Available Tags",
+      link:"/box-media/tags",
+      addNewTag:{
+            label:"New tag to ad",
+            help:"Type the tag here and click add button"
+      }
+    },
     home:{
         link:"/",
         link2:"/index.html",

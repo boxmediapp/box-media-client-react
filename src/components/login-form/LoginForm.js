@@ -12,7 +12,7 @@ import {genericUtil} from "../../utils";
 export default class LoginForm extends Component {
    constructor(props){
      super(props);
-     this.state={username:"",password:""};
+     this.state={username:"",password:"", message:null};
    }
    setUsername(username){
         this.setState(Object.assign({}, this.state,{username}));
@@ -21,6 +21,18 @@ export default class LoginForm extends Component {
 
    this.setState(Object.assign({}, this.state,{password}));
  }
+ onClearMessage(){
+   this.setState(Object.assign({}, this.state,{message:null}));
+ }
+ setErrorMessage(content){
+    var message={
+           title:"Error",
+           content,
+           onConfirm:this.onClearMessage.bind(this),
+           confirmButton:"OK"
+    }
+    this.setState(Object.assign({}, this.state,{message}));
+ }
   login(){
       const {username,password}=this.state;
       var that=this;
@@ -28,7 +40,7 @@ export default class LoginForm extends Component {
           appdata.setCredentials(username,password);
           genericUtil.saveCred(username,password);
       }).catch(function(){
-             that.props.onLoginFail();             
+             that.setErrorMessage("Failed to sign in");
       });
   }
 
@@ -83,6 +95,7 @@ export default class LoginForm extends Component {
                                       setPassword={this.setPassword.bind(this)}
                                       login={this.login.bind(this)}/>
                                </div>
+                               <DisplayMessage message={this.state.message}/>
                        </div>
                        <div className="col-sm-6">
                               <CodeDataRenderer service={this}  config={this.buildGlobalInputConfig()} level="H" size="300" showControl={false}/>
@@ -130,5 +143,20 @@ class DisplaySignInForm extends Component{
   );
 
 
+  }
+}
+class DisplayMessage extends Component{
+  render(){
+    if(this.props.message!=null && this.props.message.content){
+      return (
+
+            <div className='loginErrorMessaage'>{this.props.message.content}</div>
+
+
+      )
+    }
+    else{
+      return null;
+    }
   }
 }

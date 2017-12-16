@@ -48,7 +48,7 @@ const pHTTPDeleteRequest=function(path, headers){
   return fetch(config.api.getUrl(path),{headers,method:"DELETE"})
   .then(function(response) {
         if((!response) || response.status>=400){
-            console.error("failure response on delete request:"+path);
+            console.error("failure response on delete request:"+path +":"+response.status+":"+response);
             throw Error("HTTP response error on:"+path);
         }
 
@@ -95,6 +95,9 @@ class ServiceAPI {
            return httpGetRequest("app/info").then(function(data){
              return data.appconfig;
            });
+         }
+         updateConfig(appconfig){
+           return httpPutRequest("app/info",JSON.stringify({appconfig}));
          }
          requestS3UploadURL(request){
            return httpPostRequest("presigned", JSON.stringify(request));
@@ -197,6 +200,52 @@ class ServiceAPI {
          getAllBoxChannels(){
            return httpGetRequest("box-channels");
          }
+         getUsers(){
+           return httpGetRequest("users");
+         }
+         createNewUser(user){
+           return httpPostRequest("users", JSON.stringify(user));
+         }
+         deleteUser(username){
+           return httpDeleteRequest("users/"+username);
+         }
+         updateUser(username,user){
+           return httpPutRequest("users/"+username,JSON.stringify(user));
+         }
+         getAppReports(){
+           return httpGetRequest("reports");
+         }
+         loadTags(){
+           return httpGetRequest("tags");
+         }
+         addNewTag(tag){
+           return httpPostRequest("tags", JSON.stringify({name:tag}));
+         }
+         removeTag(tag){
+           return httpDeleteRequest("tags/"+encodeURIComponent(tag));
+         }
+         loadDevices(){
+           return httpGetRequest("devices");
+         }
+         addNewDevice(device){
+           return httpPostRequest("devices", JSON.stringify(device));
+         }
+         removeDevice(device){
+           return httpDeleteRequest("devices/"+device.name);
+         }
+         loadAdvertRules(){
+              return httpGetRequest("advertisement/settings/rule");
+         }
+         removeAdvertRule(rule){
+              return httpDeleteRequest("advertisement/settings/rule/"+rule.id);
+         }
+         addAdvertRule(rule){
+              return httpPostRequest("advertisement/settings/rule", JSON.stringify(rule));
+         }
+         updateAdvertRule(rule){
+              return httpPutRequest("advertisement/settings/rule/"+rule.id,JSON.stringify(rule));
+         }
+
 }
 
 

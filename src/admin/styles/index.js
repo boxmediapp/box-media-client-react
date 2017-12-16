@@ -3,7 +3,8 @@ export const styles={
 
    iconContainer:{
           display:"flex",
-          flexDirection:"row"
+          flexDirection:"row",
+          flexWrap: "wrap"
    }
 
 

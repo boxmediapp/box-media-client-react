@@ -27,23 +27,32 @@ export  default class AdminView extends Component {
               <div style={AppHeader.styles.content}>
                   <div style={styles.iconContainer}>
 
-                    {textValues.redirect.message}
-                     {/*
-                      <BigButton label={textValues.newepisodes.linkText}
-                               content={textValues.newepisodes.actionText}
-                               link={textValues.newepisodes.link}/>
+                      <BigButton label={textValues.manageUser.linkText}
+                                 content={textValues.manageUser.actionText}
+                                 link={textValues.manageUser.link}/>
 
-                      <BigButton label={textValues.assignedEpisodes.linkText}
-                                content={textValues.assignedEpisodes.actionText}
-                                link={textValues.assignedEpisodes.link}/>
-                      */}
+                      <BigButton label={textValues.appConfig.linkText}
+                                 content={textValues.appConfig.actionText}
+                                 link={textValues.appConfig.link}/>
+
+                    <BigButton label={textValues.appReports.linkText}
+                                            content={textValues.appReports.actionText}
+                                            link={textValues.appReports.link}/>
+
+                  <BigButton label={textValues.manageTags.linkText}
+                                                                    content={textValues.manageTags.actionText}
+                                                                    link={textValues.manageTags.link}/>
+
+                  <BigButton label={textValues.manageDevices.linkText}
+                    content={textValues.manageDevices.actionText}
+                    link={textValues.manageDevices.link}/>
+
+                    <BigButton label={textValues.manageAdvertRules.linkText}
+                      content={textValues.manageAdvertRules.actionText}
+                      link={textValues.manageAdvertRules.link}/>                                                                  
 
 
-
-
-
-
-                  </div>
+            </div>
              </div>
 
 

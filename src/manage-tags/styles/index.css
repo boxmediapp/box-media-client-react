@@ -1,0 +1,13 @@
+.mediaButton{
+  margin-right: 10px;
+
+}
+.appconfigEditRow{
+  margin-bottom: 50px;
+  background-color: #eeeeee;
+
+}
+.addNewTagContainer{
+  display:flex;
+  flex-direction: row;
+}

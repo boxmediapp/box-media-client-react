@@ -92,7 +92,21 @@ export const styles={
       display: "flex",
       flexDirection:"column",
       justifyContent:"center",
-      alignItems:"center",      
+      alignItems:"center",
+  },
+  inputsContainer:{
+    marginLeft:50
+  },
+  inputContainer:{
+    display:"flex",
+    flexDirection:"row",
+    justifyContent:"flex-start",
+    marginBottom:5
+
+  },
+
+  inputLabel:{
+
   }
 
 };

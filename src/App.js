@@ -25,8 +25,12 @@ import {ListSchedulesView} from "./list-schedules";
 import {ListPlayListView} from "./playlists";
 import {ImportSchedulesView} from "./import-schedules";
 import {HelpView} from "./help";
-
-
+import {ManageUsersView} from "./manage-users";
+import {ManageAppConfigView} from "./manage-app-config";
+import {AppReportsView} from "./app-reports";
+import {ManageTagsView} from "./manage-tags";
+import {ManageDevicesView} from "./manage-devices";
+import {ManageAdvertisementRulesView} from "./manage-advertisement-rules";
 import {genericUtil} from "./utils";
 
 
@@ -97,6 +101,12 @@ export default class App extends Component{
 
 
                                   <Route path={textValues.admin.link} component={AdminView}/>
+                                  <Route path={textValues.manageUser.link} component={ManageUsersView}/>
+                                  <Route path={textValues.appConfig.link} component={ManageAppConfigView}/>
+                                  <Route path={textValues.appReports.link} component={AppReportsView}/>
+                                  <Route path={textValues.manageTags.link} component={ManageTagsView}/>
+                                  <Route path={textValues.manageDevices.link} component={ManageDevicesView}/>
+                                  <Route path={textValues.manageAdvertRules.link} component={ManageAdvertisementRulesView}/>
 
                               </div>
                             </Router>

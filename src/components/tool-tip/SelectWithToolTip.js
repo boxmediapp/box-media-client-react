@@ -1,14 +1,17 @@
 import React, {Component} from 'react';
 import ReactTooltip from 'react-tooltip';
 import {styles} from "./styles";
+
+
 export default class SelectWithToolTip extends Component{
 
-  renderOption(option){
+  renderOption(option,index){
     return(
-        <option value={option.value}>{option.label}</option>
+        <option value={option.value} key={index}>{option.label}</option>
     );
   }
   render(){
+
     var {fieldId,label,help, value, options}=this.props;
     var helpId=fieldId+"Help";
     var className="col-sm-"+this.props.colSize+" formFieldWithLabel";

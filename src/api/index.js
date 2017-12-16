@@ -224,6 +224,28 @@ class ServiceAPI {
          removeTag(tag){
            return httpDeleteRequest("tags/"+encodeURIComponent(tag));
          }
+         loadDevices(){
+           return httpGetRequest("devices");
+         }
+         addNewDevice(device){
+           return httpPostRequest("devices", JSON.stringify(device));
+         }
+         removeDevice(device){
+           return httpDeleteRequest("devices/"+device.name);
+         }
+         loadAdvertRules(){
+              return httpGetRequest("advertisement/settings/rule");
+         }
+         removeAdvertRule(rule){
+              return httpDeleteRequest("advertisement/settings/rule/"+rule.id);
+         }
+         addAdvertRule(rule){
+              return httpPostRequest("advertisement/settings/rule", JSON.stringify(rule));
+         }
+         updateAdvertRule(rule){
+              return httpPutRequest("advertisement/settings/rule/"+rule.id,JSON.stringify(rule));
+         }
+
 }
 
 

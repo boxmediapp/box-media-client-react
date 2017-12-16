@@ -16,20 +16,20 @@ import {styles} from "./styles";
 import {genericUtil} from "../utils";
 import  "./styles/index.css";
 
-export default class ManageTagsView extends Component{
+export default class ManageDevicesView extends Component{
   constructor(props){
     super(props);
-    this.state={tags:[], modalMessage:null, newtag:""};
-    this.loadTags();
+    this.state={devices:[], modalMessage:null, newdevice:""};
+    this.loadDevices();
   }
 
-  loadTags(){
-    api.loadTags().then(tags =>{
-           this.setTags(tags);
+  loadDevices(){
+    api.loadDevices().then(devices =>{
+           this.setDevices(devices);
      });
   }
-  setTags(tags){
-    this.setState(Object.assign({}, this.state,{tags}));
+  setDevices(devices){
+    this.setState(Object.assign({}, this.state,{devices}));
   }
 
   onClearMessage(){
@@ -44,24 +44,25 @@ export default class ManageTagsView extends Component{
      }
      this.setState(Object.assign({}, this.state,{modalMessage}));
   }
-  setNewTag(newtag){
-    this.setState(Object.assign({}, this.state,{newtag}));
+  setNewDevice(newdevice){
+    this.setState(Object.assign({}, this.state,{newdevice}));
   }
-  addNewTag(){
-    if(this.state.newtag){
-      api.addNewTag(this.state.newtag).then(response =>{
-             this.loadTags();
+  addNewDevice(){
+    if(this.state.newdevice){
+
+      api.addNewDevice({name:this.state.newdevice}).then(response =>{
+             this.loadDevices();
       });
     }
 
 
   }
-  onDelete(tag){
-    if(tag){
-      var tags=this.state.tags.filter(t=>t!==tag);
-      this.setState(Object.assign({}, this.state,{tags}));
-      api.removeTag(tag).then(response =>{
-             this.loadTags();
+  onDelete(device){
+    if(device){
+      var devices=this.state.devices.filter(t=>t.id!==device.id);
+      this.setState(Object.assign({}, this.state,{devices}));
+      api.removeDevice(device).then(response =>{
+             this.loadDevices();
       });
     }
   }
@@ -71,20 +72,20 @@ export default class ManageTagsView extends Component{
         <div>
           <AppHeader selected="admin"/>
             <div style={AppHeader.styles.content}>
-                <h1>Available tags</h1>
-               <div style={styles.tagsContainer}>
-                    <ListTags tags={this.state.tags} onDelete={this.onDelete.bind(this)}/>
+                <h1>Available Devices</h1>
+               <div style={styles.devicesContainer}>
+                    <ListDevices devices={this.state.devices} onDelete={this.onDelete.bind(this)}/>
                 </div>
                 <div className="row appconfigEditRow">
-                      <TextFieldWithToolTip fieldId="addNewTag" className="addNewTagContainer"
+                      <TextFieldWithToolTip fieldId="addNewDevice" className="addNewDeviceContainer"
                                 colSize={4}
-                                label={textValues.manageTags.addNewTag.label}
-                                help={textValues.manageTags.addNewTag.help}
-                                value={this.state.newtag}
-                                onChange={this.setNewTag.bind(this)}/>
+                                label={textValues.manageDevices.addNewDevice.label}
+                                help={textValues.manageDevices.addNewDevice.help}
+                                value={this.state.newdevice}
+                                onChange={this.setNewDevice.bind(this)}/>
                               <div className="col-sm-6">
                                 <button type="button" className="btn btn-primary btn-normal" onClick={(evt) => {
-                                    this.addNewTag();
+                                    this.addNewDevice();
                                   }}>Add</button>
                               </div>
                 </div>
@@ -98,18 +99,18 @@ export default class ManageTagsView extends Component{
   }
 }
 
-class ListTags extends Component{
-     renderTag(tag){
+class ListDevices extends Component{
+     renderDevice(device){
        var {onDelete}=this.props;
        return(
 
-               <div key={tag} style={styles.tagRow}>
+               <div key={device.id} style={styles.deviceRow}>
 
-                      <div style={styles.tagContaineer}>{tag}
+                      <div style={styles.deviceContaineer}>{device.name}
 
 
                             <button style={styles.deleteAction} onClick={evt=>{
-                                  onDelete(tag);
+                                  onDelete(device);
                               }}>delete</button>
 
 
@@ -122,8 +123,8 @@ class ListTags extends Component{
 
      }
      render(){
-        if(this.props.tags && this.props.tags.length>0){
-          return this.props.tags.map(this.renderTag.bind(this));
+        if(this.props.devices && this.props.devices.length>0){
+          return this.props.devices.map(this.renderDevice.bind(this));
         }
         else{
           return null;

@@ -42,7 +42,17 @@ export  default class AdminView extends Component {
                   <BigButton label={textValues.manageTags.linkText}
                                                                     content={textValues.manageTags.actionText}
                                                                     link={textValues.manageTags.link}/>
-                  </div>
+
+                  <BigButton label={textValues.manageDevices.linkText}
+                    content={textValues.manageDevices.actionText}
+                    link={textValues.manageDevices.link}/>
+
+                    <BigButton label={textValues.manageAdvertRules.linkText}
+                      content={textValues.manageAdvertRules.actionText}
+                      link={textValues.manageAdvertRules.link}/>                                                                  
+
+
+            </div>
              </div>
 
 

@@ -14,7 +14,7 @@ import  "./styles/index.css";
 
 import {genericUtil} from "../utils";
 
-export  default class UserManagerView extends Component {
+export  default class ManageUsersView extends Component {
     constructor(props){
       super(props);
       this.state={users:[], dialog:null};

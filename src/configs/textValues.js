@@ -5,7 +5,7 @@ const textValues={
     },
     episodeList:{
               link:"/box-media/episode-list",
-              redirect1:"episode",
+              redirect:"episode",
               linkText:"Episodes"
     },
     programmeList:{
@@ -35,7 +35,7 @@ const textValues={
     },
     importSchedules:{
           link:"/box-media/importSchedules",
-          redirect1:"importSchedules",
+          noredirect:"importSchedules",
           linkText:"Imports",
           scheduledtasks:{
             title:"Scheduled Tasks"
@@ -43,7 +43,7 @@ const textValues={
     },
     admin:{
           link:"/box-media/admin",
-          redirect1:"admin",
+          noredirect:"admin",
           linkText:"Admin"
     },
     help:{
@@ -63,7 +63,7 @@ const textValues={
     },
     appConfig:{
         linkText:"App Config",
-        actionText:"Application Configuration",
+        actionText:"Configuration",
         link:"/box-media/appConfig",
         recordLimit:{
             label:"Number of records per batch",
@@ -191,14 +191,82 @@ const textValues={
       },
     },
     manageTags:{
-      linkText:"Manage Tags",
-      actionText:"Manage Available Tags",
+      linkText:"Available Tags",
+      actionText:"Manage Tags",
       link:"/box-media/tags",
       addNewTag:{
             label:"New tag to ad",
             help:"Type the tag here and click add button"
       }
     },
+    manageDevices:{
+      linkText:"Available Devices",
+      actionText:"Manage Devices",
+      link:"/box-media/devices",
+      addNewDevice:{
+            label:"New device to ad",
+            help:"Type the device name here and click add button"
+      }
+    },
+    manageAdvertRules:{
+              linkText:"Ad Settings",
+              actionText:"Advertisements",
+              link:"/box-media/adverisement",
+              edit:{
+                  title:"Edit Advert Rule Item",
+                  buttonText:"Update"
+              },
+              add:{
+                  title:"Create New Advert Rule Item",
+                  buttonText:"Create"
+              },
+              defaultValues:{
+                        id:"",
+                        advertBreakType:"POSRROLL",
+                        numberOfAdsPerBreak:"1",
+                        advertLength:"10",
+                        contentType:"Entertainment",
+                        contentMinimumDuration:"1800",
+                        contentMaximumDuration:""
+              },
+              advertBreakType:{
+                  label:"Matching break types",
+                  help: "This field specifies where the advert rule should be applied:pre-roll, mid-roll or post-roll?",
+                  options:[{value:"ALL",label:"Apply to all breaks"},{value:"PREPROLL",label:"Apply to Preroll"},{value:"MIDROLL",label:"Apply to Midroll"},{value:"POSRROLL",label:"Apply to Postroll"}]
+              },
+              numberOfAdsPerBreak:{
+                label:"Number of adverts per break",
+                help: "This field specifies how many number of adverts should be served per break?"
+              },
+              advertLength:{
+                        label:"Preferred duration for each advert",
+                        help: "This field specifies the preferred duration for each advert, this value may be passed to the advertisement vendor.?",
+                        options:[{value:"",label:"Not specified"},
+                                {value:"5",label:"5 seconds"},
+                                {value:"10",label:"10 seconds"},
+                                {value:"15",label:"15 seconds"},
+                                {value:"20",label:"20 seconds"},
+                                {value:"25",label:"25 seconds"},
+                                {value:"30",label:"30 seconds"}]
+                },
+              contentType:{
+                label:"Matching Content Type",
+                help: "This field specifies matching content type to specify the episodes to which the advert rule should apply",
+                options:[{value:"",label:"Not specified"},
+                        {value:"ALL",label:"Match all contents"},
+                        {value:"Entertainment",label:"Entertainment"},
+                        {value:"Music & Charts",label:"Music & Charts"},
+                        {value:"Shorts",label:"Shorts"}]
+               },
+               contentMinimumDuration:{
+                 label:"Matching content with minimum duration",
+                 help: "This field specifies minimum length of the video that the episode should match in order to apply the advert rule",
+               },
+               contentMaximumDuration:{
+                 label:"Matching content with maximum duration",
+                 help: "This field specifies maximum length of the video that the episode should match in order to apply the advert rule",
+               }
+     },
     home:{
         link:"/",
         link2:"/index.html",

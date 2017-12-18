@@ -1,7 +1,7 @@
 var config={
     apikey:"k7jc3QcMPKEXGW5UC",
     securityGroup:"1CNbWCFpsbmRQuKdd",
-    version:"3.2.0",
+    version:"3.2.2",
     api:{
       base:"https://mediaapp.boxplus.com/mule/boxtv/",
       getUrl(path){
@@ -9,6 +9,6 @@ var config={
       }
     },
     normalImageWidth:533,
-    normalImageHeight:300    
+    normalImageHeight:300
 }
 export default config;

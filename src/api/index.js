@@ -245,6 +245,22 @@ class ServiceAPI {
          updateAdvertRule(rule){
               return httpPutRequest("advertisement/settings/rule/"+rule.id,JSON.stringify(rule));
          }
+         findS3BoxVideo(request, start=0){
+               var queryurl="dbbox-video?start="+start;
+               if(request.search){
+                 queryurl+="&prefix="+request.prefix;
+               }
+               if(request.sortBy){
+                 queryurl+="&sortBy="+request.sortBy;
+               }
+               if(request.sortOrder){
+                 queryurl+="&sortOrder="+request.sortOrder;
+               }
+               return httpGetRequest(queryurl);
+         }
+         presigned(url){
+           return httpGetRequest("presigned?url="+url);
+         }
 
 }
 

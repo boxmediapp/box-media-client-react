@@ -8,6 +8,11 @@ const textValues={
               redirect:"episode",
               linkText:"Episodes"
     },
+    editEpisode:{
+      applink:function(episodeid){
+                return "/media-app/index.html?resource=editEpisode&episodeid="+episodeid;
+            }
+    },
     programmeList:{
           link:"/box-media/programme-list",
           redirect:"programmes",
@@ -20,7 +25,7 @@ const textValues={
     },
     s3:{
           link:"/box-media/s3-file-list",
-          redirect:"s3",
+          noredirect:"s3",
           linkText:"S3"
     },
     schedules:{

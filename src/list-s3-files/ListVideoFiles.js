@@ -29,9 +29,15 @@ export  default class ListVideoFiles extends Component {
                  rowHeight={50}
                  headerHeight={50}
                  rowsCount={videofiles.length}
-                 width={1000}
+                 width={1200}
                  height={1000}>
-
+                 <Column
+                     columnKey="id"
+                     header={<Cell></Cell>}
+                     cell={<PlayVideoCell data={data}/>}
+                     width={100}
+                     fixed={true}
+                     />
                  <Column
                           columnKey="file"
                           header={<Cell>File</Cell>}
@@ -40,6 +46,13 @@ export  default class ListVideoFiles extends Component {
                           fixed={true}
                          />
 
+              <Column
+                        columnKey="lastModifidDate"
+                        header={<Cell>Last Modified</Cell>}
+                        cell={<DateCell data={data}/>}
+                        width={200}
+                        fixed={true}
+                        />
                 <Column
                           columnKey="episodeTitle"
                           header={<Cell>Episode Title</Cell>}
@@ -47,28 +60,22 @@ export  default class ListVideoFiles extends Component {
                           width={300}
                           fixed={true}
                           />
-                <Column
-                      columnKey="lastModifidDate"
-                      header={<Cell>Last Modified</Cell>}
-                      cell={<DateCell data={data}/>}
-                      width={200}
-                      fixed={true}
-                      />
+
                 <Column
                     columnKey="durationError"
                     header={<Cell>Duration Error</Cell>}
                     cell={<TextCell data={data}/>}
-                    width={150}
+                    width={200}
                     fixed={true}
                     />
-
                     <Column
-                        columnKey="id"
-                        header={<Cell></Cell>}
-                        cell={<PlayVideoCell data={data}/>}
+                        columnKey="programmeNumber"
+                        header={<Cell>Programme Number</Cell>}
+                        cell={<TextCell data={data}/>}
                         width={200}
                         fixed={true}
                         />
+
 
 
 

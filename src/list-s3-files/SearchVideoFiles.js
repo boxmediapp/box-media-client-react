@@ -10,14 +10,12 @@ export default class SearchVideoFiles extends Component{
    constructor(props){
       super(props);
       this.state=this.props.queryparameters;
-      if(!this.state.prefix){
-        this.state.prefix="";
+      if(!this.state.search){
+        this.state.search="";
       }
    }
 
-  setPrefix(prefix){
-    this.setState(Object.assign({}, this.state,{prefix}));
-  }
+
   handleKeyPress(evt){
     if(evt.key==="Enter"){
         this.onSearch();

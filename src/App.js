@@ -39,25 +39,24 @@ import {genericUtil} from "./utils";
 export default class App extends Component{
   constructor(props){
     super(props);
+    this.state={authorization:appdata.getAuthorization()};
+    this.ubsubsribe=store.subscribe(()=>{
+          this.setAuthorization(appdata.getAuthorization());
+    });
     var cred=genericUtil.loadCred();
     if(cred){
           var username=cred.username;
           var password=cred.password;
-          appdata.setCredentials(username,password);
+          appdata.setCredentials(username,password);          
+    }
 
-          this.state={authorization:appdata.buildAuthorization(username,password)};
-    }
-    else{
-          this.state={authorization:appdata.getAuthorization()};
-    }
-    this.ubsubsribe=store.subscribe(()=>{
-          this.setAuthorization(appdata.getAuthorization());
-    });
   }
 
   onLoggedOut(currentAuthorization){
     this.setState(Object.assign({}, this.state, {authorization:null}));
   }
+
+
   onLoggedIn(currentAuthorization){
     api.loadConfig().then(appconfig=>{
         appdata.setAppConfig(appconfig);

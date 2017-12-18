@@ -248,7 +248,7 @@ class ServiceAPI {
          findS3BoxVideo(request, start=0){
                var queryurl="dbbox-video?start="+start;
                if(request.search){
-                 queryurl+="&prefix="+request.prefix;
+                 queryurl+="&search="+request.search;
                }
                if(request.sortBy){
                  queryurl+="&sortBy="+request.sortBy;

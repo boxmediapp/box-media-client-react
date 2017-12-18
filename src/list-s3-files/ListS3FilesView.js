@@ -27,9 +27,9 @@ export  default class ListS3FilesView extends  Component{
         this.recordsState=this.state.recordsState;
   }
   buildDefaultState(){
-    var prefix=genericUtil.getQueryParam(this.props.location.search, "prefix");
-    if(!prefix){
-      prefix="";
+    var search=genericUtil.getQueryParam(this.props.location.search, "search");
+    if(!search){
+      search="";
     }
     var sortBy=genericUtil.getQueryParam(this.props.location.search, "sortBy");
     var sortOrder=genericUtil.getQueryParam(this.props.location.search, "sortOrder");
@@ -41,7 +41,7 @@ export  default class ListS3FilesView extends  Component{
                  videoToPlay:null,
                  modalMessage:null,
                  videofiles:[],
-                 queryparameters:{prefix,sortBy,sortOrder},
+                 queryparameters:{search,sortBy,sortOrder},
                  recordsState:LOAD_RECORDS_STATUS.LOADING,
             };
   }

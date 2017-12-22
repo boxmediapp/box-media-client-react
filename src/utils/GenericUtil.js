@@ -110,6 +110,8 @@ export default class GenericUtil{
   }
   clearOldStorage(){
     localStorage.removeItem("mediaCred");
+    localStorage.removeItem("box.password");
+    localStorage.removeItem("box.username");
  }
 getLocalKey(){
     return "BAkgDYjQQFoWIOsQG";

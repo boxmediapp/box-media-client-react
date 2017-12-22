@@ -12,7 +12,7 @@ import {genericUtil} from "../utils";
 export  default class ListCollectionsView extends Component {
     constructor(props){
       super(props);
-      genericUtil.redirectToMediaApp(textValues.collectionList.redirect);
+      genericUtil.redirect(textValues.collectionList.redirect);
     }
 
 

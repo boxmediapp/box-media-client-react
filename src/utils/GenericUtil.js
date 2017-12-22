@@ -108,51 +108,41 @@ export default class GenericUtil{
   decrypt(content, password){
     return CryptoJS.AES.decrypt(unescape(content), password).toString(CryptoJS.enc.Utf8);
   }
-  getLocalKey(){
-      return "DecXC8bBdTI2FxhQV";
-      // var localKey=localStorage.getItem("localImageKey");
-      // if(localKey){
-      //   return localKey;
-      // }
-      // localKey=this.generatateRandomString();
-      // localStorage.setItem('localImageKey', localKey);
-      // return localKey;
-  }
-  saveCred(username,password){
-      var cred={
-          username,
-          password,
-          expiredOn:new Date().getTime()+36000000
-      };
-      var credString=JSON.stringify(cred);
-      var key=this.getLocalKey();
-      var imageCred=this.encrypt(credString,key);
-      localStorage.setItem('mediaCred', imageCred);
-  }
-  signout(){
-      localStorage.removeItem("mediaCred");
-  }
-  loadCred(){
-      var imageCred=localStorage.getItem("mediaCred");
+  clearOldStorage(){
+    localStorage.removeItem("mediaCred");
+ }
+getLocalKey(){
+    return "BAkgDYjQQFoWIOsQG";
+}
+saveUserInfo(userInfo){
+    var userInfoString=JSON.stringify(userInfo);
+    var key=this.getLocalKey();
+    var cred=this.encrypt(userInfoString,key);
+    localStorage.setItem('mediaUser', cred);
+}
+signout(){
+      localStorage.removeItem("mediaUser");
+}
+loadUserInfo(){
+      var imageCred=localStorage.getItem("mediaUser");
       if(!imageCred){
         return null;
       }
       var key=this.getLocalKey();
-      var credString=this.decrypt(imageCred,key);
-      if(!credString){
-          return null;
-      }
-      var cred=JSON.parse(credString);
-      if( (!cred.username) || (!cred.password) || (!cred.expiredOn)){
-        return null;
-      }
-      var now=new Date().getTime();
-      if(now>=cred.expiredOn){
-        return null;
-      }
-      return cred;
+      var credString=null;
+      try{
+            credString=this.decrypt(imageCred,key);
+          }
+        catch(error){
+          console.error(error+" when decrypting the userInfo");
 
-  }
+        }
+      if(!credString){
+        return null;
+      }
+      return JSON.parse(credString);
+}
+
   dateValueToTimestamp(datevalue){
     if(!datevalue){
       return null;
@@ -198,9 +188,9 @@ export default class GenericUtil{
 
 
   }
-  redirectToMediaApp(resource){
-      if(resource){
-          window.location = '/media-app/index.html?resource=' + resource;
+  redirect(lnk){
+      if(lnk){
+          window.location = lnk;
       }
 
 

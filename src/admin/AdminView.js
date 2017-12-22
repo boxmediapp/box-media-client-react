@@ -15,8 +15,6 @@ import {genericUtil} from "../utils";
 export  default class AdminView extends Component {
     constructor(props){
       super(props);
-      genericUtil.redirectToMediaApp(textValues.admin.redirect);
-
     }
     render(){
 
@@ -49,7 +47,7 @@ export  default class AdminView extends Component {
 
                     <BigButton label={textValues.manageAdvertRules.linkText}
                       content={textValues.manageAdvertRules.actionText}
-                      link={textValues.manageAdvertRules.link}/>                                                                  
+                      link={textValues.manageAdvertRules.link}/>
 
 
             </div>

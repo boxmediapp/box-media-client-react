@@ -1,4 +1,4 @@
-import LoginForm from "./login-form/LoginForm";
+import AppLogin from "./app-login/AppLogin";
 import AppHeader from "./menu/AppHeader";
 import LoginAppHeader from "./menu/LoginAppHeader";
 import ImageUploader from "./image-uploader/ImageUploader";
@@ -16,6 +16,6 @@ import LabelWithToolTip from "./tool-tip/LabelWithToolTip";
 import TextFieldWithToolTip from "./tool-tip/TextFieldWithToolTip";
 import SelectWithToolTip from "./tool-tip/SelectWithToolTip";
 
-export {LoginForm,AppHeader,ImageUploader,DisplayImateForReplace,ModalDialog,
+export {AppLogin,AppHeader,ImageUploader,DisplayImateForReplace,ModalDialog,
   ProgressBar,SearchBox,SearchWithDateRange,ModalDisplayImage,LoginAppHeader,RoundButton,
   BigButton,LoadingIcon,MessageDialog,LabelWithToolTip,TextFieldWithToolTip,SelectWithToolTip};

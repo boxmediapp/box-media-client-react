@@ -9,6 +9,7 @@ var config={
       }
     },
     normalImageWidth:533,
-    normalImageHeight:300
+    normalImageHeight:300,
+    appCategory:"box"
 }
 export default config;

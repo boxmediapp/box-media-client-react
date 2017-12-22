@@ -86,10 +86,10 @@ const httpPutRequest=function(path,body){
 
 class ServiceAPI {
 
-        login(username,password){
-                var headers=pBuildHttpHeaderWithUsernameAndPassword(username,password);
-                return pHTTPGetRequest("users",headers);
-         }
+  login(username,password){
+          var headers=pBuildHttpHeaderWithUsernameAndPassword(username,password);
+          return pHTTPPostRequest("login",headers, JSON.stringify({username:username}));
+   }
 
          loadConfig(){
            return httpGetRequest("app/info").then(function(data){

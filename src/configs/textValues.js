@@ -1,3 +1,4 @@
+import config from "./config";
 const textValues={
     title:"Box Media Application",
     redirect:{
@@ -5,7 +6,7 @@ const textValues={
     },
     episodeList:{
               link:"/box-media/episode-list",
-              redirect:"episode",
+              redirect:"/media-app/index.html?resource=episode",
               linkText:"Episodes"
     },
     editEpisode:{
@@ -15,32 +16,30 @@ const textValues={
     },
     programmeList:{
           link:"/box-media/programme-list",
-          redirect:"programmes",
+          redirect:"/media-app/index.html?resource=programmes",
           linkText:"Programme"
     },
     collectionList:{
           link:"/box-media/collection-list",
-          redirect:"collections",
+          redirect:"/media-app/index.html?resource=collections",
           linkText:"Collections"
     },
     s3:{
           link:"/box-media/s3-file-list",
-          noredirect:"s3",
           linkText:"S3"
     },
     schedules:{
           link:"/box-media/schedule-list",
-          redirect:"schedules",
+          redirect:"/media-app/index.html?resource=schedules",
           linkText:"Schedules",
     },
     playLists:{
           link:"/box-media/playlists",
-          redirect:"playlists",
+          redirect:"/media-app/index.html?resource=playlists",
           linkText:"Playlists"
     },
     importSchedules:{
           link:"/box-media/importSchedules",
-          noredirect:"importSchedules",
           linkText:"Imports",
           scheduledtasks:{
             title:"Scheduled Tasks"
@@ -48,12 +47,11 @@ const textValues={
     },
     admin:{
           link:"/box-media/admin",
-          noredirect:"admin",
           linkText:"Admin"
     },
     help:{
           link:"/box-media/help",
-          redirect:"help",
+          redirect:"/media-app/index.html?resource=help",
           linkText:"Help"
     },
 
@@ -284,4 +282,8 @@ const textValues={
     },
 
   };
+
+if(config.appCategory==='bebox'){
+    textValues.title="BeBox Media Application";
+}
 export default textValues;

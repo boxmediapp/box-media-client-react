@@ -120,6 +120,23 @@ saveUserInfo(userInfo){
     var cred=this.encrypt(userInfoString,key);
     localStorage.setItem('mediaUser', cred);
 }
+isUserInfoValid(userinfo){
+          if(  userinfo && userinfo.clientId && userinfo.clientSecret){
+                  var expiresAt=userinfo.expiresAt;
+                  var now=new Date();
+                  if(now.getTime()>=expiresAt){
+                      console.warn("user info is expired");
+                      this.signout();
+                      return false;
+                  }
+                  else{
+                              return true;
+                  }
+          }
+          else{
+              return false;
+         }
+}
 signout(){
       localStorage.removeItem("mediaUser");
 }

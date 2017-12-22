@@ -13,8 +13,8 @@ import {genericUtil} from "../utils";
 export  default class ListEpisodesView extends Component {
     constructor(props){
       super(props);
-      genericUtil.redirectToMediaApp(textValues.episodeList.redirect);
-    }      
+      genericUtil.redirect(textValues.episodeList.redirect);
+    }
 
 
     render(){

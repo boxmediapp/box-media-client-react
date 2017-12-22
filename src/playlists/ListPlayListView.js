@@ -12,8 +12,7 @@ import {genericUtil} from "../utils";
 export  default class ListPlayListView extends Component {
     constructor(props){
       super(props);
-      genericUtil.redirectToMediaApp(textValues.playLists.redirect);
-
+      genericUtil.redirect(textValues.playLists.redirect);
     }
 
 

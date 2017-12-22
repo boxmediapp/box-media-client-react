@@ -246,7 +246,7 @@ export  default class ManageAppConfigView extends Component {
       }
 
       var appconfig=appdata.getAppConfig();
-      appconfig=Object.assign(appconfig,{recordLimit,autoYearsAvailability,autoYearsAvailability,
+      appconfig=Object.assign(appconfig,{recordLimit,visibilityCategory,autoYearsAvailability,autoYearsAvailability,
         autoSetGeoAllowedCountries,autoSetContentType,autoSetTxChannel,autoCreatePlaceHolder,brightcoveStatus,
         publishProgrammeInfo,autoTranscode,imagetemplateurl,convertImage,sendUpdateToSoundMouse,s3videoURL,awsRegion,videoBucket,imageBucket,
         imageMasterFolder,imagePublicFolder,s3imagesURL,imageUrlAliases,requiredFields,transcodeSourceBucket,transcodeDestBucket,transcodeDestFileNamePrefix});

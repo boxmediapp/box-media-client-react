@@ -160,7 +160,7 @@ class PlayVideoCell extends Component {
   render() {
 
     const {data, rowIndex, columnKey, ...props} = this.props;
-    if(data.videofiles[rowIndex].episodeId){
+    if(data.videofiles[rowIndex].file){
       return (
         <Cell {...props}>
           <a onClick={evt=>{this.props.data.onPlayVideo(data.videofiles[rowIndex])}} className="btn btn-primary btn-normal">Play</a>

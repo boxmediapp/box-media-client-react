@@ -12,7 +12,7 @@ import {genericUtil} from "../utils";
 export  default class ListSchedulesView extends Component {
     constructor(props){
       super(props);
-      genericUtil.redirectToMediaApp(textValues.schedules.redirect);
+      genericUtil.redirect(textValues.schedules.redirect);
     }
 
 

@@ -12,7 +12,7 @@ import {genericUtil} from "../utils";
 export  default class ListProgrammeView extends Component {
     constructor(props){
       super(props);
-      genericUtil.redirectToMediaApp(textValues.programmeList.redirect);
+      genericUtil.redirect(textValues.programmeList.redirect);
 
     }
 

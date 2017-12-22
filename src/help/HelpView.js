@@ -12,7 +12,7 @@ import {genericUtil} from "../utils";
 export  default class HelpView extends Component {
     constructor(props){
       super(props);
-      genericUtil.redirectToMediaApp(textValues.help.redirect);
+      genericUtil.redirect(textValues.help.redirect);
 
     }
 

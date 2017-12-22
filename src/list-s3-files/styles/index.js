@@ -12,8 +12,10 @@ export const styles={
     backgroundRepeat: "no-repeat",
     padding: "6px 25px 6px 30px",
     WebkitTransform: "width 0.4s ease-in-out",
-    transition: "width 0.4s ease-in-out"
+    transition: "width 0.4s ease-in-out",
+    marginBottom:5
   },
+
   videoContainer:{
     position: 'fixed',
      top: 0,

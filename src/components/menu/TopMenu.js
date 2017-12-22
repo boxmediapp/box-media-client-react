@@ -1,6 +1,7 @@
 import React, {Component} from 'react'
 import {textValues} from  "../../configs";
 import {genericUtil} from "../../utils";
+import {config} from "../../configs";
 import {
   Link
 
@@ -109,17 +110,35 @@ class MenuItem extends Component{
     this.setState({hover: false})
   }
   render(){
+    if(config.appCategory==='bebox'){
+          if(this.props.displayItem==='importSchedules'){
+            return null;
+          }
+    }
     var link=textValues[this.props.displayItem].link;
     if(!link){
       link="/";
     }
     var linkText=textValues[this.props.displayItem].linkText;
-      return(
-        <Link to={link} style={styles.menuItem(this.props.selected===this.props.displayItem, this.state.hover)}
-          onMouseEnter={this.onHover.bind(this)} onMouseLeave={this.offHover.bind(this)}>
-              {linkText}
-        </Link>
-      );
+      if(textValues[this.props.displayItem].redirect){
+        link=textValues[this.props.displayItem].redirect;
+        return(
+          <a href={link} style={styles.menuItem(this.props.selected===this.props.displayItem, this.state.hover)}
+            onMouseEnter={this.onHover.bind(this)} onMouseLeave={this.offHover.bind(this)}>
+                {linkText}
+          </a>
+        )
+
+      }
+      else{
+        return(
+          <Link to={link} style={styles.menuItem(this.props.selected===this.props.displayItem, this.state.hover)}
+            onMouseEnter={this.onHover.bind(this)} onMouseLeave={this.offHover.bind(this)}>
+                {linkText}
+          </Link>
+        );
+      }
+
 
   }
 }

@@ -46,12 +46,12 @@ export default class App extends Component{
     this.ubsubsribe=store.subscribe(this.receiveStateFromStore.bind(this));
     genericUtil.clearOldStorage();
     var userInfo=genericUtil.loadUserInfo();
-    if(!userInfo){
-      this.state.loading=false;
+    if(genericUtil.isUserInfoValid(userInfo)){
+        appdata.setUserInfo(userInfo);
     }
     else{
-      appdata.setUserInfo(userInfo);
-    }
+      this.state.loading=false;
+    }    
   }
 
   componentWillUnmount(){
@@ -144,7 +144,7 @@ export default class App extends Component{
 
                    }
     }
-    
+
 
 
 

@@ -59,15 +59,35 @@ export  default class ManageUsersView extends Component {
     }
     onDisplayChangedPasswordDialog(user){
       this.user=user;
-      this.setDialog("update");
+      this.setDialog("password");
+    }
+    onDisplayChangeRoleDialog(user){
+      this.user=user;
+      this.setDialog("role");
     }
     onChangePassword(user){
-      console.log("updated:"+JSON.stringify(user));
+
       this.setDialog(null);
       if(user && user.username && user.password){
           api.updateUser(user.username, user);
       }
 
+    }
+    onChangeRoles(user){
+      console.log("role:"+JSON.stringify(user));
+      this.setDialog(null);
+      if(user && user.username && user.roles){
+          var users=this.state.users.map(u=>{
+              if(u.username===user.username){
+                  u.roles=user.roles;
+                  return u;
+              }
+              else{
+                return u;
+              }
+          });
+          api.updateUser(user.username, user);
+      }
     }
     onCancel(){
       this.setDialog(null);
@@ -93,10 +113,25 @@ export  default class ManageUsersView extends Component {
                      width={200}
                      />
                      <Column
+                       columnKey="roles"
+                       data={this.state.users}
+                       header={<Cell>Roles</Cell>}
+                       cell={<TextCell data={this.state.users}/>}
+                       width={200}
+                       />
+                       <Column
+                         columnKey="clientId"
+                         data={this.state.users}
+                         header={<Cell>Client ID</Cell>}
+                         cell={<TextCell data={this.state.users}/>}
+                         width={200}
+                         />
+                     <Column
 
                        data={this.state.users}
                        header={<Cell></Cell>}
-                       cell={<ActiveCell data={this.state.users} onDeleteUser={this.onDeleteUser.bind(this)} onDisplayChangedPasswordDialog={this.onDisplayChangedPasswordDialog.bind(this)}/>}
+                       cell={<ActiveCell data={this.state.users} onDeleteUser={this.onDeleteUser.bind(this)} onDisplayChangedPasswordDialog={this.onDisplayChangedPasswordDialog.bind(this)}
+                       onDisplayChangeRoleDialog={this.onDisplayChangeRoleDialog.bind(this)}/>}
                        width={800}
                        />
 
@@ -117,6 +152,10 @@ export  default class ManageUsersView extends Component {
 
              <ChangePassqwordDialog dialogtype={this.state.dialog}
              onChangePassword={this.onChangePassword.bind(this)}
+             onCancel={this.onCancel.bind(this)} user={this.user}/>
+
+             <ChangeRoleDialog dialogtype={this.state.dialog}
+             onChangeRoles={this.onChangeRoles.bind(this)}
              onCancel={this.onCancel.bind(this)} user={this.user}/>
           </div>
         );
@@ -140,12 +179,13 @@ class TextCell extends Component{
 
 class ActiveCell extends Component {
   render() {
-    const {data, rowIndex, onDeleteUser,onDisplayChangedPasswordDialog,columnKey, ...props} = this.props;
+    const {data, rowIndex, onDeleteUser,onDisplayChangedPasswordDialog,onDisplayChangeRoleDialog,columnKey, ...props} = this.props;
     return (
       <Cell {...props}>
 
 
             <a className="btn btn-primary btn-normal mediaButton"onClick={ evt=> onDisplayChangedPasswordDialog(data[rowIndex])}>Change Password</a>
+            <a className="btn btn-primary btn-normal mediaButton"onClick={ evt=> onDisplayChangeRoleDialog(data[rowIndex])}>Change Role</a>
             <a className="btn btn-primary btn-normal mediaButton" onClick={ evt=> onDeleteUser(data[rowIndex])}>Delete
             </a>
 
@@ -179,7 +219,7 @@ class DisplayCreateNewUserDialog extends Component{
 class ChangePassqwordDialog extends Component{
 
      render(){
-    if(this.props.dialogtype==="update"){
+    if(this.props.dialogtype==="password"){
          var message={
            title:"Change Password",
            onConfirm:this.props.onChangePassword,
@@ -187,6 +227,28 @@ class ChangePassqwordDialog extends Component{
            inputs:[
                    {name:"username",  label:"Username:", readOnly:true, value:this.props.user.username},
                    {name:"password",  label:"Password:"}],
+           confirmButton:"Change",
+           cancelButton:"Cancel"
+         }
+        return(<ModalDialog message={message}/>);
+    }
+    else{
+      return  null;
+    }
+  }
+}
+
+class ChangeRoleDialog extends Component{
+
+     render(){
+    if(this.props.dialogtype==="role"){
+         var message={
+           title:"Change Role",
+           onConfirm:this.props.onChangeRoles,
+           onCancel:this.props.onCancel,
+           inputs:[
+                   {name:"username",  label:"Username:", readOnly:true, value:this.props.user.username},
+                   {name:"roles",  label:"Roles:", value:this.props.user.roles}],
            confirmButton:"Change",
            cancelButton:"Cancel"
          }

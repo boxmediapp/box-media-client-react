@@ -51,14 +51,16 @@ export default class App extends Component{
     }
     else{
       this.state.loading=false;
-    }    
+    }
   }
 
   componentWillUnmount(){
     if(this.ubsubsribe){
       this.ubsubsribe();
     }
+    genericUtil.stopRefreshLoginThread();    
   }
+
   receiveStateFromStore(){
        var userinfo= appdata.getUserInfo();
        if(!userinfo){
@@ -76,6 +78,7 @@ export default class App extends Component{
                 var loading=false;
                 this.setState(Object.assign({}, this.state, {userinfo,loading}));
                 appdata.setAppConfig(appconfig);
+                genericUtil.startRefreshLoginThread(userinfo);
        }).catch((err)=>{
            console.error("failed to load the appinfo:"+err.stack);
            appdata.setUserInfo(null);

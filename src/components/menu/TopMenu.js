@@ -151,6 +151,7 @@ class LogoutMenuItem extends Component{
   }
   logout(){
     genericUtil.signout();
+    var userinfo=appdata.getUserInfo();        
     appdata.setUserInfo(null);
   }
   onHover(){

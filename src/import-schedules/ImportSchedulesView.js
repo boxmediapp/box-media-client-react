@@ -145,14 +145,17 @@ class ShowTaskListTable extends Component{
                 <div>
                     <div>{textValues.importSchedules.scheduledtasks.title}</div>
                     <table style={styles.tasksTable}>
-                      <tr style={styles.tasksTableHeader}>
-                         <th>Channel</th>
-                         <th>Time</th>
-                         <th>From</th>
-                         <th>To</th>
-                         <th></th>
-                      </tr>
-                      <ShowTasksRowData {...this.props}/>
+                      <tbody>
+                        <tr style={styles.tasksTableHeader}>
+                           <th>Channel</th>
+                           <th>Time</th>
+                           <th>From</th>
+                           <th>To</th>
+                           <th></th>
+                        </tr>
+                        <ShowTasksRowData {...this.props}/>
+
+                      </tbody>
                     </table>
                   </div>
               );
@@ -179,7 +182,7 @@ class ShowTasksRowData extends Component{
         }
     }
     return(
-            <tr style={styles.taskRecord}>
+            <tr style={styles.taskRecord} key={task.id}>
                 <td style={styles.taskField}>{channelText}</td>
                 <td style={styles.taskField}>{task.runOnTime}</td>
                 <td style={styles.taskField}>{task.importScheduleTask.fromDayOffset}</td>

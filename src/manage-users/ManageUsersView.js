@@ -17,10 +17,26 @@ import {genericUtil} from "../utils";
 export  default class ManageUsersView extends Component {
     constructor(props){
       super(props);
-      this.state={users:[], dialog:null};
-      this.loadUsers();
-    }
+      this.state={users:[], dialog:null, roleOptions:[]};
 
+    }
+    componentWillMount(){
+      this.loadUsers();
+      this.loadUserRoles();
+    }
+    loadUserRoles(){
+        api.loadUserRoles().then(userroles=>{
+              var roleOptions=userroles.map(ur=>{
+                  return {
+                    label:ur.rolename,
+                    value:ur.rolename
+                  }
+              });
+
+              this.setState(Object.assign({},this.state,{roleOptions}));
+        });
+
+    }
     loadUsers(){
       api.getUsers().then(users =>{
              this.setUsers(users);
@@ -156,7 +172,7 @@ export  default class ManageUsersView extends Component {
 
              <ChangeRoleDialog dialogtype={this.state.dialog}
              onChangeRoles={this.onChangeRoles.bind(this)}
-             onCancel={this.onCancel.bind(this)} user={this.user}/>
+             onCancel={this.onCancel.bind(this)} user={this.user} roleOptions={this.state.roleOptions}/>
           </div>
         );
 
@@ -240,7 +256,11 @@ class ChangePassqwordDialog extends Component{
 
 class ChangeRoleDialog extends Component{
 
+
      render(){
+
+
+
     if(this.props.dialogtype==="role"){
          var message={
            title:"Change Role",
@@ -248,7 +268,7 @@ class ChangeRoleDialog extends Component{
            onCancel:this.props.onCancel,
            inputs:[
                    {name:"username",  label:"Username:", readOnly:true, value:this.props.user.username},
-                   {name:"roles",  label:"Roles:", value:this.props.user.roles}],
+                   {name:"roles",  label:"Roles:", value:this.props.user.roles, options:this.props.roleOptions}],
            confirmButton:"Change",
            cancelButton:"Cancel"
          }

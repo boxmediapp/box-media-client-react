@@ -1,5 +1,5 @@
 //var episodeId=genericUtil.getPathVariable(this.props.location.pathname,textValues.episode.view.link);
-
+import {api} from "../api";
 export default class GenericUtil{
   getQueryParam(query,variable) {
     if(!query){
@@ -122,35 +122,64 @@ saveUserInfo(userInfo){
     var cred=this.encrypt(userInfoString,key);
     localStorage.setItem('mediaUser', cred);
 }
-isUserInfoValid(userinfo){
-          if(  userinfo && userinfo.clientId && userinfo.clientSecret){
-                  var expiresAt=userinfo.expiresAt;
-                  var now=new Date();
-                  if(now.getTime()>=expiresAt){
-                      console.warn("user info is expired");
-                      this.signout();
-                      return false;
-                  }
-                  else{
-                              return true;
-                  }
-          }
-          else{
-              return false;
-         }
+refreshExpiresOfUserInfo(userinfo){
+    var now=new Date();
+    userinfo.expiresAt=now.getTime()+userinfo.durationInSeconds*1000;
+    this.saveUserInfo(userinfo);
+    console.log("userInfo expiration time is refreshed");
 }
+isUserInfoExpired(userinfo){
+      var expiresAt=userinfo.expiresAt;
+      var now=new Date();
+      if(now.getTime()>=expiresAt){
+          return true;
+      }
+      else{
+            return false;
+      }
+}
+isUserInfoValid(userinfo){
+      return userinfo && userinfo.clientId && userinfo.clientSecret && (!this.isUserInfoExpired(userinfo));
+
+}
+
 signout(){
-      localStorage.removeItem("mediaUser");
+      this.stopRefreshLoginThread();
+      if(localStorage.getItem("mediaUser")){
+            var userinfo=this.loadUserInfo();
+            localStorage.removeItem("mediaUser");
+            if(userinfo){
+                api.logout(userinfo);
+            }
+      }
+}
+stopRefreshLoginThread(){
+  if(this.refreshLoginTimer){
+      clearInterval(this.refreshLoginTimer);
+      this.refreshLoginTimer=null;
+  }
+}
+startRefreshLoginThread(userinfo){
+    this.stopRefreshLoginThread();
+    var refreshInterval=userinfo.durationInSeconds-30;
+    if(refreshInterval<0){
+        refreshInterval=30;
+    }
+      this.refreshLoginTimer=setInterval(()=>{
+            api.refreshLogin(userinfo).then(respose=>{
+                  this.refreshExpiresOfUserInfo(userinfo);
+            });
+    },refreshInterval*1000);
 }
 loadUserInfo(){
-      var imageCred=localStorage.getItem("mediaUser");
-      if(!imageCred){
+      var mediaCred=localStorage.getItem("mediaUser");
+      if(!mediaCred){
         return null;
       }
       var key=this.getLocalKey();
       var credString=null;
       try{
-            credString=this.decrypt(imageCred,key);
+            credString=this.decrypt(mediaCred,key);
           }
         catch(error){
           console.error(error+" when decrypting the userInfo");

@@ -63,7 +63,19 @@ export const styles={
     fontSize: 12,
     color: "#FFFFFF",
     marginLeft:10
-
+  },
+  subtitleContaier:{
+      display:"flex",
+      flexDirection:"row",
+      fontFamily: "GiorgioSans-Regular",
+      color: "#FFFFFF",
+  },
+  userinfo:{
+    position:"absolute",
+    right:0,
+    top:10,
+    marginRight:20,
+    color: "#80ccff",
   },
   mobileMenu:{
      position:"absolute",

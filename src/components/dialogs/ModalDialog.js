@@ -89,6 +89,11 @@ class DisplayButton extends Component{
 }
 
 class DisplayInputs extends Component{
+  renderOption(option,index){
+    return(
+        <option value={option.value} key={index}>{option.label}</option>
+    );
+  }
   renderInputField(input, index){
       var onInputChanged=this.props.onInputChanged;
       var value=this.props.currentInputs[input.name];
@@ -100,15 +105,30 @@ class DisplayInputs extends Component{
                 </div>
         );
       }
-      return( <div style={styles.inputContainer} key={input.name}>
-                  <div style={styles.inputLabel}>{input.label}</div>
-                  <input type="text" key={input.name} value={value} onChange={evt=>{
-                        var newinput={};
-                        newinput[input.name]=evt.target.value;
-                        onInputChanged(newinput);
-                    }}></input>
-              </div>
-    );
+      else if(input.options){
+                return(<div style={styles.inputContainer} key={input.name}>
+                    <div style={styles.inputLabel}>{input.label}</div>
+                    <select  key={input.name} value={value} onChange={evt=>{
+                          var newinput={};
+                          newinput[input.name]=evt.target.value;
+                          onInputChanged(newinput);
+                      }}>
+                          {input.options.map(this.renderOption)}
+                    </select>
+                </div>);
+      }
+      else{
+              return( <div style={styles.inputContainer} key={input.name}>
+                    <div style={styles.inputLabel}>{input.label}</div>
+                    <input type="text" key={input.name} value={value} onChange={evt=>{
+                          var newinput={};
+                          newinput[input.name]=evt.target.value;
+                          onInputChanged(newinput);
+                      }}></input>
+                </div>
+              );
+      }
+
   }
   render(){
         if(!this.props.message.inputs){

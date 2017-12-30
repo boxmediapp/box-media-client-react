@@ -22,6 +22,14 @@ export default class GenericUtil{
     var ret=path.substring(ind+basepath.length);
     return this.removePrefix(ret,"/");
   }
+  getPathName(){
+    if(window.location && window.location.pathname){
+        return window.location.pathname;
+    }
+    else{
+      return window.location.pathname;
+    }
+  }
   removePrefix(content,prefix){
     if(content.length<prefix.length){
       return "";
@@ -122,53 +130,69 @@ saveUserInfo(userInfo){
     var cred=this.encrypt(userInfoString,key);
     localStorage.setItem('mediaUser', cred);
 }
+isUserInfoValid(userinfo){
+     if(!userinfo){
+       return false;
+     }
+    var expiresAt=userinfo.expiresAt;
+    var now=new Date();
+    return  userinfo.clientId && userinfo.clientSecret && now.getTime()<expiresAt;
+}
+signout(){
+      this.stopRefreshLoginThread();
+      if(localStorage.getItem("mediaUser")){
+            localStorage.removeItem("mediaUser");
+      }
+}
 refreshExpiresOfUserInfo(userinfo){
     var now=new Date();
     userinfo.expiresAt=now.getTime()+userinfo.durationInSeconds*1000;
     this.saveUserInfo(userinfo);
     console.log("userInfo expiration time is refreshed");
 }
-isUserInfoExpired(userinfo){
-      var expiresAt=userinfo.expiresAt;
-      var now=new Date();
-      if(now.getTime()>=expiresAt){
-          return true;
-      }
-      else{
-            return false;
-      }
-}
-isUserInfoValid(userinfo){
-      return userinfo && userinfo.clientId && userinfo.clientSecret && (!this.isUserInfoExpired(userinfo));
 
-}
-
-signout(){
-      this.stopRefreshLoginThread();
-      if(localStorage.getItem("mediaUser")){
-            var userinfo=this.loadUserInfo();
-            localStorage.removeItem("mediaUser");
-            if(userinfo){
-                api.logout(userinfo);
-            }
-      }
-}
 stopRefreshLoginThread(){
   if(this.refreshLoginTimer){
       clearInterval(this.refreshLoginTimer);
       this.refreshLoginTimer=null;
   }
 }
-startRefreshLoginThread(userinfo){
+startRefreshLoginThread(userinfo, refreshLogin, appdata){
     this.stopRefreshLoginThread();
+    if(!userinfo){
+          return;
+    }
+    if(!userinfo.durationInSeconds){
+              return;
+    }
+    if(userinfo.durationInSeconds<45){
+      return;
+    }
+
     var refreshInterval=userinfo.durationInSeconds-30;
     if(refreshInterval<0){
         refreshInterval=30;
     }
-      this.refreshLoginTimer=setInterval(()=>{
-            api.refreshLogin(userinfo).then(respose=>{
-                  this.refreshExpiresOfUserInfo(userinfo);
-            });
+    this.refreshLoginTimer=setInterval(()=>{
+                refreshLogin(userinfo).then(operator=>{
+                        var newuserinfo=operator.loginInfo;
+                        this.saveUserInfo(newuserinfo);
+                        var appuserinfo=appdata.getUserInfo();
+                        if(!appuserinfo){
+                              appdata.setUserInfo(newuserinfo);
+                        }
+                        if(newuserinfo.application!==userinfo.application){
+                            appdata.setUserInfo(newuserinfo);
+                        }
+                        return operator;
+                }).catch(error=>{
+                    console.error(error+" while refreshing login info");
+                    this.stopRefreshLoginThread();
+                    var us=appdata.getUserInfo();
+                    if(us){
+                      appdata.setUserInfo(null);
+                    }
+                });
     },refreshInterval*1000);
 }
 loadUserInfo(){
@@ -191,51 +215,94 @@ loadUserInfo(){
       return JSON.parse(credString);
 }
 
-  dateValueToTimestamp(datevalue){
-    if(!datevalue){
-      return null;
-    }
-    var datevalue=new Date(datevalue+" 23:59:59");
-    return datevalue.getTime();
+dateValueToTimestamp(datevalue, timevalue){
+  if(!datevalue){
+    return null;
   }
-  timestampToDateValue(timestamp){
-    if(!timestamp){
-      return null;
-    }
-    var dvalue=new Date(timestamp);
-    return dvalue.getFullYear()+"-"+(dvalue.getMonth()+1)+dvalue.getDate();
+  var datevalue=new Date(datevalue+" "+timevalue);
+  return datevalue.getTime();
+}
+timestampToDateValue(timestamp){
+  if(!timestamp){
+    return null;
   }
-  timeValueFromNow(seconds){
-        var timevalue=new Date();
-        timevalue.setSeconds(timevalue.getSeconds() + seconds);
-        var hourValue=timevalue.getHours();
-        var minutes=timevalue.getMinutes();
-        var seconds=timevalue.getSeconds();
-        var ret="";
-        if(hourValue<10){
-          ret+="0"+hourValue;
-        }
-        else{
-          ret+=hourValue;
-        }
-        ret+=":";
-        if(minutes<10){
-          ret+="0"+minutes;
-        }
-        else{
-          ret+=minutes;
-        }
-        ret+=":";
-        if(seconds<10){
-          ret+="0"+seconds;
-        }
-        else{
-          ret+=seconds;
-        }
-        return ret;
+  var dvalue=new Date(timestamp);
 
-
+  var fullYear=dvalue.getFullYear();
+  var mm=dvalue.getMonth()+1;
+  if(mm<10){
+    mm="0"+mm;
   }
+  var dd=dvalue.getDate();
+  if(dd<10){
+    dd="0"+dd;
+  }
+  return fullYear+"-"+mm+"-"+dd;
+}
+timeValueFromNow(seconds){
+      var timevalue=new Date();
+      timevalue.setSeconds(timevalue.getSeconds() + seconds);
+      var hourValue=timevalue.getHours();
+      var minutes=timevalue.getMinutes();
+      var seconds=timevalue.getSeconds();
+      var ret="";
+      if(hourValue<10){
+        ret+="0"+hourValue;
+      }
+      else{
+        ret+=hourValue;
+      }
+      ret+=":";
+      if(minutes<10){
+        ret+="0"+minutes;
+      }
+      else{
+        ret+=minutes;
+      }
+      ret+=":";
+      if(seconds<10){
+        ret+="0"+seconds;
+      }
+      else{
+        ret+=seconds;
+      }
+      return ret;
+}
+getWeek(datevalue){
+        var weektime=new Date("2017-01-01");
+        var t=datevalue.getTime()-weektime.getTime()/(3600000*24);
+        return t%7;
+  }
+  getDateFromWeekOfYear(year,week,fromWeekDay, toWeekDay){
+        var timevalue=new Date(year+"-01-01");
+        timevalue.setDate(timevalue.getDate()+7*week);
+        var fromDate=timevalue;
+        for(var i=0;i<=7;i++){
+              var t=new Date(timevalue.getTime());
+              t.setDate(t.getDate()-i);
+              if(this.getWeek(t)===fromWeekDay){
+                fromDate=t;
+                break;
+              }
+              t=new Date(timevalue.getTime());
+              t.setDate(t.getDate()+i);
+              if(this.getWeek(t)===fromWeekDay){
+                fromDate=t;
+                break;
+              }
+        }
+        var toDate=fromDate;
+        for(var i=0;i<=7;i++){
+              var t=new Date(fromDate.getTime());
+              t.setDate(t.getDate()+i);
+              if(this.getWeek(t)===toWeekDay){
+                toDate=t;
+                break;
+              }
+        }
+        return {fromDate,toDate};
+  }
+
   redirect(lnk){
       if(lnk){
           window.location = lnk;

@@ -1,42 +1,31 @@
 import React, {Component} from 'react'
 import {api} from "../api";
 
-import "fixed-data-table-2/dist/fixed-data-table.min.css";
+
 import {
   Link
 } from 'react-router-dom'
-import {Table, Column, Cell} from "fixed-data-table-2";
+
 
 import {textValues,config} from "../configs";
-import {AppHeader,ModalDialog} from "../components";
+import {AppHeader} from "../components";
 import {styles} from "./styles";
 import  "./styles/index.css";
 
 import {genericUtil} from "../utils";
+import DisplayUserList from "./DisplayUserList";
+import DisplayUserDetails from "./DisplayUserDetails";
 
 export  default class ManageUsersView extends Component {
     constructor(props){
       super(props);
-      this.state={users:[], dialog:null, roleOptions:[]};
-
+      this.state={users:[], selectedUser:null};
     }
     componentWillMount(){
       this.loadUsers();
-      this.loadUserRoles();
-    }
-    loadUserRoles(){
-        api.loadUserRoles().then(userroles=>{
-              var roleOptions=userroles.map(ur=>{
-                  return {
-                    label:ur.rolename,
-                    value:ur.rolename
-                  }
-              });
-
-              this.setState(Object.assign({},this.state,{roleOptions}));
-        });
 
     }
+
     loadUsers(){
       api.getUsers().then(users =>{
              this.setUsers(users);
@@ -45,20 +34,32 @@ export  default class ManageUsersView extends Component {
     setUsers(users){
       this.setState(Object.assign({}, this.state,{users}));
     }
-
-    setDialog(dialog){
-      this.setState(Object.assign({}, this.state,{dialog}));
+    setSelectedUser(selectedUser){
+      this.setState(Object.assign({}, this.state,{selectedUser}));
+    }
+    onChangePassword(user){
+        console.log("password has been changed");
+    }
+    onBackToList(){
+      this.setSelectedUser(null);
+    }
+    onChageUserRole(user){
+      if(user && user.username && user.roles){
+            var users=this.state.users.map(u=>{
+                if(u.username===user.username){
+                    u.roles=user.roles;
+                    return u;
+                }
+                else{
+                  return u;
+                }
+            });
+        }
     }
 
-    onCreateNewUser(data){
 
-      var user={username:data.username, password:data.password, roles:"user"};
-      api.createNewUser(user).then(respose=>{
-             this.loadUsers();
-       });
 
-      this.setDialog(null);
-    }
+
     onDeleteUser(user){
       if(!user){
         return;
@@ -67,215 +68,38 @@ export  default class ManageUsersView extends Component {
         return;
       }
        var users=this.state.users.filter(u=>u.username!==user.usernane);
-       this.setState(Object.assign({}, this.state,{users}));
+
+       this.setState(Object.assign({}, this.state,{users, selectedUser:null}));
        api.deleteUser(user.username).then(respose=>{
              this.loadUsers();
        });
 
     }
-    onDisplayChangedPasswordDialog(user){
-      this.user=user;
-      this.setDialog("password");
-    }
-    onDisplayChangeRoleDialog(user){
-      this.user=user;
-      this.setDialog("role");
-    }
-    onChangePassword(user){
-
-      this.setDialog(null);
-      if(user && user.username && user.password){
-          api.updateUser(user.username, user);
-      }
-
-    }
-    onChangeRoles(user){
-      console.log("role:"+JSON.stringify(user));
-      this.setDialog(null);
-      if(user && user.username && user.roles){
-          var users=this.state.users.map(u=>{
-              if(u.username===user.username){
-                  u.roles=user.roles;
-                  return u;
-              }
-              else{
-                return u;
-              }
-          });
-          api.updateUser(user.username, user);
-      }
-    }
-    onCancel(){
-      this.setDialog(null);
-    }
-    render(){
-
-        return (
-          <div>
-            <AppHeader selected="admin"/>
-              <div style={AppHeader.styles.content}>
-                          <Table
-                       rowHeight={50}
-                       headerHeight={50}
-                       rowsCount={this.state.users.length}
-                       width={1000}
-                       height={1000}>
-
-                   <Column
-                     columnKey="username"
-                     data={this.state.users}
-                     header={<Cell>User name</Cell>}
-                     cell={<TextCell data={this.state.users}/>}
-                     width={200}
-                     />
-                     <Column
-                       columnKey="roles"
-                       data={this.state.users}
-                       header={<Cell>Roles</Cell>}
-                       cell={<TextCell data={this.state.users}/>}
-                       width={200}
-                       />
-                       <Column
-                         columnKey="clientId"
-                         data={this.state.users}
-                         header={<Cell>Client ID</Cell>}
-                         cell={<TextCell data={this.state.users}/>}
-                         width={200}
-                         />
-                     <Column
-
-                       data={this.state.users}
-                       header={<Cell></Cell>}
-                       cell={<ActiveCell data={this.state.users} onDeleteUser={this.onDeleteUser.bind(this)} onDisplayChangedPasswordDialog={this.onDisplayChangedPasswordDialog.bind(this)}
-                       onDisplayChangeRoleDialog={this.onDisplayChangeRoleDialog.bind(this)}/>}
-                       width={800}
-                       />
-
-
-
-
-
-                              </Table>
-                              <a className="btn btn-primary btn-normal imageControlButton" onClick={rvt=>{
-                                this.setDialog("create");
-                              }}>Add New User
-                              </a>
-             </div>
-
-
-             <DisplayCreateNewUserDialog dialogtype={this.state.dialog} onCreateNewUser={this.onCreateNewUser.bind(this)}
-             onCancel={this.onCancel.bind(this)}/>
-
-             <ChangePassqwordDialog dialogtype={this.state.dialog}
-             onChangePassword={this.onChangePassword.bind(this)}
-             onCancel={this.onCancel.bind(this)} user={this.user}/>
-
-             <ChangeRoleDialog dialogtype={this.state.dialog}
-             onChangeRoles={this.onChangeRoles.bind(this)}
-             onCancel={this.onCancel.bind(this)} user={this.user} roleOptions={this.state.roleOptions}/>
-          </div>
-        );
-
-    }
-
-}
-
-class TextCell extends Component{
 
     render(){
-      const {data,rowIndex, columnKey,...props} = this.props;
-    return (
-      <Cell {...props}>
-{data[rowIndex][columnKey]}
-      </Cell>
-    );
+
+
+          return (
+            <div>
+              <AppHeader selected="admin"/>
+                <div style={AppHeader.styles.content}>
+                        <DisplayUserDetails user={this.state.selectedUser} onChageUserRole={this.onChageUserRole.bind(this)}
+                          onChangePassword={this.onChangePassword.bind(this)} onDeleteUser={this.onDeleteUser.bind(this)}
+                          onBackToList={this.onBackToList.bind(this)}/>
+                        <DisplayUserList user={this.state.selectedUser} users={this.state.users}
+                          onSelectUser={this.setSelectedUser.bind(this)}/>
+               </div>
+
+
+
+
+
+
+            </div>
+          );
+
+
+
     }
-}
 
-
-class ActiveCell extends Component {
-  render() {
-    const {data, rowIndex, onDeleteUser,onDisplayChangedPasswordDialog,onDisplayChangeRoleDialog,columnKey, ...props} = this.props;
-    return (
-      <Cell {...props}>
-
-
-            <a className="btn btn-primary btn-normal mediaButton"onClick={ evt=> onDisplayChangedPasswordDialog(data[rowIndex])}>Change Password</a>
-            <a className="btn btn-primary btn-normal mediaButton"onClick={ evt=> onDisplayChangeRoleDialog(data[rowIndex])}>Change Role</a>
-            <a className="btn btn-primary btn-normal mediaButton" onClick={ evt=> onDeleteUser(data[rowIndex])}>Delete
-            </a>
-
-
-      </Cell>
-    );
-  }
-};
-
-class DisplayCreateNewUserDialog extends Component{
-  render(){
-    if(this.props.dialogtype==="create"){
-         var message={
-           title:"Add New User",
-           onConfirm:this.props.onCreateNewUser,
-           onCancel:this.props.onCancel,
-           inputs:[{name:"username",  label:"Username:"},
-                   {name:"password",  label:"Password:"}],
-           confirmButton:"Create",
-           cancelButton:"Cancel"
-
-         }
-        return(<ModalDialog message={message}/>);
-    }
-    else{
-      return  null;
-    }
-  }
-}
-
-class ChangePassqwordDialog extends Component{
-
-     render(){
-    if(this.props.dialogtype==="password"){
-         var message={
-           title:"Change Password",
-           onConfirm:this.props.onChangePassword,
-           onCancel:this.props.onCancel,
-           inputs:[
-                   {name:"username",  label:"Username:", readOnly:true, value:this.props.user.username},
-                   {name:"password",  label:"Password:"}],
-           confirmButton:"Change",
-           cancelButton:"Cancel"
-         }
-        return(<ModalDialog message={message}/>);
-    }
-    else{
-      return  null;
-    }
-  }
-}
-
-class ChangeRoleDialog extends Component{
-
-
-     render(){
-
-
-
-    if(this.props.dialogtype==="role"){
-         var message={
-           title:"Change Role",
-           onConfirm:this.props.onChangeRoles,
-           onCancel:this.props.onCancel,
-           inputs:[
-                   {name:"username",  label:"Username:", readOnly:true, value:this.props.user.username},
-                   {name:"roles",  label:"Roles:", value:this.props.user.roles, options:this.props.roleOptions}],
-           confirmButton:"Change",
-           cancelButton:"Cancel"
-         }
-        return(<ModalDialog message={message}/>);
-    }
-    else{
-      return  null;
-    }
-  }
 }

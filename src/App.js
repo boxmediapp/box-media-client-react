@@ -14,35 +14,21 @@ import {textValues,images} from  "./configs";
 import {appdata,store} from "./store";
 import {api} from "./api";
 
-import {DisplayLogin} from "./display-login";
-import {AdminView} from "./admin";
-import {HomeView} from "./home";
-import {ListEpisodesView} from "./list-episodes";
-import {ListProgrammeView} from "./list-programme";
-import {ListCollectionsView} from "./list-collections";
-import {ListS3FilesView} from "./list-s3-files";
-import {ListSchedulesView} from "./list-schedules";
-import {ListPlayListView} from "./playlists";
-import {ImportSchedulesView} from "./import-schedules";
-import {HelpView} from "./help";
-import {ManageUsersView} from "./manage-users";
-import {ManageAppConfigView} from "./manage-app-config";
-import {AppReportsView} from "./app-reports";
-import {ManageTagsView} from "./manage-tags";
-import {ManageDevicesView} from "./manage-devices";
-import {ManageAdvertisementRulesView} from "./manage-advertisement-rules";
-import {genericUtil} from "./utils";
-
-import {ModalDialog} from "./components";
 
 import {LoadingScreen} from "./loading-screen";
-
-
-
+import {SignUpView} from "./sign-up";
+import RenderMediaApp from "./RenderMediaApp";
+import {NoServicesView} from "./no-services";
+import {genericUtil} from "./utils";
+import {WaitingApprovalApp} from "./waiting-approval";
+import {DisplayLogin} from "./display-login";
 export default class App extends Component{
   constructor(props){
     super(props);
     this.state={userinfo:"", message:null,loading:true};
+
+  }
+  componentWillMount(){
     this.ubsubsribe=store.subscribe(this.receiveStateFromStore.bind(this));
     genericUtil.clearOldStorage();
     var userInfo=genericUtil.loadUserInfo();
@@ -53,101 +39,78 @@ export default class App extends Component{
       this.state.loading=false;
     }
   }
-
   componentWillUnmount(){
     if(this.ubsubsribe){
       this.ubsubsribe();
     }
-    genericUtil.stopRefreshLoginThread();    
+    genericUtil.stopRefreshLoginThread();
   }
-
   receiveStateFromStore(){
        var userinfo= appdata.getUserInfo();
        if(!userinfo){
           if(this.state.userinfo){
+            api.logout(this.state.userinfo);
             this.setState(Object.assign({}, this.state, {userinfo:null,loading:false}));
             genericUtil.signout();
           }
           return;
        }
-       else if(userinfo === this.userinfo){
+       if(userinfo === this.userinfo){
             return;
        }
        this.userinfo=userinfo;
-       api.loadConfig().then(appconfig=>{
-                var loading=false;
-                this.setState(Object.assign({}, this.state, {userinfo,loading}));
-                appdata.setAppConfig(appconfig);
-                genericUtil.startRefreshLoginThread(userinfo);
-       }).catch((err)=>{
-           console.error("failed to load the appinfo:"+err.stack);
-           appdata.setUserInfo(null);
-           this.setState(Object.assign({}, this.state, {userinfo:null,loading:false}));
-           this.setErrorMessage("Login failed:"+err);
-       })
+       if(userinfo.application==="boxmedia" ||userinfo.application==="boximage"){
+               api.loadConfig().then(appconfig=>{
+                        var loading=false;
+                        this.setState(Object.assign({}, this.state, {userinfo,loading}));
+                        appdata.setAppConfig(appconfig);
+
+               }).catch((err)=>{
+                   console.error("failed to load the appinfo:"+err);
+                   appdata.setUserInfo(null);
+                   this.setState(Object.assign({}, this.state, {userinfo:null,loading:false}));
+               });
+       }
+       else{
+          var loading=false;
+          this.setState(Object.assign({}, this.state, {userinfo,loading}));
+       }
+       genericUtil.startRefreshLoginThread(userinfo,api.refreshLogin.bind(api), appdata);
   }
 
-
-
-
-
-  onClearMessage(){
-    this.setState(Object.assign({}, this.state,{modalMessage:null}));
-  }
-  setErrorMessage(content){
-     var modalMessage={
-            title:"Error",
-            content,
-            onConfirm:this.onClearMessage.bind(this),
-            confirmButton:"OK"
-     }
-     this.setState(Object.assign({}, this.state,{modalMessage,loading:false}));
-  }
 
   render(){
-                if(this.state.loading){
-                    return (<LoadingScreen/>);
-                }
-                else if(this.state.userinfo){
-                    return (
-                            <Router>
-                              <div className="topContainer">
-                                  <Route  path={textValues.home.link} exact component={HomeView}/>
-                                  <Route  path={textValues.home.link2} exact component={HomeView}/>
-                                  <Route  path={textValues.episodeList.link} component={ListEpisodesView}/>
-                                  <Route  path={textValues.programmeList.link} component={ListProgrammeView}/>
-                                  <Route  path={textValues.collectionList.link} component={ListCollectionsView}/>
-                                  <Route  path={textValues.s3.link} component={ListS3FilesView}/>
-                                  <Route  path={textValues.schedules.link} component={ListSchedulesView}/>
-                                  <Route  path={textValues.playLists.link} component={ListPlayListView}/>
-                                  <Route  path={textValues.importSchedules.link} component={ImportSchedulesView}/>
 
-                                  <Route  path={textValues.admin.link} component={AdminView}/>
-                                  <Route  path={textValues.help.link} component={HelpView}/>
+    var pathname=genericUtil.getPathName();
 
-
-
-                                  <Route path={textValues.admin.link} component={AdminView}/>
-                                  <Route path={textValues.manageUser.link} component={ManageUsersView}/>
-                                  <Route path={textValues.appConfig.link} component={ManageAppConfigView}/>
-                                  <Route path={textValues.appReports.link} component={AppReportsView}/>
-                                  <Route path={textValues.manageTags.link} component={ManageTagsView}/>
-                                  <Route path={textValues.manageDevices.link} component={ManageDevicesView}/>
-                                  <Route path={textValues.manageAdvertRules.link} component={ManageAdvertisementRulesView}/>
-
-                              </div>
-                            </Router>
-                      )
+              if(this.state.loading){
+                  return (<LoadingScreen/>);
+              }
+              else if(pathname && pathname===textValues.signup.link){
+                  return <SignUpView/>
+              }
+              else if(this.state.userinfo){
+                    if(this.state.userinfo.application==="boxmedia" || this.state.userinfo.application==="boximage"){
+                      return (<RenderMediaApp userinfo={this.state.userinfo}/>);
                     }
+                    else if(this.state.userinfo.application==="imageclient"){
+                      return (<NoServicesView userinfo={this.state.userinfo}/>);
+                    }
+
                     else{
-                        return (
-                            <DisplayLogin/>
+                      return (<WaitingApprovalApp userinfo={this.state.userinfo}/>);
+                    }
+              }
 
-                        );
+              else{
+                return (
+                    <DisplayLogin/>
+                );
+              }
 
-                   }
+
+
     }
-
 
 
 

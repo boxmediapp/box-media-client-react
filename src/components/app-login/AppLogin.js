@@ -44,7 +44,7 @@ export default class AppLogin extends Component {
               action:"input",
               dataType:"login",
               form:{
-                id: "###username###@"+window.location.host,
+                id: "###username###@boxmediaapp",
                 title:"Sign In",
                 label:"Image App Sign In",
                 fields:[{

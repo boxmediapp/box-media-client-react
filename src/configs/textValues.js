@@ -281,7 +281,7 @@ const textValues={
       linkText:"Sign out"
     },
     signup:{
-       link:"/image-app/sign-up",
+       link:"/box-media/sign-up",
        linkText:"Create Account",
        error:{
          title:"Error",
@@ -302,6 +302,67 @@ const textValues={
             ]
 
        }
+    },
+
+
+    account:{
+      link: "/box-media/account",
+      linkText:"Account",
+      actionText:"Account",
+      originalPasswordVerify:{
+           title:"User Verification",
+           verification:{
+                 error:"The password verification failed"
+           }
+      },
+      selectDataToModify:{
+          title:"Select Data to Modify",
+          firstName:{
+              label:"First Name"
+          },
+          lastName:{
+              label:"Last Name"
+          },
+          email:{
+              label:"Email"
+          },
+          password:{
+              label:"Change Password"
+          },
+          company:{
+              label:"Company"
+          },
+      },
+      modifyFirstName:{
+            title:"Update First Name",
+            error:"Failed to update the first name",
+            placeHolder:"First Name",
+            label:"First Name"
+      },
+      modifyLastName:{
+            title:"Update Last Name",
+            error:"Failed to update the last name",
+            placeHolder:"Last Name",
+            label:"Last Name"
+      },
+      modifyEmail:{
+            title:"Update Email",
+            error:"Failed to update the email",
+            placeHolder:"Email",
+            label:"Email"
+      },
+      modifyPassword:{
+            title:"Change Password",
+            error:"Failed to change password",
+            placeHolder:"Password",
+            label:"New Passsword"
+      },
+      modifyCompany:{
+            title:"Modifying Company",
+            error:"Failed to update the company",
+            placeHolder:"Company",
+            label:"Company"
+      },
     },
 
   };

@@ -84,6 +84,7 @@ class ListMenuItems extends Component{
              <MenuItem {...this.props} displayItem="importSchedules" selected={this.props.selected}/>
              <MenuItem   {...this.props} displayItem="admin" selected={this.props.selected}/>
              <MenuItem   {...this.props} displayItem="help" selected={this.props.selected}/>
+             <MenuItem  {...this.props} displayItem="account" selected={this.props.selected} render={true}/>
              <LogoutMenuItem/>
 
          </div>
@@ -151,7 +152,7 @@ class LogoutMenuItem extends Component{
   }
   logout(){
     genericUtil.signout();
-    var userinfo=appdata.getUserInfo();        
+    var userinfo=appdata.getUserInfo();
     appdata.setUserInfo(null);
   }
   onHover(){

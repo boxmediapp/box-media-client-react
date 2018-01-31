@@ -217,8 +217,8 @@ class DeleteUserDialog extends Component{
             onCancel:this.props.onCancel,
             inputs:[
                    {name:"username",  label:"Username:", readOnly:true, value:this.props.user.username},
-                   {name:"firstName",  label:"First Name:", readOnly:true},
-                   {name:"lastName",  label:"LastName Name:", readOnly:true}],
+                   {name:"firstName",  label:"First Name:", readOnly:true, value:this.props.user.firstName},
+                   {name:"lastName",  label:"LastName Name:", readOnly:true, value:this.props.user.lastName}],
                    confirmButton:"Delete",
                    cancelButton:"Cancel"
          }

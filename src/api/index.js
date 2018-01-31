@@ -161,8 +161,8 @@ class ServiceAPI {
     sendCommand(command){
             return this.doPostRequest("commands", JSON.stringify(command));
     }
-    getTasks(){
-        return this.doGetRequest("tasks?importScheduleType=IMPORT_BOX_EPISODE");
+    getTasks(importScheduleType){
+        return this.doGetRequest("tasks?importScheduleType="+importScheduleType);
      }
      createTask(task){
        return this.doPostRequest("tasks", JSON.stringify(task));

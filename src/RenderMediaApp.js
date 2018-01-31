@@ -24,7 +24,7 @@ import {AppReportsView} from "./app-reports";
 import {ManageTagsView} from "./manage-tags";
 import {ManageDevicesView} from "./manage-devices";
 import {ManageAdvertisementRulesView} from "./manage-advertisement-rules";
-
+import {AccountView} from "./account";
 
 
 
@@ -59,7 +59,7 @@ export default class RenderMediaApp extends Component{
                                   <Route path={textValues.manageTags.link} component={ManageTagsView}/>
                                   <Route path={textValues.manageDevices.link} component={ManageDevicesView}/>
                                   <Route path={textValues.manageAdvertRules.link} component={ManageAdvertisementRulesView}/>
-
+                                  <Route path={textValues.account.link} component={AccountView}/>
                               </div>
                             </Router>
                       );

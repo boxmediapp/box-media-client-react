@@ -17,7 +17,7 @@ export  default class AdminView extends Component {
       super(props);
     }
     render(){
-
+     console.log("****")
         return (
           <div>
             <AppHeader selected="admin"/>

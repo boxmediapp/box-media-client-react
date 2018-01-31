@@ -1,4 +1,5 @@
 var config={
+    appid:"boxmediaapp",
     apikey:"k7jc3QcMPKEXGW5UC",
     securityGroup:"1CNbWCFpsbmRQuKdd",
     version:"4.0.5",

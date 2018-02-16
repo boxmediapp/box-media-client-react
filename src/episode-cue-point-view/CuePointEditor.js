@@ -43,7 +43,7 @@ onCancel(){
   this.props.onCancel();
 }
 onDelete(){
-    this.props.onDelete(this.props.cueToEdit);  
+    this.props.onDelete(this.props.cueToEdit);
 }
 
   setTime(time){
@@ -123,6 +123,7 @@ renderDeleteButton(){
 
       return(
         <div id="cueEditor" style={styles.cueEditor}>
+              <div style={styles.title}>Cue Editor</div>
               <div className="row">
                   {this.renderDeleteButton()}
                   <div style={styles.buttonContainer}>

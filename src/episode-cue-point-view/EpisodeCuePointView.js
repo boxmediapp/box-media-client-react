@@ -3,7 +3,7 @@
 import React, {Component} from 'react'
 import {Table, Column, Cell} from "fixed-data-table-2";
 import "fixed-data-table-2/dist/fixed-data-table.min.css";
-import {ImageUploader,ProgressBar,ModalDialog,AppHeader} from "../components";
+import {ProgressBar,ModalDialog,AppHeader} from "../components";
 import {genericUtil,imageUtil,ResizeProcess} from "../utils";
 
 import {episodedata,store,appdata} from "../store";
@@ -14,6 +14,8 @@ import ListCuePoints from "./ListCuePoints";
 import CuePointEditor from "./CuePointEditor";
 
 import DisplayVideoObject from "./DisplayVideoObject";
+import VideoImageUploader from "./VideoImageUploader";
+
 
 
 export default class EpisodeCuePointView extends Component{
@@ -87,7 +89,7 @@ export default class EpisodeCuePointView extends Component{
 
   setCuePoints(cuepoints){
     cuepoints=cuepoints.sort(this.cueSortingFunction);
-    var episode=Object.assign({},this.state.episode,{cuepoints, cueToEdit:null});
+    var episode=Object.assign({},this.state.episode,{cuepoints, editAction:null});
     this.setState({episode, modalMessage:null});
   }
   getVideoObject(){
@@ -98,15 +100,15 @@ export default class EpisodeCuePointView extends Component{
     if(v){
       v.pause();
     }
-    var episode=Object.assign({},this.state.episode,{signedVideoURL,cueToEdit:null})
+    var episode=Object.assign({},this.state.episode,{signedVideoURL,editAction:null})
     this.setState({episode, modalMessage:null});
   }
 
 onDeleteCuePoint(cuepoint){
     var episode=this.state.episode;
-    if(episode.cueToEdit.id || episode.cueToEdit.id ===0){
-            var cueToEdit=episode.cueToEdit;
-            episode.cueToEdit=null;
+    if(episode.editAction &&  episode.editAction.cueToEdit && episode.editAction.cueToEdit.id || episode.editAction.cueToEdit.id ===0){
+            var cueToEdit=episode.editAction.cueToEdit;
+            episode.editAction=null;
             var cuepoints=episode.cuepoints.filter(c=>c!==cueToEdit);
             this.setCuePoints(cuepoints);
             api.removeCuePoint(episode,cueToEdit.id);
@@ -126,9 +128,9 @@ onDeleteCuePoint(cuepoint){
                      return c;
                    }
                 });
-                episode.cueToEdit=null;
+
                 this.setCuePoints(cuepoints);
-                this.setState({episode, modalMessage:null});
+
                 api.updateCuePoint(episode,cuepoint);
         }
         else{
@@ -139,18 +141,32 @@ onDeleteCuePoint(cuepoint){
         }
 
   }
-  onCancelEditCuePoint(){
+  onCancelEdit(){
     var episode=this.state.episode;
-    episode.cueToEdit=null;
+    episode.editAction=null;
     this.setState({episode, modalMessage:null});
   }
 
   renderCueEditor(){
-    if(this.state.episode && this.state.episode.cueToEdit){
-        return (<CuePointEditor cueToEdit={this.state.episode.cueToEdit}
+    if(this.state.episode && this.state.episode.editAction && this.state.episode.editAction.cueToEdit){
+        return (<CuePointEditor cueToEdit={this.state.episode.editAction.cueToEdit}
                  onUpdate={this.onUpdateCuePoint.bind(this)}
-                 onCancel={this.onCancelEditCuePoint.bind(this)}
+                 onCancel={this.onCancelEdit.bind(this)}
                  onDelete={this.onDeleteCuePoint.bind(this)}/>
+               );
+
+    }
+    else{
+      return null;
+    }
+  }
+  renderImageUploader(){
+    if(this.state.episode && this.state.episode.editAction && this.state.episode.editAction.imageToUpload){
+          var imageData=imageUtil.getEpisodeImageUploadData(this.state.episode);
+
+        return (<VideoImageUploader imageurl={this.state.episode.editAction.imageToUpload}
+                videoWidth={this.state.episode.editAction.videoWidth}  videoHeight={this.state.episode.editAction.videoHeight}
+                 onCancel={this.onCancelEdit.bind(this)} imageData={imageData}/>
                );
 
     }
@@ -162,7 +178,8 @@ onDeleteCuePoint(cuepoint){
       if(this.state.episode && this.state.episode.signedVideoURL){
         return(
             <DisplayVideoObject url={this.state.episode.signedVideoURL} ref={videoPlayer=>this.videoPlayer=videoPlayer}
-            onTimeUpdate={this.onTimeUpdate.bind(this)}/>
+            onTimeUpdate={this.onTimeUpdate.bind(this)}
+            onCaptureImage={this.onCaptureImage.bind(this)}/>
         );
       }
       else{
@@ -176,10 +193,10 @@ onDeleteCuePoint(cuepoint){
 
 
   onTimeUpdate(currentTime){
-      if(this.state.episode.cueToEdit){
-        var cueToEdit=this.state.episode.cueToEdit;
+      if(this.state.episode.editAction && this.state.episode.editAction.cueToEdit){
+        var cueToEdit=this.state.episode.editAction.cueToEdit;
         cueToEdit.time=currentTime;
-        var episode=Object.assign({},this.state.episode,{cueToEdit})
+        var episode=Object.assign({},this.state.episode,{editAction:{cueToEdit}})
         this.setState({episode, modalMessage:this.state.modalMessage});
       }
 
@@ -187,16 +204,21 @@ onDeleteCuePoint(cuepoint){
   onAddNewCuePoint(){
       var currentTime=this.videoPlayer.getCurrentTime();
       var  cueToEdit={time:currentTime, name:"break", type:"AD",metadata:{materialId:this.state.episode.materialId,numberOfAds:1}};
-      var episode=Object.assign({},this.state.episode,{cueToEdit})
+      var episode=Object.assign({},this.state.episode,{editAction:{cueToEdit}})
       this.setState({episode, modalMessage:this.state.modalMessage});
       window.scrollTo(0, 0);
       this.setVideoCurrentTime(cueToEdit.time);
   }
   onEditCuePoint(episode,cueToEdit){
-        var episode=Object.assign({},this.state.episode,{cueToEdit})
+        var episode=Object.assign({},this.state.episode,{editAction:{cueToEdit}})
         this.setState({episode, modalMessage:null});
         window.scrollTo(0, 0);
         this.setVideoCurrentTime(cueToEdit.time);
+  }
+  onCaptureImage(imageToUpload, videoWidth,videoHeight){
+      var episode=Object.assign({},this.state.episode,{editAction:{imageToUpload,videoWidth,videoHeight}})
+      this.setState({episode, modalMessage:null});
+      window.scrollTo(0, 0);
   }
   renderCuePoints(){
       if(this.state.episode && this.state.episode.cuepoints){
@@ -219,6 +241,7 @@ onDeleteCuePoint(cuepoint){
                         <div style={styles.editorContainer}>
                               {this.renderVideoPlayer()}
                               {this.renderCueEditor()}
+                              {this.renderImageUploader()}
                         </div>
                         {this.renderCuePoints()}
                         <div style={styles.buttonContainer}>

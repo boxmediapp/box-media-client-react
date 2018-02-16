@@ -24,11 +24,13 @@ export  default class ListCuePoints extends Component {
   renderCuePoints(episode){
     var data={episode,onEditCuePoint:this.onEditCuePoint.bind(this)};
     return(
+         <div>
+            <div style={styles.title}> Cue Point List </div>
                <Table
                  rowHeight={50}
                  headerHeight={50}
                  rowsCount={data.episode.cuepoints.length}
-                 maxHeight={500} width={1100}
+                 maxHeight={500} width={1200}
 
                  >
                  <Column
@@ -49,7 +51,7 @@ export  default class ListCuePoints extends Component {
                 />
                 <Column
                          columnKey="numberOfAds"
-                         header={<Cell>Number Of Ads</Cell>}
+                         header={<Cell>No. Ads</Cell>}
                          width={100}
                          cell={<CueMetadataTextCell data={data}/>}
 
@@ -85,7 +87,7 @@ export  default class ListCuePoints extends Component {
                 />
                 <Column
                         columnKey="materialId"
-                        width={100}
+                        width={200}
                         header={<Cell>Material Id</Cell>}
                         cell={<CueMetadataTextCell data={data}/>}
                 />
@@ -119,6 +121,7 @@ export  default class ListCuePoints extends Component {
 
 
         </Table>
+      </div>
      );
   }
 

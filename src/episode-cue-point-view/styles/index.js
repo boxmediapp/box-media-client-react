@@ -48,7 +48,12 @@ export const styles={
       marginRight:5
   },
   cueEditor:{
-    marginLeft:5
+    marginLeft:5,
+    backgroundColor: '#ecf2f8',
+    display:"flex",
+    flexDirection:"column",
+    justifyContent:"space-between",
+    boxShadow: "10px 10px 5px #888888"
   }
 
 

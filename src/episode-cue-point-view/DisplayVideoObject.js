@@ -42,6 +42,16 @@ export default class DisplayVideoObject extends Component{
   onRW(){
         this.videoObject.currentTime=this.videoObject.currentTime-1/60;
   }
+  captureAsEpisodeImage(){
+      var video=this.videoObject;
+      var canvas = document.createElement("canvas");
+      canvas.width = video.videoWidth;
+      canvas.height = video.videoHeight;
+      canvas.getContext('2d').drawImage(video, 0, 0, canvas.width, canvas.height);
+
+      var imageURL=canvas.toDataURL();
+      this.props.onCaptureImage(imageURL,video.videoWidth, video.videoHeight);
+  }
 
   renderLoading(){
     if(this.state.buffering){
@@ -52,7 +62,7 @@ export default class DisplayVideoObject extends Component{
     return (
       <div style={styles.videoPlayerContainer}>
                 {this.renderLoading()}
-                <video id="videoPlayer" ref={elem=>this.videoObject=elem} controls>
+                <video id="videoPlayer" ref={elem=>this.videoObject=elem} crossOrigin="anonymous" controls>
                     <source type="video/mp4" src={this.props.url}/>
                 </video>
                 <div style={styles.playerFooter}>
@@ -66,6 +76,11 @@ export default class DisplayVideoObject extends Component{
                               <div style={styles.buttonLabel}>RW</div>
                           </a>
                    </div>
+                   <div style={styles.buttonContainer}>
+                         <a className="btn btn-primary btn-normal" onClick={this.captureAsEpisodeImage.bind(this)}>
+                             <div style={styles.buttonLabel}>Capture Image</div>
+                         </a>
+                  </div>
             </div>
       </div>
     );

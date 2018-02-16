@@ -1,4 +1,4 @@
-
+import {appdata} from "../store";
 
 var normalImageWidth=480;
 var normalImageHeight=270;
@@ -127,5 +127,17 @@ export default class ImageUtil{
       }
       return {width, height};
   }
-  
+  buildEpisodeImageBaseFilename(episode){
+      return episode.materialId.replace(/\//g, "_").replace(/ /g, "-");
+  }
+  getEpisodeImageUploadData(episode){
+          var appconfig=appdata.getAppConfig();
+          var uploadFilename=this.buildEpisodeImageBaseFilename(episode)+".png";
+
+          return {
+                  imageBucket:appconfig.imageBucket,
+                  filepath:appconfig.imageMasterFolder+"/"+uploadFilename,
+                  filename: uploadFilename
+            }
+  }
 }

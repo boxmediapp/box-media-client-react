@@ -16,6 +16,7 @@ export  default class ListEpisodesView extends Component {
       genericUtil.redirect(textValues.episodeList.redirect);
     }
 
+    
 
     render(){
 

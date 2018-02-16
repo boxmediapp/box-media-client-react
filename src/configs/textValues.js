@@ -365,6 +365,12 @@ const textValues={
       },
     },
 
+    episodeCuePointView:{
+        link:"/box-media/video-cues",
+      linkText:"Video Cue Points"
+
+    }
+
   };
 
 if(config.appCategory==='bebox'){

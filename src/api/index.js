@@ -235,6 +235,23 @@ class ServiceAPI {
          presigned(url){
            return this.doGetRequest("presigned?url="+url);
          }
+         loadEpisodeDetails(episodid){
+           return this.doGetRequest("episodes/"+episodid);
+         }
+         loadCuePoints(episodid){
+                return this.doGetRequest("cue/"+episodid);
+         }
+         updateCuePoint(episode,cue){
+              return this.doPutRequest("cue/"+episode.id+"/"+cue.id,JSON.stringify(cue));
+         }
+         createCuePoint(episode,cue){
+              return this.doPostRequest("cue/"+episode.id,JSON.stringify(cue));
+
+         }
+         removeCuePoint(episode,cueid){
+             return this.doDeleteRequest("cue/"+episode.id+"/"+cueid);
+
+          }
 
 }
 

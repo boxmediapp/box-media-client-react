@@ -2,13 +2,14 @@ import React, {Component} from 'react';
 import {styles} from "./styles";
 import {ProgressBar,ModalDialog} from "../components";
 import {api} from "../api";
-import {genericUtil,imageUtil} from "../utils";
+import {genericUtil,imageUtil,ResizeProcess} from "../utils";
 
 export default class VideoImageUploader extends Component{
 
   constructor(props){
     super(props);
-    this.state={file:null, progressValue:0, progressTotal:0};
+    this.state={file:null, progressValue:0, progressTotal:0, progressMessage:null};
+    this.process=new ResizeProcess(this, this.props);
   }
   onClearMessage(){
     this.setState(Object.assign({}, this.state,{modalMessage:null}));
@@ -16,8 +17,12 @@ export default class VideoImageUploader extends Component{
 
 
   setProgressValue(progressValue,progressTotal){
-    this.setState(Object.assign({}, this.state,{progressValue,progressTotal}));
+    this.setState(Object.assign({}, this.state,{progressValue,progressTotal,progressMessage:this.state.progressMessage}));
   }
+  setProgressValueWithMessage(progressValue,progressTotal,progressMessage){
+    this.setState(Object.assign({}, this.state,{progressValue,progressTotal,progressMessage}));
+  }
+
   onUploadProgess(progressValue,total){
     this.setProgressValue(progressValue,total);
   }
@@ -34,34 +39,90 @@ export default class VideoImageUploader extends Component{
         this.setState(Object.assign({}, this.state,{modalMessage,progressValue,progressTotal}));
   }
   onUploadAborted(){
-
         var progressValue=0;
         var progressTotal=0;
         this.setState(Object.assign({}, this.state,{modalMessage:null,progressValue,progressTotal}));
   }
   onUploadAsEpisodeImage(){
-        this.setProgressValue(0,1);
-
-        var uploadRequest={
-                    file:this.props.imageData.filepath,
-                    bucket:this.props.imageData.imageBucket
+        var request={
+                    progressMessage: "Uploading the master image",
+                    filepath:this.props.imageData.filepath,
+                    imageBucket:this.props.imageData.imageBucket,
+                    imageData:imageUtil.dataURLToBlob(this.props.imageurl),
+                    onComplete:this.onUploadMasterImageComplete.bind(this)
          };
+         this.uploadImage(request);
 
-           api.requestS3UploadURL(uploadRequest).then(data=>{
-              console.log("presign response:"+JSON.stringify(data));
-              this.startUpload(data);
-           }).catch(error=>{
+  }
+  onUploadMasterImageComplete(data, props){
+        this.uploadPublicImage(this.props.imageData.publicImages);
+  }
+  uploadPublicImage(publicImages){
+    if(publicImages.length==0){
+            this.onUploadComplete();
+            return;
+    }
+    var punlicImage=publicImages[0];
+    publicImages.splice(0,1);
+
+    imageUtil.resizeImage({
+      imageURL:this.props.imageurl,
+      sourceWidth:this.props.videoWidth,
+      sourceHeight:this.props.videoHeight,
+      sourceX:0,
+      sourceY:0,
+      destX:0,
+      destY:0,
+      destWidth:punlicImage.width,
+      destHeight:punlicImage.height,
+      imageType:punlicImage.type,
+      onComplete:(resizeImgData)=>{
+          var request={
+                    progressMessage: "Uploading the image:"+punlicImage.width+" x "+punlicImage.height,
+                    filepath:punlicImage.filepath,
+                    imageBucket:punlicImage.imageBucket,
+                    imageData:resizeImgData,
+                    onComplete:()=>{
+                        this.uploadPublicImage(publicImages);
+                    }
+         };
+         this.uploadImage(request);
+      }
+    });
+
+
+  }
+  uploadImage(request){
+        this.setProgressValueWithMessage(0,1, request.progressMessage);
+        var uploadRequest={
+                    file:request.filepath,
+                    bucket:request.imageBucket
+         };
+         api.requestS3UploadURL(uploadRequest).then(data=>{
+              this.startUpload(data, request);
+        }).catch(error=>{
                this.onUploadError("Failed upload the file:"+error);
            });
 
   }
-  onUploadComplete(data, props){
+  startUpload(s3,request){
+                genericUtil.startUpload({
+                  s3,
+                  file:request.imageData,
+                  onProgress:this.onUploadProgess.bind(this),
+                  onComplete:request.onComplete,
+                  onError:this.onUploadError.bind(this),
+                  onAbort:this.onUploadAborted.bind(this)
+                    });
+  }
+
+onUploadComplete(){
 
     var modalMessage={
            title:"Image Copmplete",
            content:"Image is uploaded to the s3 bucket successfully",
            onConfirm:()=>{
-             this.props.onCancel();             
+             this.props.onCancel();
            },
            confirmButton:"OK"
     }
@@ -69,16 +130,7 @@ export default class VideoImageUploader extends Component{
     var progressTotal=0;
     this.setState(Object.assign({}, this.state,{modalMessage,progressValue,progressTotal}));
   }
-  startUpload(s3){
-                this.setProgressValue(0,1);
-                genericUtil.startUpload({s3,
-               file:imageUtil.dataURLToBlob(this.props.imageurl),
-               onProgress:this.onUploadProgess.bind(this),
-               onComplete:this.onUploadComplete.bind(this),
-               onError:this.onUploadError.bind(this),
-               onAbort:this.onUploadAborted.bind(this)
-        });
-  }
+
 
   onCancel(){
     this.props.onCancel();
@@ -88,7 +140,7 @@ export default class VideoImageUploader extends Component{
       var width=this.props.videoWidth;
       var height=this.props.videoHeight;
 
-      var {progressValue,progressTotal}=this.state;
+      var {progressValue,progressTotal,progressMessage}=this.state;
       return(
         <div  style={styles.cueEditor}>
                 <div style={styles.title}>Episode Image Uploader</div>
@@ -107,7 +159,8 @@ export default class VideoImageUploader extends Component{
               <div styles={styles.imageContainer}>
                         <img src={this.props.imageurl}/>
               </div>
-               <ProgressBar width={width} height={height} progressValue={progressValue} progressTotal={progressTotal}/>
+               <ProgressBar width={width} height={height} progressValue={progressValue} progressTotal={progressTotal}
+                 message={progressMessage}/>
                <ModalDialog message={this.state.modalMessage}/>
       </div>
     );

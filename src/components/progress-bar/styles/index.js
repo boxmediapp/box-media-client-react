@@ -20,6 +20,10 @@ export const styles={
          height:30,
          backgroundColor:"rgba(255,255,255,0.8)  "
      };
+  },
+  
+  progressMessage:{
+      whiteSpace:"nowrap"
   }
 
 };

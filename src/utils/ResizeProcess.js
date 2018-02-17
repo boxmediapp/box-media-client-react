@@ -19,7 +19,7 @@ export default class ResizeProcess{
         if(!this.caller.props.contractNumber || !this.caller.props.episodeNumber){
            throw Error("contractNumber or epsiodeNumber is empty, failed to create:"+JSON.stringify(data));
         }
-        var imageset={             
+        var imageset={
              programmeNumber:this.caller.props.contractNumber+"/"+this.caller.props.episodeNumber,
              title:this.caller.state.title,
              fileCounter:this.caller.props.fileCounter

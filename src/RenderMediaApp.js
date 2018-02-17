@@ -26,7 +26,7 @@ import {ManageDevicesView} from "./manage-devices";
 import {ManageAdvertisementRulesView} from "./manage-advertisement-rules";
 import {AccountView} from "./account";
 import {EpisodeCuePointView} from "./episode-cue-point-view";
-
+import {ImageManagerView} from "./image-manager";
 
 
 
@@ -63,6 +63,8 @@ export default class RenderMediaApp extends Component{
                                   <Route path={textValues.manageAdvertRules.link} component={ManageAdvertisementRulesView}/>
                                   <Route path={textValues.account.link} component={AccountView}/>
                                   <Route path={textValues.episodeCuePointView.link} component={EpisodeCuePointView}/>
+
+                                  <Route path={textValues.imageManager.link} component={ImageManagerView}/>
                               </div>
                             </Router>
                       );

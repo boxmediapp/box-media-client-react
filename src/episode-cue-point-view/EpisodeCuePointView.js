@@ -160,13 +160,28 @@ onDeleteCuePoint(cuepoint){
       return null;
     }
   }
+  onUploadEpisodeImage(imageData){
+        var imagefilename=imageData.filename;
+        api.patchEpisode(this.state.episode.id,{imageURL:imagefilename}).then(response=>{
+              console.log("episode imageURL is updated");
+        }).catch(error=>{
+          var modalMessage={
+                 title:"Error",
+                 content:"Failed to patch the episode with imageURL",
+                 onConfirm:this.onClearMessage.bind(this),
+                 confirmButton:"OK"
+          }
+          this.setState(Object.assign({}, this.state,{modalMessage}));
+        });
+  }
   renderImageUploader(){
     if(this.state.episode && this.state.episode.editAction && this.state.episode.editAction.imageToUpload){
           var imageData=imageUtil.getEpisodeImageUploadData(this.state.episode);
 
         return (<VideoImageUploader imageurl={this.state.episode.editAction.imageToUpload}
                 videoWidth={this.state.episode.editAction.videoWidth}  videoHeight={this.state.episode.editAction.videoHeight}
-                 onCancel={this.onCancelEdit.bind(this)} imageData={imageData}/>
+                 onCancel={this.onCancelEdit.bind(this)} imageData={imageData}
+                 onUploadEpisodeImage={this.onUploadEpisodeImage.bind(this)}/>
                );
 
     }

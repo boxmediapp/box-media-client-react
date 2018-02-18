@@ -1,15 +1,15 @@
 import React, {Component} from 'react';
 import {styles} from "./styles";
-import {ProgressBar,ModalDialog} from "../components";
+import {ModalDialog,ProgressBar} from "../components";
 import {api} from "../api";
-import {genericUtil,imageUtil,ResizeProcess} from "../utils";
+import {genericUtil,imageUtil} from "../utils";
 
 export default class VideoImageUploader extends Component{
 
   constructor(props){
     super(props);
-    this.state={file:null, progressValue:0, progressTotal:0, progressMessage:null};
-    this.process=new ResizeProcess(this, this.props);
+    this.state={progressValue:0, progressTotal:0, progressMessage:null};
+
   }
   onClearMessage(){
     this.setState(Object.assign({}, this.state,{modalMessage:null}));
@@ -56,6 +56,7 @@ export default class VideoImageUploader extends Component{
   }
   onUploadMasterImageComplete(data, props){
         this.uploadPublicImage(this.props.imageData.publicImages);
+        this.props.onUploadEpisodeImage(this.props.imageData);
   }
   uploadPublicImage(publicImages){
     if(publicImages.length==0){

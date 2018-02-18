@@ -60,7 +60,21 @@ class ServiceAPI {
         return JSON.parse(body);
     });
   }
-
+  executeHTTPPatchRequestWithHeaders(path, headers, body){
+    if(!headers){
+      headers={};
+    }
+   return fetch(this.config.api.getUrl(path),{headers, method:"PATCH", body})
+   .then(function(response) {
+     if((!response) || response.status>=400){
+         console.error("failure response on put request:"+path);
+         throw Error("HTTP patch request response error on:"+path);
+     }
+         return response.text();
+   }).then(function(body) {
+       return JSON.parse(body);
+   });
+  }
 
    executeHTTPDeleteRequestWithHeaders(path, headers){
      if(!headers){
@@ -111,6 +125,10 @@ class ServiceAPI {
   doPostRequest(path,body){
     var headers=this.buildHttpHeader();
     return this.executeHTTPPostRequestWithHeaders(path,headers,body);
+  }
+  doPatchRequest(path,body){
+    var headers=this.buildHttpHeader();
+    return this.executeHTTPPatchRequestWithHeaders(path,headers,body);
   }
   doDeleteRequest(path){
     var headers=this.buildHttpHeader();
@@ -238,6 +256,21 @@ class ServiceAPI {
          loadEpisodeDetails(episodid){
            return this.doGetRequest("episodes/"+episodid);
          }
+         loadProgrammeDetails(programmeid){
+            return this.doGetRequest("series/"+programmeid);
+         }
+         loadCollectionDetails(collectionid){
+           return this.doGetRequest("seriesgroup/"+collectionid);
+         }
+         patchEpisode(episodeid, episode){
+              return this.doPatchRequest("episodes/"+episodeid,JSON.stringify(episode));
+         }
+         patchProgramme(programmeid, programme){
+              return this.doPatchRequest("series/"+programmeid,JSON.stringify(programme));
+         }
+         patchProgrammeCollection(collectionid,programmeCollection){
+               return this.doPatchRequest("seriesgroup/"+collectionid,JSON.stringify(programmeCollection));
+         }
          loadCuePoints(episodid){
                 return this.doGetRequest("cue/"+episodid);
          }
@@ -251,7 +284,25 @@ class ServiceAPI {
          removeCuePoint(episode,cueid){
              return this.doDeleteRequest("cue/"+episode.id+"/"+cueid);
 
-          }
+         }
+         getEpisodeImages(episode){
+           return this.doGetRequest("images-s3?episodeid="+episode.id);
+         }
+         getProgrammeImages(programme){
+           return this.doGetRequest("images-s3?programmeid="+programme.id);
+         }
+         getCollectionImages(collection){
+            return this.doGetRequest("images-s3?collectionid="+collection.id);
+         }
+         deleteCollectionLevelMasterImage(collectionid,imagefile){
+           return this.doDeleteRequest("box-images/master/seriesgroup/"+collectionid+"/"+imagefile);
+         }
+	       deleteProgrammeLevelImage(programmeid,imagefile){
+           return this.doDeleteRequest("box-images/master/series/"+programmeid+"/"+imagefile);
+	       }
+	       deleteEpisodeLevelImage(episodeid,imagefile){
+           return this.doDeleteRequest("box-images/master/episode/"+episodeid+"/"+imagefile);
+	       }
 
 }
 

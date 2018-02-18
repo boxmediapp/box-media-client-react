@@ -131,6 +131,12 @@ export default class ImageUtil{
   buildEpisodeImageBaseFilename(episode){
       return episode.materialId.replace(/\//g, "_").replace(/ /g, "-");
   }
+  buildProgrammeImageBaseFilename(programme){
+      return programme.contractNumber.replace(/\//g, "_").replace(/ /g, "-");
+  }
+  buildCollectionImageBaseFilename(collection){
+      return collection.title.replace(/[&\/\\#,\ +()$~%.'":*?<>{}]/g,'-');
+  }
   getEpisodeImageUploadData(episode){
           var appconfig=appdata.getAppConfig();
           var filenamebase=this.buildEpisodeImageBaseFilename(episode);
@@ -152,6 +158,56 @@ export default class ImageUtil{
                   imageBucket:appconfig.imageBucket,
                   filepath:appconfig.imageMasterFolder+"/"+filename,
                   filename,
+                  publicImages
+            }
+  }
+  getProgrammeImageUploadData(programme){
+          var appconfig=appdata.getAppConfig();
+          var filenamebase=this.buildProgrammeImageBaseFilename(programme);
+          var filename=filenamebase+".png";
+          var publicImages=[];
+          imageRequirements.forEach(img=>{
+            var fname=filenamebase+"_"+img.width+"x"+img.height+"."+img.type;
+            publicImages.push({
+                          filepath:appconfig.imagePublicFolder+"/"+fname,
+                          width:img.width,
+                          height:img.height,
+                          imageBucket:appconfig.imageBucket,
+                          filename:fname,
+                          type:img.type
+                      })
+          });
+
+          return {
+                  imageBucket:appconfig.imageBucket,
+                  filepath:appconfig.imageMasterFolder+"/"+filename,
+                  filename,
+                  publicImages
+            }
+  }
+  getCollectionImageUploadData(collection){
+          var appconfig=appdata.getAppConfig();
+          var filenamebase=this.buildCollectionImageBaseFilename(collection);
+          var filename=filenamebase+".png";
+          var publicImages=[];
+          imageRequirements.forEach(img=>{
+            var fname=filenamebase+"_"+img.width+"x"+img.height+"."+img.type;
+            publicImages.push({
+                          filepath:appconfig.imagePublicFolder+"/"+fname,
+                          width:img.width,
+                          height:img.height,
+                          imageBucket:appconfig.imageBucket,
+                          filename:fname,
+                          type:img.type
+
+                      })
+          });
+
+          return {
+                  imageBucket:appconfig.imageBucket,
+                  filepath:appconfig.imageMasterFolder+"/"+filename,
+                  filename,
+                  filenamebase,
                   publicImages
             }
   }

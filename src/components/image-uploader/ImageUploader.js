@@ -45,9 +45,15 @@ export  default class ImageUploader extends Component {
    onDrop(acceptedFiles, rejectedFiles){
       if(acceptedFiles && acceptedFiles.length>0){
         imageUtil.getImagePreviewAndInfo(acceptedFiles[0],data=>{
+            if(this.props.onDropSucess){
               if(this.props.onDropSucess(data)){
                 this.setState(Object.assign({},this.state,data));
               }
+            }
+            else{
+              this.setState(Object.assign({},this.state,data));
+            }
+
         }, errorMessage =>{
             this.props.onDropFailed(errorMessage);
         });
@@ -129,7 +135,7 @@ export  default class ImageUploader extends Component {
         if(this.state.imagePreviewUrl){
               return this.renderPreviewImage();
         }
-        else if(!genericUtil.doesUserHasFullAccess(userinfo)){      
+        else if(!genericUtil.doesUserHasFullAccess(userinfo)){
               return this.renderMissingUploadPermission();
         }
         else if(this.props.image){

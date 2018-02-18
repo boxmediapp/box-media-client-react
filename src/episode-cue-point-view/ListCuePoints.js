@@ -30,7 +30,7 @@ export  default class ListCuePoints extends Component {
                  rowHeight={50}
                  headerHeight={50}
                  rowsCount={data.episode.cuepoints.length}
-                 maxHeight={500} width={1200}
+                 maxHeight={500} width={1500}
 
                  >
                  <Column
@@ -74,7 +74,7 @@ export  default class ListCuePoints extends Component {
 
                  <Column
                           columnKey="name"
-                          width={100}
+                          width={200}
                           header={<Cell>Name</Cell>}
                           cell={<CueTextCell data={data}/>}
                 />
@@ -94,7 +94,7 @@ export  default class ListCuePoints extends Component {
 
                 <Column
                         columnKey="mediaType"
-                        width={100}
+                        width={200}
                         header={<Cell>Media Type</Cell>}
                         cell={<CueMetadataTextCell data={data}/>}
                 />
@@ -102,7 +102,7 @@ export  default class ListCuePoints extends Component {
 
                 <Column
                         columnKey="artist"
-                        width={100}
+                        width={200}
                         header={<Cell>Artist</Cell>}
                         cell={<CueMetadataTextCell data={data}/>}
                 />

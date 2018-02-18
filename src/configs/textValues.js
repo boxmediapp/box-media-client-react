@@ -367,9 +367,13 @@ const textValues={
 
     episodeCuePointView:{
         link:"/box-media/video-cues",
-      linkText:"Video Cue Points"
-
-    }
+        linkText:"Video Cue Points"
+    },
+    imageManager:{
+          link:"/box-media/image-manager",
+          linkText:"Upload Image"
+    },
+    uploadHDImageText:["Drop an image here", "Prefers 1920 x 1080"],
 
   };
 

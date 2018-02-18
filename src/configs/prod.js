@@ -2,7 +2,7 @@ var config={
     appid:"boxmediaapp",
     apikey:"k7jc3QcMPKEXGW5UC",
     securityGroup:"1CNbWCFpsbmRQuKdd",
-    version:"4.1.0",
+    version:"4.1.2",
     api:{
       base:"https://mediaapp.boxplus.com/mule/boxtv/",
       getUrl(path){

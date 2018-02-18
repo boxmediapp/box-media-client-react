@@ -1,5 +1,5 @@
 import {appdata} from "../store";
-
+import {imageRequirements} from "../configs";
 var normalImageWidth=480;
 var normalImageHeight=270;
 
@@ -81,7 +81,8 @@ export default class ImageUtil{
           var resizedImage = that.dataURLToBlob(dataUrl);
           request.onComplete(resizedImage);
       }
-      image.src = request.imageURL+"?timestamp="+(new Date()).getTime();
+      //image.src = request.imageURL+"?timestamp="+(new Date()).getTime();
+      image.src = request.imageURL;
   }
   dataURLToBlob(dataURL) {
     var BASE64_MARKER = ';base64,';
@@ -130,14 +131,84 @@ export default class ImageUtil{
   buildEpisodeImageBaseFilename(episode){
       return episode.materialId.replace(/\//g, "_").replace(/ /g, "-");
   }
+  buildProgrammeImageBaseFilename(programme){
+      return programme.contractNumber.replace(/\//g, "_").replace(/ /g, "-");
+  }
+  buildCollectionImageBaseFilename(collection){
+      return collection.title.replace(/[&\/\\#,\ +()$~%.'":*?<>{}]/g,'-');
+  }
   getEpisodeImageUploadData(episode){
           var appconfig=appdata.getAppConfig();
-          var uploadFilename=this.buildEpisodeImageBaseFilename(episode)+".png";
+          var filenamebase=this.buildEpisodeImageBaseFilename(episode);
+          var filename=filenamebase+".png";
+          var publicImages=[];
+          imageRequirements.forEach(img=>{
+            var fname=filenamebase+"_001_"+img.width+"x"+img.height+"."+img.type;
+            publicImages.push({
+                          filepath:appconfig.imagePublicFolder+"/"+fname,
+                          width:img.width,
+                          height:img.height,
+                          imageBucket:appconfig.imageBucket,
+                          filename:fname,
+                          type:img.type
+                      })
+          });
 
           return {
                   imageBucket:appconfig.imageBucket,
-                  filepath:appconfig.imageMasterFolder+"/"+uploadFilename,
-                  filename: uploadFilename
+                  filepath:appconfig.imageMasterFolder+"/"+filename,
+                  filename,
+                  publicImages
+            }
+  }
+  getProgrammeImageUploadData(programme){
+          var appconfig=appdata.getAppConfig();
+          var filenamebase=this.buildProgrammeImageBaseFilename(programme);
+          var filename=filenamebase+".png";
+          var publicImages=[];
+          imageRequirements.forEach(img=>{
+            var fname=filenamebase+"_"+img.width+"x"+img.height+"."+img.type;
+            publicImages.push({
+                          filepath:appconfig.imagePublicFolder+"/"+fname,
+                          width:img.width,
+                          height:img.height,
+                          imageBucket:appconfig.imageBucket,
+                          filename:fname,
+                          type:img.type
+                      })
+          });
+
+          return {
+                  imageBucket:appconfig.imageBucket,
+                  filepath:appconfig.imageMasterFolder+"/"+filename,
+                  filename,
+                  publicImages
+            }
+  }
+  getCollectionImageUploadData(collection){
+          var appconfig=appdata.getAppConfig();
+          var filenamebase=this.buildCollectionImageBaseFilename(collection);
+          var filename=filenamebase+".png";
+          var publicImages=[];
+          imageRequirements.forEach(img=>{
+            var fname=filenamebase+"_"+img.width+"x"+img.height+"."+img.type;
+            publicImages.push({
+                          filepath:appconfig.imagePublicFolder+"/"+fname,
+                          width:img.width,
+                          height:img.height,
+                          imageBucket:appconfig.imageBucket,
+                          filename:fname,
+                          type:img.type
+
+                      })
+          });
+
+          return {
+                  imageBucket:appconfig.imageBucket,
+                  filepath:appconfig.imageMasterFolder+"/"+filename,
+                  filename,
+                  filenamebase,
+                  publicImages
             }
   }
 }

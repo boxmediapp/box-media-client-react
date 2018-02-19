@@ -181,7 +181,8 @@ onDeleteCuePoint(cuepoint){
         return (<VideoImageUploader imageurl={this.state.episode.editAction.imageToUpload}
                 videoWidth={this.state.episode.editAction.videoWidth}  videoHeight={this.state.episode.editAction.videoHeight}
                  onCancel={this.onCancelEdit.bind(this)} imageData={imageData}
-                 onUploadEpisodeImage={this.onUploadEpisodeImage.bind(this)}/>
+                 onUploadEpisodeImage={this.onUploadEpisodeImage.bind(this)}
+                 episode={this.state.episode}/>
                );
 
     }

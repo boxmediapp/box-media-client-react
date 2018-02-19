@@ -55,6 +55,7 @@ export default class ModalDialog extends Component {
                             <div style={styles.footer}>
                               <DisplayButton onClick={this.onConfirm.bind(this)} buttonText={this.props.message.confirmButton}/>
                               <DisplayButton onClick={this.onCancel.bind(this)} buttonText={this.props.message.cancelButton}/>
+                              <DisplayCustomButton customButton={this.props.message.customButton}/>
                             </div>
                         </div>
                   </div>
@@ -86,6 +87,22 @@ class DisplayButton extends Component{
 
         }
 
+}
+class DisplayCustomButton extends Component{
+  render(){
+  if(this.props.customButton){
+    return(
+      <div style={styles.buttonContainer}>
+         <a href={this.props.customButton.link} className="btn btn-primary btn-normal">{this.props.customButton.label}</a>
+      </div>
+    );
+  }
+  else{
+    return null;
+  }
+
+
+  }
 }
 
 class DisplayInputs extends Component{

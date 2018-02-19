@@ -3,6 +3,7 @@ import {styles} from "./styles";
 import {ModalDialog,ProgressBar} from "../components";
 import {api} from "../api";
 import {genericUtil,imageUtil} from "../utils";
+import {textValues} from "../configs";
 
 export default class VideoImageUploader extends Component{
 
@@ -125,7 +126,11 @@ onUploadComplete(){
            onConfirm:()=>{
              this.props.onCancel();
            },
-           confirmButton:"OK"
+           confirmButton:"OK",
+           customButton:{
+             label:"Got to Image Manager",
+             link:textValues.imageManager.link+"?episodeid="+this.props.episode.id
+           }
     }
     var progressValue=0;
     var progressTotal=0;

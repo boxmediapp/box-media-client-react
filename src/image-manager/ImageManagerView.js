@@ -425,7 +425,7 @@ onDeleteMasterImage(){
  }
 
  renderUploadButton(uploadImageData){
-   if((!this.props.progressTotal) && uploadImageData.imageinfo){
+   if((!this.state.progressTotal) && uploadImageData.imageinfo){
      return(
        <button type="button" className="btn btn-primary btn-normal imageControlButton" onClick={this.onUploadClicked.bind(this)}>Upload</button>
      );
@@ -452,6 +452,7 @@ onDeleteMasterImage(){
                  </div>
                  <div  style={styles.imageFooter}>
                        {this.renderUploadButton(uploadImageData)}
+                       {this.renderCaptureFromVideLink()}
                  </div>
            </div>
          );
@@ -469,6 +470,26 @@ onDeleteMasterImage(){
     else{
       return null;
     }
+  }
+  renderCaptureFromVideLink(){
+      if(this.state.episode && this.state.episode.ingestSource){
+          if(this.state.episode.uploadImageData && this.state.episode.uploadImageData.imageinfo){
+                return null;
+          }
+          else{
+
+              var url=textValues.episodeCuePointView.link+"?episodeid="+this.state.episode.id;
+
+              return (<a href={url} className="btn btn-primary btn-normal imageControlButton">Capture From Video</a>);
+          }
+
+
+      }
+      else{
+        return null;
+      }
+
+
   }
   renderTitle(){
     if(this.state.episode){

@@ -143,7 +143,7 @@ export default class ImageUtil{
           var filename=filenamebase+".png";
           var publicImages=[];
           imageRequirements.forEach(img=>{
-            var fname=filenamebase+"_001_"+img.width+"x"+img.height+"."+img.type;
+            var fname=filenamebase+"_"+img.width+"x"+img.height+"."+img.type;
             publicImages.push({
                           filepath:appconfig.imagePublicFolder+"/"+fname,
                           width:img.width,

@@ -491,12 +491,38 @@ onDeleteMasterImage(){
 
 
   }
+
   renderTitle(){
+
     if(this.state.episode){
-      return (<div style={styles.title}>Episode Level Image: {this.state.episode.title} ({this.state.episode.programmeNumber})</div>);
+      var programmelink=null;
+      if(this.state.episode.series){
+          programmelink=textValues.imageManager.link+"?programmeid="+this.state.episode.series.id;
+      }
+
+      return (
+         <div style={styles.header}>
+              <div style={styles.title}>Episode Level Image: {this.state.episode.title} ({this.state.episode.programmeNumber})
+              </div>
+              <div style={styles.rightContainer}>
+                  <a href={programmelink}>Edit Programme Level Images</a>
+              </div>
+        </div>
+        );
     }
     else if(this.state.programme){
-      return (<div style={styles.title}>Programme Level Image: {this.state.programme.name} ({this.state.programme.contractNumber})</div>);
+      var collectionlink=null;
+      if(this.state.programme.seriesGroup){
+        collectionlink=textValues.imageManager.link+"?collectionid="+this.state.programme.seriesGroup.id;
+      }
+      return (
+        <div style={styles.header}>
+              <div style={styles.title}>Programme Level Image: {this.state.programme.name} ({this.state.programme.contractNumber})</div>
+              <div style={styles.rightContainer}>
+                  <a href={collectionlink}>Edit Collection Level Images</a>
+              </div>
+        </div>
+      );
     }
     else if(this.state.programmeCollection){
       return (<div style={styles.title}>Collection Level Image: {this.state.programmeCollection.title}</div>);

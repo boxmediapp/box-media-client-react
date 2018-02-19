@@ -127,6 +127,12 @@ export const styles={
     width:"100%",
     justifyContent:"space-between",
   },
+  header:{
+    display:"flex",
+    flexDirection:"row",
+    width:"100%",
+    justifyContent:"space-between",
+  },
   imagetype:{
     fontFamily: "'Roboto', sans-serif",
     textTransform: "uppercase",

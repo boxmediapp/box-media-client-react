@@ -2,21 +2,7 @@
 import {api} from "../api";
 export default class GenericUtil{
 
-  doesUserHasFullAccess(userinfo){
-    if(!userinfo){
-         return false;
-    }
-    if(!userinfo.roles){
-      return false;
-    }
-    var hasWriteAccess=false;
-    userinfo.roles.forEach(role=>{
-        if(role.operationAccess==="admin" || role.operationAccess==="full-access"){
-              hasWriteAccess=true;
-        }
-    });
-    return hasWriteAccess;
-}
+  
 
   getQueryParam(query,variable) {
     if(!query){

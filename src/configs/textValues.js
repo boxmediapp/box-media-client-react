@@ -1,6 +1,14 @@
 import config from "./config";
+import {appdata} from "../store";
 const textValues={
-    title:"Box Media Application",
+    title:function(){
+        if(appdata.isBeboxClient()){
+          return "BeBox Media Application";
+        }
+        else{
+          return "Box Media Application";
+        }
+    },
     redirect:{
       message:"Loading..."
     },
@@ -377,7 +385,5 @@ const textValues={
 
   };
 
-if(config.appCategory==='bebox'){
-    textValues.title="BeBox Media Application";
-}
+
 export default textValues;

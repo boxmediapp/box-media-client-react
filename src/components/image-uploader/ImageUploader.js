@@ -7,7 +7,7 @@ import {imageUtil,genericUtil} from "../../utils";
 import {appdata} from "../../store";
 
 import {api} from "../../api";
-import {textValues} from "../../configs";
+import {textValues, config} from "../../configs";
 import {styles} from "./styles";
 
 
@@ -135,7 +135,7 @@ export  default class ImageUploader extends Component {
         if(this.state.imagePreviewUrl){
               return this.renderPreviewImage();
         }
-        else if(!genericUtil.doesUserHasFullAccess(userinfo)){
+        else if(!config.application.userHasWriteAccess){
               return this.renderMissingUploadPermission();
         }
         else if(this.props.image){

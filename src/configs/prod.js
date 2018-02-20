@@ -11,7 +11,6 @@ var config={
     },
     importScheduleType:'ONDEMAND',
     normalImageWidth:533,
-    normalImageHeight:300,
-    appCategory:"box"
+    normalImageHeight:300,    
 }
 export default config;

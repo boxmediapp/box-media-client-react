@@ -74,7 +74,7 @@ class ListMenuItems extends Component{
      if(styles.mql.matches || this.props.menuPressed){
 
        return(
-           <div style={styles.menuItems()}>             
+           <div style={styles.menuItems()}>
              <LogoutMenuItem/>
 
          </div>
@@ -100,12 +100,7 @@ class MenuItem extends Component{
   offHover(){
     this.setState({hover: false})
   }
-  render(){
-    if(config.appCategory==='bebox'){
-          if(this.props.displayItem==='importSchedules'){
-            return null;
-          }
-    }
+  render(){    
     var link=textValues[this.props.displayItem].link;
     if(!link){
       link="/";

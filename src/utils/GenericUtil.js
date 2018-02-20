@@ -2,51 +2,7 @@
 import {api} from "../api";
 export default class GenericUtil{
 
-  doesUserHasFullAccess(userinfo){
-    if(!userinfo){
-         return false;
-    }
-    if(!userinfo.roles){
-      return false;
-    }
-    var hasWriteAccess=false;
-    userinfo.roles.forEach(role=>{
-        if(role.operationAccess==="admin" || role.operationAccess==="full-access"){
-              hasWriteAccess=true;
-        }
-    });
-    return hasWriteAccess;
-}
-canUserAccessApp(userinfo){
-  if(!userinfo){
-       return false;
-  }
-  if(!userinfo.roles){
-    return false;
-  }
-  var isApp=false;
-  userinfo.roles.forEach(role=>{
-      if(role.applicationId==="MEDIA_APP" || role.applicationId==="BEBOX"){
-            isApp=true;
-      }
-  });
-  return isApp;
-}
-isUserImageClient(userinfo){
-  if(!userinfo){
-       return false;
-  }
-  if(!userinfo.roles){
-    return false;
-  }
-  var isApp=false;
-  userinfo.roles.forEach(role=>{
-      if(role.applicationId==="IMAGE_CLIENT_APP"){
-            isApp=true;
-      }
-  });
-  return isApp;
-}
+  
 
   getQueryParam(query,variable) {
     if(!query){

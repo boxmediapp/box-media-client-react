@@ -11,7 +11,7 @@ export  default class AppHeader extends Component {
                   <div style={styles.titleContainer()}>
                           <img src={localImages.logo} style={styles.logo}/>
 
-                           <div style={styles.appTitle}>{textValues.title}</div>
+                           <div style={styles.appTitle}>{textValues.title()}</div>
                   </div>
 
 

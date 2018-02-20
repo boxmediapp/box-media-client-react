@@ -1,6 +1,7 @@
 import {config} from "../../../configs";
+import {appdata} from "../../../store";
 export const styles={
-  header: function(){
+  header: function(applicationId){
 
     var ret= {
         position:"fixed",
@@ -14,7 +15,7 @@ export const styles={
     if(!styles.mql.matches){
       ret.width="100vw";
     }
-    if(config.appCategory==="bebox"){
+    if(appdata.isBeboxClient()){
       ret.backgroundColor='#a5248A';
     }
     return ret;

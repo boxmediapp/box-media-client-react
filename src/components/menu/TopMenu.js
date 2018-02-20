@@ -2,6 +2,7 @@ import React, {Component} from 'react'
 import {textValues} from  "../../configs";
 import {genericUtil} from "../../utils";
 import {config} from "../../configs";
+
 import {
   Link
 
@@ -72,7 +73,20 @@ class ListMenuItems extends Component{
 
   render(){
      if(styles.mql.matches || this.props.menuPressed){
-
+       if(appdata.isBeboxClient()){
+         return(
+             <div style={styles.menuItems()}>
+               <MenuItem {...this.props} displayItem="episodeList" selected={this.props.selected}/>
+               <MenuItem {...this.props} displayItem="programmeList" selected={this.props.selected}/>
+               <MenuItem {...this.props} displayItem="collectionList" selected={this.props.selected}/>
+               <MenuItem {...this.props} displayItem="s3" selected={this.props.selected}/>
+               <MenuItem {...this.props} displayItem="playLists" selected={this.props.selected}/>
+               <MenuItem   {...this.props} displayItem="help" selected={this.props.selected}/>
+               <MenuItem  {...this.props} displayItem="account" selected={this.props.selected} render={true}/>
+               <LogoutMenuItem/>
+           </div>
+             );
+       }
        return(
            <div style={styles.menuItems()}>
              <MenuItem {...this.props} displayItem="episodeList" selected={this.props.selected}/>
@@ -111,11 +125,7 @@ class MenuItem extends Component{
     this.setState({hover: false})
   }
   render(){
-    if(config.appCategory==='bebox'){
-          if(this.props.displayItem==='importSchedules'){
-            return null;
-          }
-    }
+
     var link=textValues[this.props.displayItem].link;
     if(!link){
       link="/";

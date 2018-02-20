@@ -1,4 +1,3 @@
-import {config} from "../../../configs";
 export const styles={
   header: function(){
 
@@ -14,9 +13,7 @@ export const styles={
     if(!styles.mql.matches){
       ret.width="100vw";
     }
-    if(config.appCategory==="bebox"){
-      ret.backgroundColor='#a5248A';
-    }
+
     return ret;
   },
   titleContainer:function(){

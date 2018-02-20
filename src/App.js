@@ -9,7 +9,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import "./styles/App.css";
 
 
-import {textValues,images} from  "./configs";
+import {textValues,images,config} from  "./configs";
 
 import {appdata,store} from "./store";
 import {api} from "./api";
@@ -59,7 +59,8 @@ export default class App extends Component{
             return;
        }
        this.userinfo=userinfo;
-       if(userinfo.application==="boxmedia" ||userinfo.application==="boximage"){
+
+       if(appdata.userCanAccessApp()){
                api.loadConfig().then(appconfig=>{
                         var loading=false;
                         this.setState(Object.assign({}, this.state, {userinfo,loading}));
@@ -70,6 +71,7 @@ export default class App extends Component{
                    appdata.setUserInfo(null);
                    this.setState(Object.assign({}, this.state, {userinfo:null,loading:false}));
                });
+
        }
        else{
           var loading=false;
@@ -90,10 +92,10 @@ export default class App extends Component{
                   return <SignUpView/>
               }
               else if(this.state.userinfo){
-                    if(genericUtil.canUserAccessApp(this.state.userinfo)){
+                    if(appdata.userCanAccessApp()){
                         return (<RenderMediaApp userinfo={this.state.userinfo}/>);
                     }
-                    else if(genericUtil.isUserImageClient(this.state.userinfo)){
+                    else if(appdata.isImageClient()){
                       return (<NoServicesView userinfo={this.state.userinfo}/>);
                     }
 

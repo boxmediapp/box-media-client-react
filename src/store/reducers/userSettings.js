@@ -2,15 +2,16 @@ const ActionNames ={
   SET_USER_INFO: "SET_USER_INFO"
 }
 
+
 const initialState={
-     userinfo:null
-}
+            userinfo:null
+          };
 
 export const userSettings={
       reducer:function (state=initialState, action){
               switch(action.type){
               case ActionNames.SET_USER_INFO:
-                            return Object.assign({},state,{userinfo:action.userinfo});
+                            return {userinfo:action.userinfo};
             }
             return state;
         },

@@ -1,7 +1,8 @@
 import React, {Component} from 'react'
 
-import {AppLogin,LoginAppHeader,LoadingIcon} from "../components";
+import {LoadingIcon} from "../components";
 import {textValues} from "../configs";
+import AppHeader from "./AppHeader";
 
 
 import {genericUtil} from "../utils";
@@ -10,9 +11,8 @@ export default class LoadingScreen extends Component {
     render() {
         return (
         <div>
-          <LoginAppHeader/>
-
-                <div style={LoginAppHeader.styles.content}>
+          <AppHeader/>
+                <div style={AppHeader.styles.content}>
                             <LoadingIcon loading="true"/>
                 </div>
           </div>

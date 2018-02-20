@@ -9,12 +9,12 @@ import {
 } from 'react-router-dom'
 
 
-import {LoginAppHeader,ModalDialog} from "../components";
+import {ModalDialog} from "../components";
 import {appdata,store} from "../store";
 import {styles} from "./styles";
 import {textValues} from "../configs";
 import {LoadingScreen} from "../loading-screen";
-
+import AppHeader from "./AppHeader";
 
 export  default class SignUpView extends Component {
   constructor(props){
@@ -172,9 +172,9 @@ export  default class SignUpView extends Component {
 renderForm(){
   return (
     <div>
-        <LoginAppHeader selected="home"/>
+        <AppHeader selected="home"/>
 
-        <div style={LoginAppHeader.styles.content}>
+        <div style={AppHeader.styles.content}>
                    <div style={styles.contentContainer}>
                       <div style={styles.formContainer}>
                           <div style={styles.title}>Create Your Account</div>
@@ -254,8 +254,8 @@ renderAccountCreated(){
 
 
     <div>
-        <LoginAppHeader selected="home"/>
-          <div style={LoginAppHeader.styles.content}>
+        <AppHeader selected="home"/>
+          <div style={AppHeader.styles.content}>
                      <div style={styles.contentContainer}>
                           <div style={styles.contentContainer}>
                               <div style={styles.formContainer}>

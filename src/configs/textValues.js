@@ -381,6 +381,11 @@ const textValues={
           link:"/box-media/image-manager",
           linkText:"Upload Image"
     },
+    redirectToOldVersion:{
+        link:"/box-media/redirect-old-version",
+        redirect:"/media-app/index.html"
+    },
+
     uploadHDImageText:["Drop an image here", "Prefers 1920 x 1080"],
 
   };

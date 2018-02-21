@@ -57,7 +57,6 @@ export default class VideoImageUploader extends Component{
   }
   onUploadMasterImageComplete(data, props){
         this.uploadPublicImage(this.props.imageData.publicImages);
-        this.props.onUploadEpisodeImage(this.props.imageData);
   }
   uploadPublicImage(publicImages){
     if(publicImages.length==0){
@@ -119,7 +118,7 @@ export default class VideoImageUploader extends Component{
   }
 
 onUploadComplete(){
-
+    this.props.onUploadComplete(this.props.imageData);    
     var modalMessage={
            title:"Image Copmplete",
            content:"Image is uploaded to the s3 bucket successfully",

@@ -244,37 +244,48 @@ loadCollectionDetails(collectionid){
 
   }
   onUploadComplete(){
+          var modalMessage={
+                 title:"Image Copmplete",
+                 content:"Image is uploaded to the s3 bucket successfully",
+                 onConfirm:()=>{
+                   if(this.state.episode){
+                      this.loadEpisodeDetails(this.state.episode.id);
+                   }
+                   else if(this.state.programme){
+                       this.loadProgrammeDetails(this.state.programme.id);
+                   }
+                   else if(this.state.programmeCollection){
+                       this.loadCollectionDetails(this.state.programmeCollection.id);
+                   }
 
-      var modalMessage={
-             title:"Image Copmplete",
-             content:"Image is uploaded to the s3 bucket successfully",
-             onConfirm:()=>{
-               if(this.state.episode){
-                  this.loadEpisodeDetails(this.state.episode.id);
-               }
-               else if(this.state.programme){
-                   this.loadProgrammeDetails(this.state.programme.id);
-               }
-               else if(this.state.programmeCollection){
-                   this.loadCollectionDetails(this.state.programmeCollection.id);
-               }
+                 },
+                 confirmButton:"OK"
+          }
+          var progressValue=0;
+          var progressTotal=0;
 
-             },
-             confirmButton:"OK"
-      }
-      var progressValue=0;
-      var progressTotal=0;
-      this.setState(Object.assign({}, this.state,{modalMessage,progressValue,progressTotal}));
+
+
+    if(this.state.episode){
+            var imagefilename=this.state.episode.uploadImageData.filename;
+            api.patchEpisode(this.state.episode.id,{imageURL:imagefilename}).then(response=>{
+                  console.log("episode imageURL is updated");
+                  this.setState(Object.assign({}, this.state,{modalMessage,progressValue,progressTotal}));
+            }).catch(error=>{
+              var modalMessage={
+                     title:"Error",
+                     content:"Failed to patch the episode with imageURL",
+                     onConfirm:this.onClearMessage.bind(this),
+                     confirmButton:"OK"
+              }
+              this.setState(Object.assign({}, this.state,{modalMessage}));
+            });
     }
-
-  onUploadMasterImageComplete(){
-
-      if(this.state.episode){
-              this.uploadPublicImage(this.state.episode.uploadImageData);
-
-              var imagefilename=this.state.episode.uploadImageData.filename;
-              api.patchEpisode(this.state.episode.id,{imageURL:imagefilename}).then(response=>{
-                    console.log("episode imageURL is updated");
+    else   if(this.state.programme){
+              var imagefilename=this.state.programme.uploadImageData.filename;
+              api.patchProgramme(this.state.programme.id,{imageURL:imagefilename}).then(response=>{
+                    console.log("programme imageURL is updated");
+                    this.setState(Object.assign({}, this.state,{modalMessage,progressValue,progressTotal}));
               }).catch(error=>{
                 var modalMessage={
                        title:"Error",
@@ -285,16 +296,16 @@ loadCollectionDetails(collectionid){
                 this.setState(Object.assign({}, this.state,{modalMessage}));
               });
       }
-      else   if(this.state.programme){
-                this.uploadPublicImage(this.state.programme.uploadImageData);
 
-                var imagefilename=this.state.programme.uploadImageData.filename;
-                api.patchProgramme(this.state.programme.id,{imageURL:imagefilename}).then(response=>{
-                      console.log("programme imageURL is updated");
+      else   if(this.state.programmeCollection){
+                var imagefilename=this.state.programmeCollection.uploadImageData.filename;
+                api.patchProgrammeCollection(this.state.programmeCollection.id,{imageURL:imagefilename}).then(response=>{
+                      console.log("programmeCollection imageURL is updated");
+                      this.setState(Object.assign({}, this.state,{modalMessage,progressValue,progressTotal}));
                 }).catch(error=>{
                   var modalMessage={
                          title:"Error",
-                         content:"Failed to patch the episode with imageURL",
+                         content:"Failed to patch the programmeCollection with imageURL",
                          onConfirm:this.onClearMessage.bind(this),
                          confirmButton:"OK"
                   }
@@ -302,25 +313,19 @@ loadCollectionDetails(collectionid){
                 });
         }
 
-        else   if(this.state.programmeCollection){
+
+    }
+
+  onUploadMasterImageComplete(){
+      if(this.state.episode){
+              this.uploadPublicImage(this.state.episode.uploadImageData);
+      }
+      else   if(this.state.programme){
+                this.uploadPublicImage(this.state.programme.uploadImageData);
+      }
+      else   if(this.state.programmeCollection){
                   this.uploadPublicImage(this.state.programmeCollection.uploadImageData);
-
-                  var imagefilename=this.state.programmeCollection.uploadImageData.filename;
-                  api.patchProgrammeCollection(this.state.programmeCollection.id,{imageURL:imagefilename}).then(response=>{
-                        console.log("programmeCollection imageURL is updated");
-                  }).catch(error=>{
-                    var modalMessage={
-                           title:"Error",
-                           content:"Failed to patch the programmeCollection with imageURL",
-                           onConfirm:this.onClearMessage.bind(this),
-                           confirmButton:"OK"
-                    }
-                    this.setState(Object.assign({}, this.state,{modalMessage}));
-                  });
-          }
-
-
-
+      }
   }
   uploadPublicImage(uploadImageData){
 

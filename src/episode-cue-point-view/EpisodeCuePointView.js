@@ -160,7 +160,7 @@ onDeleteCuePoint(cuepoint){
       return null;
     }
   }
-  onUploadEpisodeImage(imageData){
+  onUploadComplete(imageData){
         var imagefilename=imageData.filename;
         api.patchEpisode(this.state.episode.id,{imageURL:imagefilename}).then(response=>{
               console.log("episode imageURL is updated");
@@ -181,7 +181,7 @@ onDeleteCuePoint(cuepoint){
         return (<VideoImageUploader imageurl={this.state.episode.editAction.imageToUpload}
                 videoWidth={this.state.episode.editAction.videoWidth}  videoHeight={this.state.episode.editAction.videoHeight}
                  onCancel={this.onCancelEdit.bind(this)} imageData={imageData}
-                 onUploadEpisodeImage={this.onUploadEpisodeImage.bind(this)}
+                 onUploadComplete={this.onUploadComplete.bind(this)}
                  episode={this.state.episode}/>
                );
 

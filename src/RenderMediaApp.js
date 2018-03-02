@@ -28,6 +28,8 @@ import {AccountView} from "./account";
 import {EpisodeCuePointView} from "./episode-cue-point-view";
 import {ImageManagerView} from "./image-manager";
 import {RedirectToOldVersionView} from "./redirect-to-old-version";
+import {MenuServiceView} from "./cms";
+
 
 
 
@@ -67,6 +69,9 @@ export default class RenderMediaApp extends Component{
 
                                   <Route path={textValues.imageManager.link} component={ImageManagerView}/>
                                   <Route path={textValues.redirectToOldVersion.link} component={RedirectToOldVersionView}/>
+
+
+                                  <Route path={textValues.cms.menuService.link} component={MenuServiceView}/>
                               </div>
                             </Router>
                       );

@@ -90,15 +90,14 @@ class ListMenuItems extends Component{
        }
        return(
            <div style={styles.menuItems()}>
+             <MenuItem {...this.props} displayItem="home" selected={this.props.selected}/>
              <MenuItem {...this.props} displayItem="episodeList" selected={this.props.selected}/>
              <MenuItem {...this.props} displayItem="programmeList" selected={this.props.selected}/>
              <MenuItem {...this.props} displayItem="collectionList" selected={this.props.selected}/>
              <MenuItem {...this.props} displayItem="s3" selected={this.props.selected}/>
              <MenuItem {...this.props} displayItem="schedules" selected={this.props.selected}/>
              <MenuItem {...this.props} displayItem="playLists" selected={this.props.selected}/>
-             <MenuItem {...this.props} displayItem="importSchedules" selected={this.props.selected}/>
              <MenuItem   {...this.props} displayItem="admin" selected={this.props.selected}/>
-             <MenuItem   {...this.props} displayItem="help" selected={this.props.selected}/>
              <MenuItem  {...this.props} displayItem="account" selected={this.props.selected} render={true}/>
              <LogoutMenuItem/>
 

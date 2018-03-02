@@ -8,6 +8,11 @@ export const styles={
     width:iconWidth,
     height:iConHeight
   },
+  iconImage:{
+    width:iconWidth,
+    height:iConHeight,
+  },
+
   bigIcon:{
       width:iconWidth,
       height:iConHeight,
@@ -28,8 +33,33 @@ export const styles={
       fontSize:20
   },
   content:{
+  },
+  itemIcon:{
+      borderRadius:10,
 
-
-
+      display:"flex",
+      flexDirection:"row",
+      justifyContent:"center",
+      alignItems:"center",
+      backgroundColor:"#CCCCCC",
+      marginLeft:5,
+      marginRight:5,
+      paddingLeft:5,
+      paddingRight:5
+  },
+  itemIconList:{
+    display:"flex",
+    flexDirection:"row"
+  },
+  itemsContainer:{
+    display:"flex",
+    flexDirection:"row",
+    flexWrap:"wrap",
+    border:"1px solid #222222",
+    minWidth:10,
+    padding:3
+  },
+  label:{
+    margin:10
   }
 };

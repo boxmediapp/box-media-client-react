@@ -31,7 +31,7 @@ export const styles={
     }
     return ret;
   },
-  mql:window.matchMedia(`(min-width: 700px)`),
+  mql:window.matchMedia(`(min-width: 800px)`),
   topnav: {
     overflow: "hidden",
     marginRight:30,
@@ -48,8 +48,6 @@ export const styles={
   appTitleContainer:{
     marginLeft:10,
     paddingTop:5
-
-
   },
   appTitle:{
     fontFamily: "GiorgioSans-Regular",

@@ -2,7 +2,7 @@
 import {api} from "../api";
 export default class GenericUtil{
 
-  
+
 
   getQueryParam(query,variable) {
     if(!query){
@@ -314,6 +314,41 @@ getWeek(datevalue){
 
   }
 
+  array1IncludedInArray2(array1,array2,matchFunction){
+    for(var i=0;i<array1.length;i++){
+          var a1=array1[i];
+          var found=false;
+          for(var j=0;j<array2.length;j++){
+            var a2=array2[j];
+            if(matchFunction(a1,a2)){
+              found=true;
+              break;
+            }
+          }
+          if(!found){
+            return false;
+          }
+    }
+    return true;
+  }
+  array1IsIdentidicalToArray2(array1, array2, matchFunction){
+        if(array1===null && array2===null){
+              return true;
+        }
+        if(array1===null && array2!==null){
+              return false;
+        }
+        if(array2===null && array1!==null){
+              return false;
+        }
+        if(!this.array1IncludedInArray2(array1,array2,matchFunction)){
+          return false;
+        }
+        if(!this.array1IncludedInArray2(array2,array1,matchFunction)){
+          return false;
+        }
+        return true;
+ }
 }
 
 

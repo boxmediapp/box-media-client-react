@@ -1,5 +1,7 @@
 import config from "./config";
+import localImages from "./localImages";
 import {appdata} from "../store";
+
 const textValues={
     title:function(){
         if(appdata.isBeboxClient()){
@@ -15,44 +17,72 @@ const textValues={
     episodeList:{
               link:"/box-media/episode-list",
               redirect:"/media-app/index.html?resource=episode",
-              linkText:"Episodes"
-    },
-    editEpisode:{
-      applink:function(episodeid){
-                return "/media-app/index.html?resource=editEpisode&episodeid="+episodeid;
-            }
+              linkText:"Episodes",
+              actionText:"Episodes",
+              icon:localImages.episode
     },
     programmeList:{
           link:"/box-media/programme-list",
           redirect:"/media-app/index.html?resource=programmes",
-          linkText:"Programme"
+          linkText:"Programme",
+          actionText:"Programme",
+          icon:localImages.programme
     },
     collectionList:{
           link:"/box-media/collection-list",
           redirect:"/media-app/index.html?resource=collections",
-          linkText:"Collections"
+          linkText:"Collections",
+          actionText:"Collections",
+          icon:localImages.collection
     },
     s3:{
           link:"/box-media/s3-file-list",
-          linkText:"S3"
+          linkText:"S3",
+          actionText:"Videos in S3",
+          icon:localImages.s3
     },
     schedules:{
           link:"/box-media/schedule-list",
           redirect:"/media-app/index.html?resource=schedules",
           linkText:"Schedules",
+          actionText:"Schedule View",
+          icon:localImages.schedules
     },
     playLists:{
           link:"/box-media/playlists",
           redirect:"/media-app/index.html?resource=playlists",
-          linkText:"Playlists"
+          linkText:"Playlists",
+          actionText:"Playlists",
+          icon:localImages.playlist
     },
+    manageUser:{
+        linkText:"Users Manager",
+        actionText:"Manage Users",
+        link:"/box-media/userManager",
+        icon:localImages.userManager
+    },
+
     importSchedules:{
           link:"/box-media/importSchedules",
           linkText:"Imports",
+          actionText:"Import Schedules",
           scheduledtasks:{
             title:"Scheduled Tasks"
-          }
+          },
+          icon:localImages.importSchedules
     },
+
+    editEpisode:{
+      applink:function(episodeid){
+                return "/media-app/index.html?resource=editEpisode&episodeid="+episodeid;
+            }
+    },
+
+
+
+
+
+
     admin:{
           link:"/box-media/admin",
           linkText:"Admin"
@@ -67,15 +97,12 @@ const textValues={
       link:"/box-media-app/logout",
       linkText:"Sign out"
     },
-    manageUser:{
-        linkText:"Users Manager",
-        actionText:"Manage Users",
-        link:"/box-media/userManager",
-    },
+
     appConfig:{
         linkText:"App Config",
-        actionText:"Configuration",
+        actionText:"Application Configuration",
         link:"/box-media/appConfig",
+        icon:localImages.appSettings,
         recordLimit:{
             label:"Number of records per batch",
             help:"This is for only for system adminstration. Number of records per batch retrieve from the database, the rest will be fetch on the end of scroll."
@@ -200,11 +227,13 @@ const textValues={
       numberOfHoursActive:{
           label:"Total video hours in active"
       },
+      icon:localImages.reports
     },
     manageTags:{
       linkText:"Available Tags",
       actionText:"Manage Tags",
       link:"/box-media/tags",
+      icon:localImages.manageTags,
       addNewTag:{
             label:"New tag to ad",
             help:"Type the tag here and click add button"
@@ -214,6 +243,7 @@ const textValues={
       linkText:"Available Devices",
       actionText:"Manage Devices",
       link:"/box-media/devices",
+      icon:localImages.manageDevices,
       addNewDevice:{
             label:"New device to ad",
             help:"Type the device name here and click add button"
@@ -223,6 +253,7 @@ const textValues={
               linkText:"Ad Settings",
               actionText:"Advertisements",
               link:"/box-media/adverisement",
+              icon:localImages.advertisement,
               edit:{
                   title:"Edit Advert Rule Item",
                   buttonText:"Update"
@@ -317,6 +348,7 @@ const textValues={
       link: "/box-media/account",
       linkText:"Account",
       actionText:"Account",
+      icon:localImages.account,
       originalPasswordVerify:{
            title:"User Verification",
            verification:{
@@ -387,6 +419,26 @@ const textValues={
     },
 
     uploadHDImageText:["Drop an image here", "Prefers 1920 x 1080"],
+    cms:{
+          menuService:{
+              link:"/box-media/cms/menus",
+              linkText:"CMS Menu",
+              actionText:"CMS Menu",
+              icon:localImages.cmsMenu,
+              error:{
+                title:"Error in CMS Menu Service",
+                missingTitle:"Title is required",
+                missingPlaylists:"You need add at least one playlists"
+              },
+              addPlayList:{
+                  title:"Adding PlayList",
+                  content:"Select the playlist to add",
+                  confirmButton:{label:"ADD"},
+                  cancelButton:{label:"CANCEL"}
+              }
+          }
+
+    }
 
   };
 

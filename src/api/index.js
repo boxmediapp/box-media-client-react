@@ -303,6 +303,21 @@ class ServiceAPI {
 	       deleteEpisodeLevelImage(episodeid,imagefile){
            return this.doDeleteRequest("box-images/master/episode/"+episodeid+"/"+imagefile);
 	       }
+         updateCMSMenu(cmsmenu){
+            if(cmsmenu.id){
+                return this.doPutRequest("cms/manage/menu/"+cmsmenu.id, JSON.stringify(cmsmenu));
+            }
+            else{
+                return this.doPostRequest("cms/manage/menu", JSON.stringify(cmsmenu));
+            }
+
+         }
+         loadBCPlaylists(){
+            return this.doGetRequest("bc/playlists");
+         }
+         loadAllCMSMenu(){
+            return this.doGetRequest("cms/manage/menu");
+         }
 
 }
 

@@ -1,7 +1,7 @@
 import {localImages,textValues} from "../../../configs";
 
 var iconWidth=100;
-var iConHeight=100;
+var iConHeight=56;
 
 export const styles={
   bigIConContainer:{

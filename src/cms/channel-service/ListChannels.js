@@ -16,12 +16,15 @@ export default class ListChannels extends Component{
    renderChannel(channel,index){
      var link=textValues.cms.channelService.link+"?channelId="+channel.channelId;
      var label=channel.channelName;
-
+     var imageurl=textValues.cms.channelService.icon2;
+     if(channel.carousel && channel.carousel.length>10){
+       imageurl=channel.carousel;
+     }
      return(
        <BigButton key={index} label={label}
                   content={label}
                   link={link}
-                  icon={textValues.cms.channelService.icon2}/>
+                  icon={imageurl}/>
      )
 
    }

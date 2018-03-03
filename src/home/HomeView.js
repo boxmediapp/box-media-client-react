@@ -92,16 +92,20 @@ export  default class HomeView extends Component {
                                   link={textValues.appConfig.link}
                                   icon={textValues.appConfig.icon}/>
 
-                                <BigButton label={textValues.cms.menuService.linkText}
-                                             content={textValues.cms.menuService.actionText}
-                                             link={textValues.cms.menuService.link}
-                                             icon={textValues.cms.menuService.icon}/>
+                      <BigButton label={textValues.cms.menuService.linkText}
+                                  content={textValues.cms.menuService.actionText}
+                                  link={textValues.cms.menuService.link}
+                                  icon={textValues.cms.menuService.icon}/>
 
+                      <BigButton label={textValues.cms.channelService.linkText}
+                                  content={textValues.cms.channelService.actionText}
+                                  link={textValues.cms.channelService.link}
+                                  icon={textValues.cms.channelService.icon}/>
 
-                                           <BigButton label={textValues.account.linkText}
-                                                          content={textValues.account.actionText}
-                                                          link={textValues.account.link}
-                                                          icon={textValues.account.icon}/>         
+                      <BigButton label={textValues.account.linkText}
+                                content={textValues.account.actionText}
+                                link={textValues.account.link}
+                                icon={textValues.account.icon}/>
 
 
 

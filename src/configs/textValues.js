@@ -436,6 +436,16 @@ const textValues={
                   confirmButton:{label:"ADD"},
                   cancelButton:{label:"CANCEL"}
               }
+          },
+          channelService:{
+              link:"/box-media/cms/channels",
+              linkText:"Channels",
+              actionText:"Channels",
+              icon:localImages.channel,
+              error:{
+                title:"Error in Channel Service",
+                missingTitle:"Title is required"
+              }
           }
 
     }

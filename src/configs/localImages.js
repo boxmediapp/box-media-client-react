@@ -21,7 +21,7 @@ const localImages={
   appSettings:require("../images/app-settings.png"),
   cmsMenu:require("../images/cms-menu.png"),
   account:require("../images/account.png"),
-
+  channel:require("../images/channel.png")
 
 }
 export default localImages;

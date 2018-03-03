@@ -15,7 +15,7 @@ var ACTIONS={
 export default class MenuServiceView extends Component{
   constructor(props){
         super(props);
-        this.state={playlists:[],modalMessage:null,loading:true, cmsmenu:[],action:ACTIONS.LIST_MENU, menuItemToEdit:null};
+        this.state={modalMessage:null,loading:true, cmsmenu:[],action:ACTIONS.LIST_MENU, menuItemToEdit:null};
   }
   setErrorMessage(message){
     var modalMessage={
@@ -26,46 +26,29 @@ export default class MenuServiceView extends Component{
     }
     this.setState(Object.assign({}, this.state,{modalMessage,loading:false}));
   }
+  onError(error){
+    console.error(error);
+    this.setErrorMessage(""+error);
+  }
 
   onClearMessage(){
     this.setState(Object.assign({}, this.state,{modalMessage:null}));
   }
 
 componentWillMount(){
+      this.loadCMSMenu();
+}
+loadCMSMenu(){
       var loading=false;
-      this.loadPlayLists().then(playlists=>{
-                api.loadAllCMSMenu().then(cmsmenu=>{
-                      this.setState(Object.assign({}, this.state,{playlists,cmsmenu,loading}));
-                }).catch(error=>{
-                    this.setErrorMessage(""+error);
-                });
-
+      api.loadAllCMSMenu().then(cmsmenu=>{
+            this.setState(Object.assign({}, this.state,{cmsmenu,loading}));
       }).catch(error=>{
           this.setErrorMessage(""+error);
       });
-
 }
 onCancel(){
     this.setState(Object.assign({}, this.state,{action:ACTIONS.LIST_MENU}));
 }
-
-loadPlayLists(){
-      var pr=new Promise((resolve,reject)=>{
-            api.loadBCPlaylists().then(playlists=>{
-                if(playlists && playlists.length){
-                  playlists.forEach(pl=>{
-                    pl.label=pl.playListData.name;
-                    pl.value=pl.playListData.id;
-                  });
-                  resolve(playlists);
-                }
-            }).catch(error=>{
-                reject(error);
-            });
-      });
-      return pr;
-}
-
 
   onUpdateCMSMenu(cmsMenu){
     if(!cmsMenu.title){
@@ -75,7 +58,7 @@ loadPlayLists(){
       this.setErrorMessage(textValues.cms.menuService.error.missingPlaylists);
     }
     else{
-      this.setState(Object.assign({}, this.state,{loading:true}));
+      this.setState(Object.assign({}, this.state,{loading:true, action:ACTIONS.LIST_MENU}));
       var playlist=[];
       cmsMenu.playlist.forEach(pl=>{
           playlist.push({
@@ -89,10 +72,9 @@ loadPlayLists(){
             title:cmsMenu.title,
             playlist
           }).then(response=>{
-             this.setState(Object.assign({}, this.state,{loading:false,created:true}));
+            this.loadCMSMenu();
            }).catch(error=>{
-             this.setState(Object.assign({}, this.state,{loading:false,created:false}));
-             this.setErrorMessage("Failed to update cms menu:"+error);
+                this.onError(error);
            });
     }
 
@@ -104,11 +86,17 @@ loadPlayLists(){
     this.setState(Object.assign({}, this.state,{action:ACTIONS.CREATE_MENU}));
   }
   renderCreateCMSMenu(){
-      return (<CMSMenuEditor playlists={this.state.playlists} onUpdateCMSMenu={this.onUpdateCMSMenu.bind(this)} onCancel={this.onCancel.bind(this)}/>);
+      return (<CMSMenuEditor
+        onUpdateCMSMenu={this.onUpdateCMSMenu.bind(this)}
+        onCancel={this.onCancel.bind(this)}
+        onError={this.onError.bind(this)}/>);
   }
   renderEditCMSMenu(){
-       return (<CMSMenuEditor playlists={this.state.playlists} onUpdateCMSMenu={this.onUpdateCMSMenu.bind(this)}
-          menuItemToEdit={this.state.menuItemToEdit} onCancel={this.onCancel.bind(this)}/>);
+       return (<CMSMenuEditor
+                onUpdateCMSMenu={this.onUpdateCMSMenu.bind(this)}
+                 menuItemToEdit={this.state.menuItemToEdit}
+                 onCancel={this.onCancel.bind(this)}
+                 onError={this.onError.bind(this)}/>);
   }
   editCMSMenu(menuItemToEdit){
     this.setState(Object.assign({}, this.state,{menuItemToEdit, action:ACTIONS.EDIT_MENU}));

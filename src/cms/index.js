@@ -1,2 +1,3 @@
 import MenuServiceView from "./menu-service/MenuServiceView";
-export {MenuServiceView};
+import ChannelServiceView from "./channel-service/ChannelServiceView";
+export {MenuServiceView,ChannelServiceView};

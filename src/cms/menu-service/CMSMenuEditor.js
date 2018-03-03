@@ -1,10 +1,10 @@
 import React, {Component} from 'react'
-import {AppHeader,ModalDialog,ItemIconList,SelectionModalDialog} from "../../components";
+import {AppHeader,ModalDialog,ItemIconList,SelectionModalDialog,LoadingIcon} from "../../components";
 import {LoadingScreen} from "../../loading-screen";
 import {textValues, localImages} from "../../configs";
 import {styles} from "./styles";
 import {genericUtil} from "../../utils";
-
+import {api} from "../../api";
 var ACTIONS={
     ADD_PLAY_LIST:1
 }
@@ -13,30 +13,66 @@ var ACTIONS={
 export default class CMSMenuEditor extends Component{
   constructor(props){
         super(props);
-        this.state={title:"",selectedPlaylists:[],action:null};
+        this.state={title:"",selectedPlaylists:[],action:null,availablePlaylists:null,loading:true};
   }
   componentWillMount(){
-    this.updateEditorFromProps(this.props);
+    var loading=false;
+
+    this.loadPlayLists().then(availablePlaylists=>{
+          if(this.props.menuItemToEdit){
+              this.setStateFromMenuItem(this.props.menuItemToEdit,availablePlaylists);
+          }
+          else{
+              this.setState(Object.assign({}, this.state,{availablePlaylists,loading}));
+          }
+    }).catch(error=>{
+        this.onError(error);
+        this.setState(Object.assign({}, this.state,{availablePlaylists:[],loading}));
+    });
+  }
+  onError(error){
+      this.props.onError(error);
+  }
+  loadPlayLists(){
+         var pr=new Promise((resolve,reject)=>{
+              api.loadBCPlaylists().then(playlists=>{
+                  if(playlists && playlists.length){
+                    playlists.forEach(pl=>{
+                      pl.label=pl.playListData.name;
+                      pl.value=pl.playListData.id;
+                    });
+                    resolve(playlists);
+                  }
+              }).catch(error=>{
+                  reject(error);
+              });
+        });
+        return pr;
   }
 
   componentWillReceiveProps(nextProps){
       if(this.state.menuItemToEdit!=nextProps.menuItemToEdit){
-            this.updateEditorFromProps(nextProps);
+            if(nextProps.menuItemToEdit){
+                  this.setStateFromMenuItem(nextProps.menuItemToEdit,this.state.availablePlaylists);
+            }
+            else{
+                this.setState(Object.assign({}, this.state,{title:"",selectedPlaylists:[],action:null}));
+            }
       }
   }
-  updateEditorFromProps(props){
-          if(props.menuItemToEdit){
-                  var selectedPlaylists=[];
-                  props.menuItemToEdit.playlist.forEach(pl=>{
-                          for(var i=0;i<this.props.playlists.length;i++){
-                            if(this.props.playlists[i].id===pl.id){
-                              selectedPlaylists.push(this.props.playlists[i]);
-                              break;
-                            }
-                          }
-                      });
-                 this.setState({title:this.props.menuItemToEdit.title,selectedPlaylists,action:null});
-          }
+  setStateFromMenuItem(menuItemToEdit, availablePlaylists){
+        var selectedPlaylists=[];
+        var loading=false;
+
+        menuItemToEdit.playlist.forEach(pl=>{
+                for(var i=0;i<availablePlaylists.length;i++){
+                  if(availablePlaylists[i].id===pl.id){
+                      selectedPlaylists.push(availablePlaylists[i]);
+                      break;
+                  }
+                }
+            });
+       this.setState({title:menuItemToEdit.title,selectedPlaylists,action:null,availablePlaylists,loading});
   }
 
   setTitle(title){
@@ -44,6 +80,12 @@ export default class CMSMenuEditor extends Component{
   }
 
   updateMenu(){
+
+    var cmsMenu={
+          title:this.state.title,
+          playlist:this.state.selectedPlaylists
+    }
+
     if(this.props.menuItemToEdit){
           var modified=false;
           if(this.props.menuItemToEdit.title!==this.state.title){
@@ -59,23 +101,12 @@ export default class CMSMenuEditor extends Component{
           }
           else{
             console.log("not modified");
+            return;
           }
-          var cmsMenu={
-                id:this.props.menuItemToEdit.id,
-                title:this.state.title,
-                playlist:this.state.selectedPlaylists
-          }
-          this.props.onUpdateCMSMenu(cmsMenu);
-
-    }
-    else{
-      var cmsMenu={
-            title:this.state.title,
-            playlist:this.state.selectedPlaylists
-      }
-      this.props.onUpdateCMSMenu(cmsMenu);
+          cmsMenu.id=this.props.menuItemToEdit.id;
     }
 
+    this.props.onUpdateCMSMenu(cmsMenu);
   }
 
   displatAddPlayListDialog(){
@@ -106,11 +137,11 @@ export default class CMSMenuEditor extends Component{
     this.setState(Object.assign({}, this.state,{selectedPlaylists,action:null}));
   }
   renderAction(){
-      if(this.state.action===ACTIONS.ADD_PLAY_LIST){
-        return (<SelectionModalDialog items={this.props.playlists}
+      if(this.state.action===ACTIONS.ADD_PLAY_LIST && this.state.availablePlaylists && this.state.availablePlaylists.length>0){
+        return (<SelectionModalDialog items={this.state.availablePlaylists}
                 title={textValues.cms.menuService.addPlayList.title}
                 content={textValues.cms.menuService.addPlayList.content}
-                selectedItem={this.props.playlists[0]}
+                selectedItem={this.state.availablePlaylists[0]}
                 onConfirm={this.addPlayList.bind(this)}
                 onCancel={this.onCancelPlayList.bind(this)}
                 confirmButton={textValues.cms.menuService.addPlayList.confirmButton}
@@ -132,6 +163,7 @@ render(){
   return (
                       <div style={styles.formContainer}>
                           <div style={styles.title}>{title}</div>
+                          <LoadingIcon loading={this.state.loading}/>
                           <div style={styles.formItem}>
                               <label htmlFor="title" style={styles.label}>Title:</label>
                               <input type="text" className="form-control" id="title" placeholder="Menu Title"

@@ -1,5 +1,5 @@
 import React, {Component} from 'react'
-import {AppHeader,ModalDialog,LoadingIcon} from "../../components";
+import {AppHeader,ModalDialog,LoadingIcon,BigButton} from "../../components";
 import {textValues} from "../../configs";
 import {api} from "../../api";
 import {styles} from "./styles";
@@ -14,12 +14,14 @@ export default class ListChannels extends Component{
       this.props.editChannel(channel);
    }
    renderChannel(channel,index){
+     var link=textValues.cms.channelService.link+"?channelId="+channel.channelId;
+     var label=channel.channelName;
+
      return(
-       <div key={index} style={styles.channelRecord}>
-        <a onClick={evt=>{
-            this.editChannel(channel);
-        }} style={styles.channellink}>{channel.channelName}</a>
-       </div>
+       <BigButton key={index} label={label}
+                  content={label}
+                  link={link}
+                  icon={textValues.cms.channelService.icon2}/>
      )
 
    }
@@ -28,7 +30,7 @@ export default class ListChannels extends Component{
         return (
           <div style={styles.channelsContainer}>
                  <div style={styles.title}>Channels</div>
-                 <div style={styles.channelList}>
+                 <div style={styles.iconContainer}>
                       {this.props.channels.map(this.renderChannel.bind(this))}
                  </div>
                  <div style={styles.footer}>

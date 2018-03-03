@@ -442,9 +442,17 @@ const textValues={
               linkText:"Channels",
               actionText:"Channels",
               icon:localImages.channel,
+              icon2:localImages.achannel,
               error:{
                 title:"Error in Channel Service",
-                missingTitle:"Title is required"
+                channelId:"channelId is required",
+                channelName:"Channel name is required"
+              },
+              confirmDelete:{
+                title:"Deleting Channel",
+                content:"Are you sure you want to delete the channel:",
+                cancelButton:"Cancel",
+                confirmButton:"DELETE"
               }
           }
 

@@ -188,9 +188,7 @@ class ServiceAPI {
      removeTask(task){
        return this.doDeleteRequest("tasks/"+task.id);
      }
-     getAllBoxChannels(){
-         return this.doGetRequest("box-channels");
-       }
+
        getUsers(){
          return this.doGetRequest("users");
        }
@@ -318,6 +316,22 @@ class ServiceAPI {
          loadAllCMSMenu(){
             return this.doGetRequest("cms/manage/menu");
          }
+
+         getAllBoxChannels(){
+             return this.doGetRequest("box-channels");
+         }
+         getABoxChannel(channelId){
+             return this.doGetRequest("box-channels/"+channelId);
+        }
+
+
+         updateBoxChannel(channel){
+            return this.doPostRequest("box-channels", JSON.stringify(channel));
+         }
+
+        deleteBoxChannel(channel){
+             return this.doDeleteRequest("box-channels/"+channel.channelId);
+        }
 
 }
 

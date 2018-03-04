@@ -435,6 +435,12 @@ const textValues={
                   content:"Select the playlist to add",
                   confirmButton:{label:"ADD"},
                   cancelButton:{label:"CANCEL"}
+              },
+              confirmDelete:{
+                title:"Deleting CMS Menu",
+                content:"Are you sure you want to delete this menu:",
+                cancelButton:"Cancel",
+                confirmButton:"DELETE"
               }
           },
           channelService:{
@@ -456,7 +462,18 @@ const textValues={
               }
           }
 
-    }
+    },
+    apiAccessHelp:{
+        link:"/box-media/api-help",
+        linkText:"Box Media API",
+        actionText:"Box Media API",
+        icon:localImages.mediapi,
+        content:{
+            title:"Box Media API",
+            p1:["If you need a programmtic access to the Box Media Application, please use your pair of a Client ID and a Client Secret instead of of your username and password to access the Box Media API.",
+                "Your client ID and client Secret"]
+        }
+      }
 
   };
 

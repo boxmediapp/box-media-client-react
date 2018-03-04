@@ -1,5 +1,5 @@
 import React, {Component} from 'react'
-import {AppHeader,ModalDialog,LoadingIcon} from "../../components";
+import {AppHeader,ModalDialog,LoadingIcon,BigButton} from "../../components";
 import {textValues} from "../../configs";
 import {api} from "../../api";
 import {styles} from "./styles";
@@ -14,21 +14,23 @@ export default class ListCMSMenu extends Component{
       this.props.editCMSMenu(menuItem);
    }
    renderCMSMenu(menuItem,index){
+     var link=textValues.cms.menuService.link+"?menuId="+menuItem.id;
+     var label=menuItem.title;
+     var imageurl=textValues.cms.menuService.icon;
      return(
-       <div key={index} style={styles.cmsMenuRecord}>
-        <a onClick={evt=>{
-            this.editCMSMenu(menuItem);
-        }} style={styles.cmslink}>{menuItem.title}</a>
-       </div>
+       <BigButton key={index} label={label}
+                  content={label}
+                  link={link}
+                  icon={imageurl}/>
      )
 
    }
     render(){
       if(this.props.cmsmenu!=null && this.props.cmsmenu.length>0){
         return (
-          <div style={styles.cmsMenuContainer}>
+          <div style={styles.cmsMenuList}>
                  <div style={styles.title}>CMS Menu</div>
-                 <div style={styles.cmsMenuList}>
+                 <div style={styles.iconContainer}>
                       {this.props.cmsmenu.map(this.renderCMSMenu.bind(this))}
                  </div>
                  <div style={styles.footer}>

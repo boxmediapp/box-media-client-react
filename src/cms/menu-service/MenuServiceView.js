@@ -1,6 +1,7 @@
 import React, {Component} from 'react'
 import {AppHeader,ModalDialog,LoadingIcon} from "../../components";
 import {textValues} from "../../configs";
+import {genericUtil} from "../../utils";
 import {api} from "../../api";
 import {styles} from "./styles";
 import CMSMenuEditor from "./CMSMenuEditor";
@@ -15,7 +16,7 @@ var ACTIONS={
 export default class MenuServiceView extends Component{
   constructor(props){
         super(props);
-        this.state={modalMessage:null,loading:true, cmsmenu:[],action:ACTIONS.LIST_MENU, menuItemToEdit:null};
+        this.state={modalMessage:null,loading:true, cmsmenu:[],action:ACTIONS.LIST_MENU, menuItemToEdit:null,availablePlaylists:[]};
   }
   setErrorMessage(message){
     var modalMessage={
@@ -36,7 +37,59 @@ export default class MenuServiceView extends Component{
   }
 
 componentWillMount(){
-      this.loadCMSMenu();
+      this.processQueryParameters(this.props);
+      this.loadAvailablePlaylists();
+}
+componentWillReceiveProps(nextprops){
+    this.processQueryParameters(nextprops);
+}
+loadPlayLists(){
+       var pr=new Promise((resolve,reject)=>{
+            api.loadBCPlaylists().then(playlists=>{
+                if(playlists && playlists.length){
+                  playlists.forEach(pl=>{
+                    pl.label=pl.playListData.name;
+                    pl.value=pl.playListData.id;
+                  });
+                  resolve(playlists);
+                }
+            }).catch(error=>{
+                reject(error);
+            });
+      });
+      return pr;
+}
+loadAvailablePlaylists(){
+  this.loadPlayLists().then(availablePlaylists=>{
+      this.setState(Object.assign({}, this.state,{availablePlaylists}));
+  }).catch(error=>{
+      this.onError(error);
+  });
+}
+
+processQueryParameters(props){
+      var loading=false;
+      var menuId=null;
+      if(props && props.location && props.location.search){
+            menuId=genericUtil.getQueryParam(props.location.search, "menuId");
+      }
+      if(menuId){
+        api.loadACMSMenu(menuId).then(menuItemToEdit=>{
+            this.setState(Object.assign({}, this.state,{loading,menuItemToEdit, action:ACTIONS.EDIT_MENU}));
+        }).catch(error=>{
+            this.onError(error);
+        });
+        return;
+
+      }
+      else{
+        api.loadAllCMSMenu().then(cmsmenu=>{
+                this.setState(Object.assign({}, this.state,{loading,cmsmenu,action:ACTIONS.LIST_MENU}));
+          }).catch(error=>{
+              this.setErrorMessage(""+error);
+          });
+
+      }
 }
 loadCMSMenu(){
       var loading=false;
@@ -79,8 +132,34 @@ onCancel(){
     }
 
   }
+deleteCMSMenu(cmsMenu){
+  if(cmsMenu && cmsMenu.id){
+      this.setState(Object.assign({}, this.state,{loading:true}));
+      api.deleteCMSMenu(cmsMenu).then(response=>{
+          this.setState(Object.assign({}, this.state,{loading:false}));
+          genericUtil.redirect(textValues.cms.menuService.link);
+      }).catch(error=>{
+          this.onError(error);
+      });
+  }
+  else{
+    console.error("cannot delete empty channel");
+  }
+}
+  onDeleteCMSMenu(cmsMenu){
 
-
+    var modalMessage={
+           title:textValues.cms.menuService.confirmDelete.title,
+           content:textValues.cms.menuService.confirmDelete.content+cmsMenu.title,
+           onConfirm:()=>{
+              this.deleteCMSMenu(cmsMenu)
+                },
+           onCancel:this.onClearMessage.bind(this),
+           cancelButton:textValues.cms.menuService.confirmDelete.cancelButton,
+           confirmButton:textValues.cms.menuService.confirmDelete.confirmButton,
+    }
+    this.setState(Object.assign({}, this.state,{modalMessage,loading:false}));
+  }
 
   onDisplayCreateMenuForm(){
     this.setState(Object.assign({}, this.state,{action:ACTIONS.CREATE_MENU}));
@@ -88,14 +167,16 @@ onCancel(){
   renderCreateCMSMenu(){
       return (<CMSMenuEditor
         onUpdateCMSMenu={this.onUpdateCMSMenu.bind(this)}
-        onCancel={this.onCancel.bind(this)}
+        availablePlaylists={this.state.availablePlaylists}
+
         onError={this.onError.bind(this)}/>);
   }
   renderEditCMSMenu(){
        return (<CMSMenuEditor
-                onUpdateCMSMenu={this.onUpdateCMSMenu.bind(this)}
+                 onUpdateCMSMenu={this.onUpdateCMSMenu.bind(this)}
                  menuItemToEdit={this.state.menuItemToEdit}
-                 onCancel={this.onCancel.bind(this)}
+                 availablePlaylists={this.state.availablePlaylists}
+                 onDeleteCMSMenu={this.onDeleteCMSMenu.bind(this)}
                  onError={this.onError.bind(this)}/>);
   }
   editCMSMenu(menuItemToEdit){

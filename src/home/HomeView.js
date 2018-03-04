@@ -107,6 +107,10 @@ export  default class HomeView extends Component {
                                 link={textValues.account.link}
                                 icon={textValues.account.icon}/>
 
+                      <BigButton label={textValues.apiAccessHelp.linkText}
+                                          content={textValues.apiAccessHelp.actionText}
+                                          link={textValues.apiAccessHelp.link}
+                                          icon={textValues.apiAccessHelp.icon}/>
 
 
           </div>

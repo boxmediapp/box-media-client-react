@@ -1,10 +1,15 @@
 import React, {Component} from 'react'
-import {AppHeader,ModalDialog,ItemIconList,SelectionModalDialog,LoadingIcon} from "../../components";
+import {AppHeader,ModalDialog,ItemIconList,SelectionModalDialog} from "../../components";
 import {LoadingScreen} from "../../loading-screen";
 import {textValues, localImages} from "../../configs";
 import {styles} from "./styles";
 import {genericUtil} from "../../utils";
 import {api} from "../../api";
+import {
+  Link
+
+} from 'react-router-dom'
+
 var ACTIONS={
     ADD_PLAY_LIST:1
 }
@@ -13,101 +18,62 @@ var ACTIONS={
 export default class CMSMenuEditor extends Component{
   constructor(props){
         super(props);
-        this.state={title:"",selectedPlaylists:[],action:null,availablePlaylists:null,loading:true};
+        this.state={menuItemToEdit:this.buildCMMenu(this.props.menuItemToEdit, this.props.availablePlaylists),action:null};
   }
-  componentWillMount(){
-    var loading=false;
 
-    this.loadPlayLists().then(availablePlaylists=>{
-          if(this.props.menuItemToEdit){
-              this.setStateFromMenuItem(this.props.menuItemToEdit,availablePlaylists);
-          }
-          else{
-              this.setState(Object.assign({}, this.state,{availablePlaylists,loading}));
-          }
-    }).catch(error=>{
-        this.onError(error);
-        this.setState(Object.assign({}, this.state,{availablePlaylists:[],loading}));
-    });
+buildCMMenu(menuItemToEdit,availablePlaylists){
+        var ret={
+            title:"",
+            playlist:[]
+        }
+        if(menuItemToEdit){
+            ret=Object.assign(ret,menuItemToEdit);
+        }
+        if(ret.playlist.length>0 && availablePlaylists.length>0){
+              var playlist=[];
+              ret.playlist.forEach(pl=>{
+                        for(var i=0;i<availablePlaylists.length;i++){
+                        if(availablePlaylists[i].id===pl.id){
+                            playlist.push(availablePlaylists[i]);
+                            break;
+                        }
+                      }
+                  });
+              ret.playlist=playlist;
+        }
+        return ret;
+}
+componentWillReceiveProps(nextProps){
+    if((!nextProps.menuItemToEdit) || this.state.menuItemToEdit.id!=nextProps.menuItemToEdit.id || this.props.availablePlaylists.length!=nextProps.availablePlaylists.length){
+            var menuItemToEdit=this.buildCMMenu(this.state.menuItemToEdit,nextProps.availablePlaylists);
+            this.setState(Object.assign({}, this.state,{menuItemToEdit}));
+    }
+}
+
+
+updateMenu(){
+  if(this.props.menuItemToEdit){
+        var modified=false;
+        if(this.props.menuItemToEdit.title!==this.state.menuItemToEdit.title){
+              modified=true;
+        }
+        else if(!genericUtil.array1IsIdentidicalToArray2(this.state.menuItemToEdit.playlist,this.props.menuItemToEdit.playlist, (p1,p2)=>{
+          return p1.id===p2.id;
+        })){
+            modified=true;
+        }
+        if(!modified){
+            console.log("not Modified");
+            return;
+        }
   }
-  onError(error){
+  this.props.onUpdateCMSMenu(this.state.menuItemToEdit);
+}
+
+onError(error){
       this.props.onError(error);
   }
-  loadPlayLists(){
-         var pr=new Promise((resolve,reject)=>{
-              api.loadBCPlaylists().then(playlists=>{
-                  if(playlists && playlists.length){
-                    playlists.forEach(pl=>{
-                      pl.label=pl.playListData.name;
-                      pl.value=pl.playListData.id;
-                    });
-                    resolve(playlists);
-                  }
-              }).catch(error=>{
-                  reject(error);
-              });
-        });
-        return pr;
-  }
 
-  componentWillReceiveProps(nextProps){
-      if(this.state.menuItemToEdit!=nextProps.menuItemToEdit){
-            if(nextProps.menuItemToEdit){
-                  this.setStateFromMenuItem(nextProps.menuItemToEdit,this.state.availablePlaylists);
-            }
-            else{
-                this.setState(Object.assign({}, this.state,{title:"",selectedPlaylists:[],action:null}));
-            }
-      }
-  }
-  setStateFromMenuItem(menuItemToEdit, availablePlaylists){
-        var selectedPlaylists=[];
-        var loading=false;
-
-        menuItemToEdit.playlist.forEach(pl=>{
-                for(var i=0;i<availablePlaylists.length;i++){
-                  if(availablePlaylists[i].id===pl.id){
-                      selectedPlaylists.push(availablePlaylists[i]);
-                      break;
-                  }
-                }
-            });
-       this.setState({title:menuItemToEdit.title,selectedPlaylists,action:null,availablePlaylists,loading});
-  }
-
-  setTitle(title){
-       this.setState(Object.assign({}, this.state,{title}));
-  }
-
-  updateMenu(){
-
-    var cmsMenu={
-          title:this.state.title,
-          playlist:this.state.selectedPlaylists
-    }
-
-    if(this.props.menuItemToEdit){
-          var modified=false;
-          if(this.props.menuItemToEdit.title!==this.state.title){
-            modified=true;
-          }
-          else if(!genericUtil.array1IsIdentidicalToArray2(this.state.selectedPlaylists,this.props.menuItemToEdit.playlist, (p1,p2)=>{
-            return p1.id===p2.id;
-          })){
-              modified=true;
-          }
-          if(modified){
-              console.log("Modified");
-          }
-          else{
-            console.log("not modified");
-            return;
-          }
-          cmsMenu.id=this.props.menuItemToEdit.id;
-    }
-
-    this.props.onUpdateCMSMenu(cmsMenu);
-  }
 
   displatAddPlayListDialog(){
     this.setState(Object.assign({}, this.state,{action:ACTIONS.ADD_PLAY_LIST}));
@@ -115,33 +81,30 @@ export default class CMSMenuEditor extends Component{
   onCancelPlayList(){
     this.setState(Object.assign({}, this.state,{action:null}));
   }
-  cancelEdit(){
-    this.props.onCancel();
-  }
+
   addPlayList(playlist){
-    var selectedPlaylists=this.state.selectedPlaylists;
-    var existing=selectedPlaylists.filter(pl=>pl.id===playlist.id);
+    var menuItemToEdit=this.state.menuItemToEdit;
+    var existing=menuItemToEdit.playlist.filter(pl=>pl.id===playlist.id);
     if(existing && existing.length){
         console.log("already added");
     }
     else{
-          selectedPlaylists.push(playlist);
-          this.setState(Object.assign({}, this.state,{selectedPlaylists,action:null}));
+          menuItemToEdit.playlist.push(playlist);
+          this.setState(Object.assign({}, this.state,{menuItemToEdit,action:null}));
     }
 
   }
   onDeletePlayList(playList){
-
-    var selectedPlaylists=this.state.selectedPlaylists.filter(pl=>pl.id!=playList.id);
-
-    this.setState(Object.assign({}, this.state,{selectedPlaylists,action:null}));
+    var menuItemToEdit=this.state.menuItemToEdit;
+    menuItemToEdit.playlist=menuItemToEdit.playlist.filter(pl=>pl.id!=playList.id);
+    this.setState(Object.assign({}, this.state,{menuItemToEdit,action:null}));
   }
   renderAction(){
-      if(this.state.action===ACTIONS.ADD_PLAY_LIST && this.state.availablePlaylists && this.state.availablePlaylists.length>0){
-        return (<SelectionModalDialog items={this.state.availablePlaylists}
+      if(this.state.action===ACTIONS.ADD_PLAY_LIST && this.props.availablePlaylists && this.props.availablePlaylists.length>0){
+        return (<SelectionModalDialog items={this.props.availablePlaylists}
                 title={textValues.cms.menuService.addPlayList.title}
                 content={textValues.cms.menuService.addPlayList.content}
-                selectedItem={this.state.availablePlaylists[0]}
+                selectedItem={this.props.availablePlaylists[0]}
                 onConfirm={this.addPlayList.bind(this)}
                 onCancel={this.onCancelPlayList.bind(this)}
                 confirmButton={textValues.cms.menuService.addPlayList.confirmButton}
@@ -150,6 +113,32 @@ export default class CMSMenuEditor extends Component{
       else{
         return null;
       }
+  }
+
+  deleteCMSMenu(){
+      this.props.onDeleteCMSMenu(this.state.menuItemToEdit);
+  }
+  renderDeleteDutton(){
+    if(this.props.menuItemToEdit){
+      return(
+          <div style={styles.deleteButtonContainer}>
+                 <button type="submit" className="btn btn-primary btn-normal" onClick={(evt) => {
+                          this.deleteCMSMenu();
+                      }}>DELETE</button>
+          </div>
+      );
+    }
+    else{
+          return null;
+    }
+
+  }
+
+
+  setCMSMenuValues(values){
+    var menuItemToEdit=this.state.menuItemToEdit;
+    menuItemToEdit=Object.assign(menuItemToEdit,values);
+    this.setState(Object.assign({}, this.state,{menuItemToEdit}));
   }
 
 render(){
@@ -163,18 +152,17 @@ render(){
   return (
                       <div style={styles.formContainer}>
                           <div style={styles.title}>{title}</div>
-                          <LoadingIcon loading={this.state.loading}/>
                           <div style={styles.formItem}>
                               <label htmlFor="title" style={styles.label}>Title:</label>
                               <input type="text" className="form-control" id="title" placeholder="Menu Title"
                               onChange={(evt) => {
-                              this.setTitle(evt.target.value);
-                            }} value={this.state.title}/>
+                                this.setCMSMenuValues({title:evt.target.value});
+                            }} value={this.state.menuItemToEdit.title}/>
                           </div>
 
                           <div style={styles.formItem}>
                               <ItemIconList label="Selected Playlists:" selectIcon={localImages.deleteIcon}
-                              items={this.state.selectedPlaylists}
+                              items={this.state.menuItemToEdit.playlist}
                               onSelectedItem={this.onDeletePlayList.bind(this)}/>
 
 
@@ -192,11 +180,13 @@ render(){
                                         }}>{buttonLabel}</button>
                             </div>
                             <div style={styles.buttonContainer}>
+                              <Link to={textValues.cms.menuService.link} className="btn btn-primary btn-normal">
+                                   CANCEL
+                             </Link>
 
-                                <button type="submit" className="btn btn-primary btn-normal" onClick={(evt) => {
-                                         this.cancelEdit();
-                                     }}>Cancel</button>
                             </div>
+
+                              {this.renderDeleteDutton()}
                           </div>
 
                       </div>

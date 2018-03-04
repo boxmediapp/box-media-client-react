@@ -316,6 +316,12 @@ class ServiceAPI {
          loadAllCMSMenu(){
             return this.doGetRequest("cms/manage/menu");
          }
+         loadACMSMenu(menuId){
+            return this.doGetRequest("cms/manage/menu/"+menuId);
+         }
+         deleteCMSMenu(cmsMenu){
+           return this.doDeleteRequest("cms/manage/menu/"+cmsMenu.id);
+         }
 
          getAllBoxChannels(){
              return this.doGetRequest("box-channels");

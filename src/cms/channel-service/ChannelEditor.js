@@ -33,7 +33,7 @@ export default class ChannelEditor extends Component{
   }
 
   componentWillReceiveProps(nextProps){
-      if(this.state.channel!=nextProps.channel){
+      if((!nextProps.channel) || this.state.channel.channelId!=nextProps.channel.channelId){
           this.setState(Object.assign({}, this.state,{channel:this.buildChannel(nextProps.channel)}));
       }
   }

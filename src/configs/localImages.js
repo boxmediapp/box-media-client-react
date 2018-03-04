@@ -22,6 +22,8 @@ const localImages={
   cmsMenu:require("../images/cms-menu.png"),
   account:require("../images/account.png"),
   channel:require("../images/channel.png"),
-  achannel:require("../images/achannel.png")
+  achannel:require("../images/achannel.png"),
+  mediapi:require("../images/media-api.png"),
+
 }
 export default localImages;

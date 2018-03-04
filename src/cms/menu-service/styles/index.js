@@ -66,6 +66,11 @@ export const styles={
     label:{
       marginRight:10
     },
+    iconContainer:{
+           display:"flex",
+           flexDirection:"row",
+           flexWrap: "wrap"
+    },
     cmsMenuList:{
       display:"flex",
       flexDirection:"column",
@@ -94,7 +99,14 @@ export const styles={
     cmslink:{
       color:"blue",
       cursor: "pointer"
-    }
+    },
+    deleteButtonContainer:{
+      flex:1,
+      display:"flex",
+      flexDirection:"row",
+      justifyContent:"flex-end",
+      marginRight:30
+    },
 
 
 

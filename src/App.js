@@ -61,10 +61,10 @@ export default class App extends Component{
        this.userinfo=userinfo;
 
        if(appdata.userCanAccessApp()){
-               api.loadConfig().then(appconfig=>{
+               api.loadConfig().then(appinfo=>{
                         var loading=false;
                         this.setState(Object.assign({}, this.state, {userinfo,loading}));
-                        appdata.setAppConfig(appconfig);
+                        appdata.setAppInfo(appinfo);
 
                }).catch((err)=>{
                    console.error("failed to load the appinfo:"+err);

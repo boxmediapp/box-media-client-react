@@ -52,7 +52,9 @@ export default class DisplayVideoObject extends Component{
       var imageURL=canvas.toDataURL();
       this.props.onCaptureImage(imageURL,video.videoWidth, video.videoHeight);
   }
-
+displayEmbeddedCode(){
+    this.props.displayEmbeddedCode();
+}
   renderLoading(){
     if(this.state.buffering){
         return (<LoadingIcon loading={true}/>)
@@ -81,6 +83,11 @@ export default class DisplayVideoObject extends Component{
                              <div style={styles.buttonLabel}>Capture Image</div>
                          </a>
                   </div>
+                  <div style={styles.buttonContainer}>
+                        <a className="btn btn-primary btn-normal" onClick={this.displayEmbeddedCode.bind(this)}>
+                            <div style={styles.buttonLabel}>Brightcove Player</div>
+                        </a>
+                 </div>
             </div>
       </div>
     );

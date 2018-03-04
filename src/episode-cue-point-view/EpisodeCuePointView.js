@@ -16,6 +16,8 @@ import CuePointEditor from "./CuePointEditor";
 import DisplayVideoObject from "./DisplayVideoObject";
 import VideoImageUploader from "./VideoImageUploader";
 
+import DisplayEmbeddedCode from "./DisplayEmbeddedCode";
+
 
 
 export default class EpisodeCuePointView extends Component{
@@ -146,6 +148,12 @@ onDeleteCuePoint(cuepoint){
     episode.editAction=null;
     this.setState({episode, modalMessage:null});
   }
+  displayEmbeddedCode(){
+    var displayCode="BrightCodeWebPlayer";
+    var episode=Object.assign({},this.state.episode,{editAction:{displayCode}})
+    this.setState({episode, modalMessage:this.state.modalMessage});
+    window.scrollTo(0, 0);
+  }
 
   renderCueEditor(){
     if(this.state.episode && this.state.episode.editAction && this.state.episode.editAction.cueToEdit){
@@ -190,12 +198,26 @@ onDeleteCuePoint(cuepoint){
       return null;
     }
   }
+  renderDisplayEmbeddedCode(){
+    if(this.state.episode && this.state.episode.editAction && this.state.episode.editAction.displayCode){
+        return (<DisplayEmbeddedCode displayCode={this.state.episode.editAction.displayCode}                
+                 onCancel={this.onCancelEdit.bind(this)}
+                 episode={this.state.episode}/>
+               );
+
+    }
+    else{
+      return null;
+    }
+
+  }
   renderVideoPlayer(){
       if(this.state.episode && this.state.episode.signedVideoURL){
         return(
             <DisplayVideoObject url={this.state.episode.signedVideoURL} ref={videoPlayer=>this.videoPlayer=videoPlayer}
             onTimeUpdate={this.onTimeUpdate.bind(this)}
-            onCaptureImage={this.onCaptureImage.bind(this)}/>
+            onCaptureImage={this.onCaptureImage.bind(this)}
+            displayEmbeddedCode={this.displayEmbeddedCode.bind(this)}/>
         );
       }
       else{
@@ -258,6 +280,7 @@ onDeleteCuePoint(cuepoint){
                               {this.renderVideoPlayer()}
                               {this.renderCueEditor()}
                               {this.renderImageUploader()}
+                              {this.renderDisplayEmbeddedCode()}
                         </div>
                         {this.renderCuePoints()}
                         <div style={styles.buttonContainer}>

@@ -166,7 +166,7 @@ class ServiceAPI {
 
     loadConfig(){
          return this.doGetRequest("app/info").then(function(data){
-           return data.appconfig;
+           return data;
          });
      }
 

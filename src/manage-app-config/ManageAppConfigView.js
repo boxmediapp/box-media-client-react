@@ -272,8 +272,9 @@ export  default class ManageAppConfigView extends Component {
        this.setState(Object.assign({}, this.state,{modalMessage}));
     }
     loadAppConfig(){
-      api.loadConfig().then(appconfig=>{
-          appdata.setAppConfig(appconfig);
+      api.loadConfig().then(appinfo=>{
+          var appconfig=appinfo.appconfig
+          appdata.setAppInfo(appinfo);
           this.setState(Object.assign({},this.state,this.buildAppConfigStateData(appconfig)));
       }).catch((err)=>{
            this.setErrorMessage("failed to load the appinfo:"+err.stack);

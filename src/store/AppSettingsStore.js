@@ -50,10 +50,16 @@ export default class AppSettingsStore{
   }
 
 
-  setAppConfig(appconfig){
+  setAppInfo(appinfo){
+    var appconfig=appinfo.appconfig;
+    var bcSettings=appinfo.bcSettings;
     this.store.dispatch(applicationSettings.actions.appconfig(appconfig));
+    this.store.dispatch(applicationSettings.actions.bcSettings(bcSettings));
   }
   getAppConfig(){
     return this.store.getState().applicationSettings.appconfig;
+  }
+  getBCSettings(){
+    return this.store.getState().applicationSettings.bcSettings;
   }
 }

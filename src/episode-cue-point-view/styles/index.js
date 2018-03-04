@@ -54,7 +54,22 @@ export const styles={
     flexDirection:"column",
     justifyContent:"space-between",
     boxShadow: "10px 10px 5px #888888"
+  },
+  codeContainer:{
+    marginLeft:5,
+    display:"flex",
+    flexDirection:"column",
+    justifyContent:"center",
+    alignItems:"center",
+    boxShadow: "10px 10px 5px #888888",
+    width:350,
+    height:250,
+  },
+  embeddedCode:{          
+          width:300,
+          height:200,
   }
+
 
 
 };

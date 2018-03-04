@@ -45,7 +45,22 @@ export default class ListCMSMenu extends Component{
         );
       }
       else{
-        return null;
+        return (
+          <div style={styles.cmsMenuList}>
+                 <div style={styles.title}>CMS Menu</div>
+                 <div style={styles.iconContainer}>
+                      No CMS Memu found
+                 </div>
+                 <div style={styles.footer}>
+                    <div style={styles.buttonContainer}>
+                         <button type="submit" className="btn btn-primary btn-normal" onClick={(evt) => {
+                                this.createMenu();
+                          }}>Create</button>
+                    </div>
+                  </div>
+
+          </div>
+        )
       }
 
     }

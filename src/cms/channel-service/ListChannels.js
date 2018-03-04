@@ -48,7 +48,22 @@ export default class ListChannels extends Component{
         );
       }
       else{
-        return null;
+        return (
+          <div style={styles.channelsContainer}>
+                 <div style={styles.title}>Channels</div>
+                 <div style={styles.iconContainer}>
+                      No Channels found
+                 </div>
+                 <div style={styles.footer}>
+                    <div style={styles.buttonContainer}>
+                         <button type="submit" className="btn btn-primary btn-normal" onClick={(evt) => {
+                                this.createChannel();
+                          }}>Create</button>
+                    </div>
+                  </div>
+
+          </div>
+        );
       }
 
     }

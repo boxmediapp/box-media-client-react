@@ -107,6 +107,13 @@ export const styles={
       justifyContent:"flex-end",
       marginRight:30
     },
+    footer:{
+      display:"flex",
+      flexDirection:"row",
+      justifyContent:"flex-start",
+      width:"100%",
+      marginLeft:30
+    }
 
 
 

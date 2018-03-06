@@ -313,6 +313,12 @@ class ServiceAPI {
          loadBCPlaylists(){
             return this.doGetRequest("bc/playlists");
          }
+         loadExplictPlaylists(){
+           return this.doGetRequest("bc/playlist?search=type:EXPLICIT");
+         }
+         patchBCPlaylist(playlist){
+           return this.doPatchRequest("bc/playlist/"+playlist.id,JSON.stringify(playlist));
+         }
          loadAllCMSMenu(){
             return this.doGetRequest("cms/manage/menu");
          }

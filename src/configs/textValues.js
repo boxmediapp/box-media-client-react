@@ -24,8 +24,8 @@ const textValues={
     programmeList:{
           link:"/box-media/programme-list",
           redirect:"/media-app/index.html?resource=programmes",
-          linkText:"Programme",
-          actionText:"Programme",
+          linkText:"Programmes",
+          actionText:"Programmes",
           icon:localImages.programme
     },
     collectionList:{
@@ -460,6 +460,14 @@ const textValues={
                 cancelButton:"Cancel",
                 confirmButton:"DELETE"
               }
+          },
+          playlists:{
+            link:"/box-media/cms/episode-playlists",
+            linkText:"Playlists",
+            actionText:"Playlists",
+            error:{
+              title:"Error in Playlist Service",
+            },
           }
 
     },
@@ -470,7 +478,7 @@ const textValues={
         icon:localImages.mediapi,
         content:{
             title:"Box Media API",
-            p1:["If you need a programmtic access to the Box Media Application, please use your pair of a Client ID and a Client Secret instead of of your username and password to access the Box Media API.",
+            p1:["If you need a programmtic access to the Box Media Application, please use your pair of a Client ID and a Client Secret instead of your username and password to access the Box Media API.",
                 "Your client ID and client Secret"]
         }
       }

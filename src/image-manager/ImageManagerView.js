@@ -510,7 +510,7 @@ onDeleteMasterImage(){
               <div style={styles.title}>Episode Level Image: {this.state.episode.title} ({this.state.episode.programmeNumber})
               </div>
               <div style={styles.rightContainer}>
-                  <a href={programmelink}>Edit Programme Level Images</a>
+                  <a href={programmelink} className="btn btn-primary btn-normal">Programme Level Images</a>
               </div>
         </div>
         );
@@ -524,7 +524,7 @@ onDeleteMasterImage(){
         <div style={styles.header}>
               <div style={styles.title}>Programme Level Image: {this.state.programme.name} ({this.state.programme.contractNumber})</div>
               <div style={styles.rightContainer}>
-                  <a href={collectionlink}>Edit Collection Level Images</a>
+                  <a href={collectionlink} className="btn btn-primary btn-normal">Collection Level Images</a>
               </div>
         </div>
       );

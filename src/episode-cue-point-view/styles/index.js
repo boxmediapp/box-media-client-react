@@ -1,4 +1,9 @@
 export const styles={
+  header:{
+    display:"flex",
+    flexDirection:"row",
+    justifyContent:"space-between"
+  },
   title:{
     fontFamily: "'Roboto', sans-serif",
     textTransform: "uppercase",
@@ -65,7 +70,7 @@ export const styles={
     width:350,
     height:250,
   },
-  embeddedCode:{          
+  embeddedCode:{
           width:300,
           height:200,
   }

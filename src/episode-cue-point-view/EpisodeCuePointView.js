@@ -200,7 +200,7 @@ onDeleteCuePoint(cuepoint){
   }
   renderDisplayEmbeddedCode(){
     if(this.state.episode && this.state.episode.editAction && this.state.episode.editAction.displayCode){
-        return (<DisplayEmbeddedCode displayCode={this.state.episode.editAction.displayCode}                
+        return (<DisplayEmbeddedCode displayCode={this.state.episode.editAction.displayCode}
                  onCancel={this.onCancelEdit.bind(this)}
                  episode={this.state.episode}/>
                );
@@ -269,13 +269,21 @@ onDeleteCuePoint(cuepoint){
 
   }
   render(){
-
+      var editepisodeURL=textValues.editEpisode.applink(this.state.episode.id);
+      var editimageURL=textValues.imageManager.link+"?episodeid="+this.state.episode.id;
       return (
           <div>
             <AppHeader selected="episodeList"/>
 
               <div style={AppHeader.styles.content}>
-                    <div style={styles.title}>{this.state.episode.title} </div>
+                    <div style={styles.header}>
+                          <div style={styles.title}>{this.state.episode.title}</div>
+                          <div style={styles.title}>{this.state.episode.programmeNumber}</div>
+                          <a href={editimageURL} className="btn btn-primary btn-normal">Manage Images</a>
+                          <a href={editepisodeURL} className="btn btn-primary btn-normal">Edit Metadata</a>
+                    </div>
+
+
                         <div style={styles.editorContainer}>
                               {this.renderVideoPlayer()}
                               {this.renderCueEditor()}

@@ -11,36 +11,86 @@ class ServiceAPI {
         this.config=config;
         this.appdata=appdata;
      }
-
-     executeHTTPGetRequestWithHeaders(path, headers){
-     if(!headers){
-       headers={};
+     checkHttpError(response,path, methodName){
+          var errorObject=null;
+          if(!response){
+            console.error("empty response received with "+methodName+" request from:"+path);
+            throw Error("Empty Response received from the server");
+          }
+          else if(!response.status){
+            console.error("response with status zero is received with "+methodName+" request from:"+path);
+            throw new Error("Response with zero code received from the server");
+          }
+          else if(response.status>=300 || response.status<200){
+                  console.error("response with status "+response.status+" is received with "+methodName+" request from:"+path);
+                  errorObject= new Error("Response "+response.status+" is received from the server");
+                  errorObject.errorHttpResponse=response;
+                  throw errorObject;
+          }
+          else{
+              console.log(" Successfull response "+response.status+" with "+methodName+" from :"+path);
+          }
      }
-    return fetch(this.config.api.getUrl(path),{headers})
-    .then(function(response) {
-      if((!response) || response.status>=400){
-          console.error("failure response on get request:"+path);
-          throw Error("HTTP get request response error on:"+path);
-      }
-          return response.text();
-    }).then(function(body) {
-        return JSON.parse(body);
-    });
-  };
+     processAPIError(error, errorCallback){
+          if(error && error.errorHttpResponse){
+                try{
+                      error.errorHttpResponse.text().then(errorBody=>{
+                            if(errorBody){
+                                  try{
+                                      var errorMessage=JSON.parse(errorBody);
+                                      if(errorMessage && errorMessage.error){
+                                          errorCallback(errorMessage.error,error.errorHttpResponse.status);
+                                      }
+                                      else{
+                                          errorCallback(errorBody,error.errorHttpResponse.status);
+                                      }
 
+                                  }
+                                  catch(e3){
+                                      console.log(e3);
+                                      errorCallback(errorBody,error.errorHttpResponse.status);
+                                  }
 
+                            }
+                            else{
+                              errorCallback(error,error.errorHttpResponse.status);
+                            }
+
+                      }).catch(e2=>{
+                            console.error(e2);
+                            errorCallback(error,error.errorHttpResponse.status);
+                      });
+                }
+                catch(e1){
+                      console.error(e1);
+                      errorCallback(error,error.errorHttpResponse.status);
+                }
+          }
+          else{
+              errorCallback(error);
+          }
+     }
+     executeHTTPGetRequestWithHeaders(path, headers){
+             if(!headers){
+               headers={};
+             }
+            return fetch(this.config.api.getUrl(path),{headers})
+            .then(response=> {
+                  this.checkHttpError(response,path, "GET");
+                  return response.text();
+            }).then(body => {
+                return JSON.parse(body);
+            });
+    }
    executeHTTPPostRequestWithHeaders(path, headers, body){
      if(!headers){
        headers={};
      }
     return fetch(this.config.api.getUrl(path),{headers, method:"POST", body})
-    .then(function(response) {
-      if((!response) || response.status>=400){
-          console.error("failure response on post request:"+path);
-          throw Error("HTTP post request response error on:"+path);
-      }
-          return response.text();
-    }).then(function(body) {
+    .then(response=> {
+        this.checkHttpError(response,path, "POST");
+        return response.text();
+    }).then(body => {
         return JSON.parse(body);
     });
    }
@@ -50,13 +100,10 @@ class ServiceAPI {
        headers={};
      }
     return fetch(this.config.api.getUrl(path),{headers, method:"PUT", body})
-    .then(function(response) {
-      if((!response) || response.status>=400){
-          console.error("failure response on put request:"+path);
-          throw Error("HTTP put request response error on:"+path);
-      }
-          return response.text();
-    }).then(function(body) {
+    .then(response => {
+      this.checkHttpError(response,path, "PUT");
+      return response.text();
+    }).then(body => {
         return JSON.parse(body);
     });
   }
@@ -65,30 +112,24 @@ class ServiceAPI {
       headers={};
     }
    return fetch(this.config.api.getUrl(path),{headers, method:"PATCH", body})
-   .then(function(response) {
-     if((!response) || response.status>=400){
-         console.error("failure response on put request:"+path);
-         throw Error("HTTP patch request response error on:"+path);
-     }
-         return response.text();
-   }).then(function(body) {
+   .then(response => {
+       this.checkHttpError(response,path, "PATCH");
+       return response.text();
+   }).then(body => {
        return JSON.parse(body);
    });
   }
+
 
    executeHTTPDeleteRequestWithHeaders(path, headers){
      if(!headers){
        headers={};
      }
     return fetch(this.config.api.getUrl(path),{headers,method:"DELETE"})
-    .then(function(response) {
-          if((!response) || response.status>=400){
-              console.error("failure response on delete request:"+path);
-              throw Error("HTTP response error on:"+path);
-          }
-
+    .then(response => {
+          this.checkHttpError(response,path, "DELETE");
           return response.text();
-    }).then(function(body) {
+    }).then(body => {
         return JSON.parse(body);
     });
   }

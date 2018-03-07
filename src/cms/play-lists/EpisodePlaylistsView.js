@@ -24,8 +24,15 @@ export default class EpisodePlaylistsView extends Component{
     this.setState(Object.assign({}, this.state,{modalMessage,loading:false}));
   }
   onError(error){
-    console.error(error);
-    this.setErrorMessage(""+error);
+        console.error(error);
+        api.processAPIError(error, (errorMessage, code)=>{
+              if(code && code===422){
+                    this.setErrorMessage("The playlist is full, you can no longer add new items to the playlist");
+              }
+              else{
+                this.setErrorMessage(errorMessage);
+              }
+        });
   }
 
   onClearMessage(){
@@ -88,7 +95,7 @@ export default class EpisodePlaylistsView extends Component{
         api.loadEpisodeDetails(episodeid).then(episode=>{
             if(!episode.brightcoveId){
                   this.onError("The episode is not yet published to the brighcove yet");
-                  
+
                   return;
              }
              else{

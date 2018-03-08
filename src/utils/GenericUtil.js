@@ -349,7 +349,86 @@ getWeek(datevalue){
         }
         return true;
    }
-   
+
+   toPlaylistTagSearchString(opts){
+                if(!opts.tags || !opts.tags.length){
+                    return null;
+                }
+                if(opts.type=="any"){
+                    var searchvalue="tags:\""+opts.tags[0]+"\"";
+                    for(var i=1;i<opts.tags.length;i++){
+                        searchvalue+=",";
+                        searchvalue+="\""+opts.tags[i]+"\"";
+                    }
+                    return searchvalue;
+                }
+                else{
+                    var searchvalue="";
+                    for(var i=0;i<opts.tags.length;i++){
+                        searchvalue+=" +tags:";
+                        searchvalue+="\""+opts.tags[i]+"\"";
+                    }
+                    return searchvalue;
+                }
+
+  }
+   parsePlaylistTagSearchString(searchString, result){
+        if(!searchString){
+              return;
+        }
+        searchString=searchString.trim();
+        if(!searchString){
+              return;
+        }
+        if(searchString.startsWith("+tags:")){
+                      if(result.type){
+                          if(result.type!="all"){
+                             result.error="searchtag contains the inconsistent type";
+                          }
+                      }
+                      else{
+                         result.type="all";
+                      }
+                      this.parsePlaylistTagSearchString(searchString.substring("+tags:".length),result);
+        }
+        else if(searchString.startsWith("tags:")){
+                      if(result.type){
+                          if(result.type!="any"){
+                             result.error="searchtag contains the inconsistent type";
+                          }
+                      }
+                      else{
+                         result.type="any";
+                      }
+                      this.parsePlaylistTagSearchString(searchString.substring("tags:".length),result);
+        }
+        else if(searchString.startsWith(",")){
+                      if(!result.type){
+                             result.type="any";
+                      }
+                      this.parsePlaylistTagSearchString(searchString.substring(1),result);
+      }
+      else if(searchString.startsWith('"')){
+                    searchString=searchString.substring(1);
+                      var ib=searchString.indexOf('"');
+                      if(ib==-1){
+                            result.error="quote is not closed in the search tag";
+                            return;
+                      }
+                      var tagvalue=searchString.substring(0,ib);
+                      if(!result.tags){
+                          result.tags=[];
+                      }
+                      result.tags.push(tagvalue);
+                      if((ib+1)<searchString.length){
+                           this.parsePlaylistTagSearchString(searchString.substring(ib+1),result);
+                      }
+      }
+                else{
+                      result.error="searchtag value is in wrong format";
+                }
+  }
+
 
 
 }

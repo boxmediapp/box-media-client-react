@@ -24,6 +24,11 @@ const localImages={
   channel:require("../images/channel.png"),
   achannel:require("../images/achannel.png"),
   mediapi:require("../images/media-api.png"),
+  explicitplaylist:require("../images/explicit-playlist.png"),
+  smartplaylist:require("../images/smart-playlist.png"),
+  sortAscending:require("../images/sort-ascending.png"),
+  sortDescending:require("../images/sort-descending.png"),
+
 
 }
 export default localImages;

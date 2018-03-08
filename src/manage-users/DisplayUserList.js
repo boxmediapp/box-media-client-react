@@ -5,7 +5,7 @@ import {styles} from "./styles";
 
 export default class DisplayUserList extends Component{
   render(){
-    if(this.props.user){
+    if(!this.props.users){
       return null;
     }
     return (

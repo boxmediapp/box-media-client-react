@@ -66,6 +66,90 @@ export const styles={
   buttonContainer:{
       marginLeft:10
   },
+  deleteButtonContainer:{
+    flex:1,
+    display:"flex",
+    flexDirection:"row",
+    justifyContent:"flex-end",
+    marginRight:30
+  },
+    createIcon:{
+    marginRight:30,
+    marginLeft:200,
+    cursor:"pointer"
+  },
+  explicitplaylist:{
+    display:"flex",
+    flexDirection:"row",
+    justifyContent:"flex-start"
+  },
+  playlistIcon:{
+     width:25,
+     height:25,
+     marginRight:5
+  },
+  sortHeader:{
+      color:"blue",
+      cursor:"pointer",
+      whiteSpace:"nowrap"
+
+  },
+  sortIcon:{
+    width:20,
+    height:20,
+    margin:5
+  },
+
+  playlistname:{
+      width:300
+  },
+  description:{
+    width:400,
+    height:150
+  },
+  videoListContainer:{
+    display:"flex",
+    flexDirection:"column",
+    justifyContent:"flex-start",
+    marginTop:30,
+    maerginLeft:10
+  },
+  subtitle:{
+    fontSize: 25,
+    marginBottom: 5,
+    color: "#414242",
+    fontWeight: "lighter"
+  },
+  activateState:{
+    width:100,
+    height:35,
+    borderRadius: 10,
+    WebkitBorderRadius: 10,
+    mozBorderRadius: 10,
+    border:"1px solid green",
+    backgroundColor:"green",
+    display:"flex",
+    flexDirection:"column",
+    justifyContent:"center",
+    alignItems:"center",
+    color: "white",
+    fontFamily: "'Roboto', sans-serif",
+  },
+  inactivateState:{
+    width:100,
+    height:35,
+    borderRadius: 10,
+    WebkitBorderRadius: 10,
+    mozBorderRadius: 10,
+    border:"1px solid red",
+    backgroundColor:"red",
+    display:"flex",
+    flexDirection:"column",
+    justifyContent:"center",
+    alignItems:"center",
+    color: "white",
+    fontFamily: "'Roboto', sans-serif",
+  }
 
 
 };

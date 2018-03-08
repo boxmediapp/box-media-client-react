@@ -55,6 +55,14 @@ const textValues={
           actionText:"Playlists",
           icon:localImages.playlist
     },
+    playlists:{
+        link:"/box-media/cms/playlists",
+        linkText:"Playlists",
+        actionText:"Playlists",
+        error:{
+            title:"Error in Playlists",
+        }
+    },
     manageUser:{
         linkText:"Users Manager",
         actionText:"Manage Users",
@@ -467,10 +475,10 @@ const textValues={
             actionText:"Playlists",
             error:{
               title:"Error in Playlist Service",
-            },
+            }
           }
-
     },
+
     apiAccessHelp:{
         link:"/box-media/api-help",
         linkText:"Box Media API",

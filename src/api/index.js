@@ -354,6 +354,12 @@ class ServiceAPI {
          loadBCPlaylists(){
             return this.doGetRequest("bc/playlists");
          }
+         loadABCPlaylist(plid){
+             return this.doGetRequest("bc/playlists/"+plid);
+         }
+         loadPlaylistVideos(plid){
+             return this.doGetRequest("bc/playlists/"+plid+"/videos");
+         }
          loadExplictPlaylists(){
            return this.doGetRequest("bc/playlist?search=type:EXPLICIT");
          }

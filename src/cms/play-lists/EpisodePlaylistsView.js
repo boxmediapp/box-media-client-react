@@ -16,7 +16,7 @@ export default class EpisodePlaylistsView extends Component{
   }
   setErrorMessage(message){
     var modalMessage={
-           title:textValues.cms.playlists.error.title,
+           title:textValues.playlists.error.title,
            content:message,
            onConfirm:this.onClearMessage.bind(this),
            confirmButton:"Ok",

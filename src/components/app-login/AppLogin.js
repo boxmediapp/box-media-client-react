@@ -43,7 +43,7 @@ export default class AppLogin extends Component {
             securityGroup:config.securityGroup,
             initData:{
               action:"input",
-              dataType:"login",
+              dataType:"form",
               form:{
                 id: "###username###@"+config.appid,
                 title:"Sign In",

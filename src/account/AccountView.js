@@ -133,7 +133,7 @@ export default class AccountView extends Component{
        this.setState(Object.assign({}, this.state,{userAccount,action:USER_ACTION.SHOW_USER_DETAILS}));
        var initData={
                   action:"input",
-                  dataType:"select",
+                  dataType:"control",
                   form:{
                         title:textValues.account.selectDataToModify.title,
                         fields:[{
@@ -591,7 +591,7 @@ startUpdateCompany(){
                   securityGroup:config.securityGroup,
                   initData:{
                         action:"input",
-                        dataType:"verify",
+                        dataType:"form",
                         form:{
                               id: userinfo.username+"@"+config.appid,
                               label:"boxmedia",

@@ -62,7 +62,7 @@ export  default class SignUpView extends Component {
         securityGroup:config.securityGroup,
         initData:{
           action:"input",
-          dataType:"subscribe",
+          dataType:"form",
           form:{
             id: "###username###@"+config.appid,
             title:"Create Account",

@@ -1,4 +1,5 @@
 var config={
+    url:"https://image.boxnetwork.co.uk",
     appid:"boxmediaapp",
     apikey:"k7jc3QcMPKEXGW5UC",
     securityGroup:"1CNbWCFpsbmRQuKdd",

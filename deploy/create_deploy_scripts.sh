@@ -1,7 +1,7 @@
 source deploy/util.sh
 
 
-createDeployScript dubuntu  $projectversion  deploy/bebox.sh  dubuntu              dilshat
+createDeployScript dubuntu  $projectversion  deploy/prod.sh  dubuntu              dilshat
 createDeployScript dev      $projectversion  deploy/prod.sh  davran              davran
 createDeployScript box      $projectversion  deploy/prod.sh  mediapp.iterativesolution.co.uk     ec2-user
 createDeployScript bebox    $projectversion  deploy/prod.sh  bemediaapp.iterativesolution.co.uk  ec2-user

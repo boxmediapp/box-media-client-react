@@ -55,7 +55,10 @@ unzipAndReplaceVariables(){
     echo "cd $destzipfolder" > /tmp/script_$uniqueidforfilename.sh
     echo "unzip -o $zipfilename" >> /tmp/script_$uniqueidforfilename.sh
 
-    #echo  'sed -i -e "s,@@@db_user@@@,'$db_user',g" mysql/box-scripts/mysql.env' >> /tmp/script_$uniqueidforfilename.sh
+    echo  'find static/js/ -iname "*.js" -exec sed -i -e "s,@@@global_input_url@@@,'$global_input_url',g" {} \;' >> /tmp/script_$uniqueidforfilename.sh
+    echo  'find static/js/ -iname "*.js" -exec sed -i -e "s,@@@global_input_apikey@@@,'$global_input_apikey',g" {} \;' >> /tmp/script_$uniqueidforfilename.sh
+    echo  'find static/js/ -iname "*.js" -exec sed -i -e "s,@@@global_input_apikey_securityGroup@@@,'$global_input_apikey_securityGroup',g" {} \;' >> /tmp/script_$uniqueidforfilename.sh
+
 
 
 }

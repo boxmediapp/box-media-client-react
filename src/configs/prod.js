@@ -1,8 +1,8 @@
 var config={
-    url:"https://image.boxnetwork.co.uk",
+    url:"@@@global_input_url@@@",
     appid:"boxmediaapp",
-    apikey:"k7jc3QcMPKEXGW5UC",
-    securityGroup:"1CNbWCFpsbmRQuKdd",
+    apikey:"@@@global_input_apikey@@@",
+    securityGroup:"@@@global_input_apikey_securityGroup@@@",
     version:"4.2.3",
     api:{
       base:"https://mediaapp.boxplus.com/mule/boxtv/",
